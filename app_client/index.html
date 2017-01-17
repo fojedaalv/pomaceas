@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="PomaceasWebApp">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomáceas Web</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/flatly-bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css">
+  </head>
+  <body>
+    <navigation></navigation>
+    <div class="container" ng-view></div>
+
+    <!-- Bibliotecas básicas de AngularJS -->
+    <script src="/angular/angular.min.js"></script>
+    <script src="/lib/angular-route.min.js"></script>
+    <script src="/app.js"></script>
+    <!-- Controladores para cada módulo del sistema -->
+    <script src="/home/home.controller.js"></script>
+    <script src="/login/login.controller.js"></script>
+    <script src="/register/register.controller.js"></script>
+    <script src="/dashboard/dashboard.controller.js"></script>
+    <script src="/about/about.controller.js"></script>
+    <!-- Servicios definidos para los datos -->
+    <script src="/common/services/authentication.service.js"></script>
+    <!-- Directivas definidas para el sistema -->
+    <script src="/common/directives/navigation/navigation.directive.js"></script>
+    <script src="/common/directives/navigation/navigation.controller.js"></script>
+  </body>
+</html>

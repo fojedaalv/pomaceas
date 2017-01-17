@@ -1,0 +1,18 @@
+/* Common Styles */
+.app-container{
+  margin-top: 72px;
+}
+/* Home page styles */
+header{
+  margin-top: 100px;
+}
+
+.homepage-logos{
+  background-color: rgba(92,155,63,0.75);
+}
+
+/* Bootstrap template overrides */
+/* (Valores que sobreescriben a los originales en la plantilla de Bootstrap */
+.navbar-inverse{
+  background-color: rgba(92,155,63,0.75);
+}
