@@ -16,3 +16,7 @@ header{
 .navbar-inverse{
   background-color: rgba(92,155,63,0.75);
 }
+
+input[type="file"]{
+  display: inline-block;
+}

@@ -22,7 +22,7 @@ function config($routeProvider, $logProvider){
     })
     .when('/dashboard', {
       templateUrl: 'dashboard/dashboard.view.html',
-      controller: 'registerCtrl',
+      controller: 'dashboardCtrl',
       controllerAs: 'vm'
     })
     .when('/about', {
