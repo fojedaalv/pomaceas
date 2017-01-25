@@ -17,6 +17,9 @@
           <a href="/#/login">Acceder</a>
         </li>
         <li ng-show="navvm.isLoggedIn">
+          <a href="/#/dashboard">Panel de Control</a>
+        </li>
+        <li ng-show="navvm.isLoggedIn">
           <a href="" ng-click="navvm.logout()">Salir</a>
         </li>
       </ul>

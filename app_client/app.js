@@ -25,6 +25,11 @@ function config($routeProvider, $logProvider){
       controller: 'dashboardCtrl',
       controllerAs: 'vm'
     })
+    .when('/dashboard/users', {
+      templateUrl: 'dashboard/users/users.view.html',
+      controller: 'dashboardUsersCtrl',
+      controllerAs: 'vm'
+    })
     .when('/about', {
       templateUrl: 'about/about.view.html',
       controller: 'aboutCtrl',

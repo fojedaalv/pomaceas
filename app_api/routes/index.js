@@ -8,6 +8,7 @@ var auth = jwt({
 
 //var ctrlEvents = require('../controllers/events');
 var ctrlAuth = require('../controllers/authentication');
+var ctrlUsers = require('../controllers/users');
 
 /*
 router.get('/events', ctrlEvents.eventsList);
@@ -19,5 +20,7 @@ router.delete('/events/:eventId', auth, ctrlEvents.eventsDeleteOne);
 
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
+
+router.get('/users', auth, ctrlUsers.list);
 
 module.exports = router;

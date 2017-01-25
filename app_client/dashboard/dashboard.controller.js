@@ -6,6 +6,7 @@ function dashboardCtrl($scope){
   vm.fileData = [];
   vm.fileDataDisplay = [];
   vm.isDataLoaded = false;
+  vm.loadProgress = 0;
   vm.loadFile = function(){
     // Adapted from http://stackoverflow.com/questions/18571001/file-upload-using-angularjs
     // http://jsfiddle.net/f8Hee/1/
@@ -14,6 +15,7 @@ function dashboardCtrl($scope){
     var r = new FileReader();
     r.onprogress = function(e){
       console.log(e.total+","+e.loaded);
+      vm.loadProgress = e.loaded/e.total*100;
     }
 
     r.onloadend = function(e){
@@ -30,7 +32,8 @@ function dashboardCtrl($scope){
       }
       vm.fileDataDisplay = vm.fileData.slice(0,100);
       vm.isDataLoaded = true;
-      $scope.$apply()
+      vm.loadProgress = 100;
+      $scope.$apply();
     }
     r.readAsText(f);
   }

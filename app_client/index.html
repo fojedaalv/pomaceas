@@ -8,7 +8,7 @@
   </head>
   <body>
     <navigation></navigation>
-    <div class="container" ng-view></div>
+    <div ng-view></div>
 
     <!-- Bibliotecas básicas de AngularJS -->
     <script src="/angular/angular.min.js"></script>
@@ -19,11 +19,15 @@
     <script src="/login/login.controller.js"></script>
     <script src="/register/register.controller.js"></script>
     <script src="/dashboard/dashboard.controller.js"></script>
+    <script src="/dashboard/users/users.controller.js"></script>
     <script src="/about/about.controller.js"></script>
     <!-- Servicios definidos para los datos -->
     <script src="/common/services/authentication.service.js"></script>
+    <script src="/common/services/users.service.js"></script>
     <!-- Directivas definidas para el sistema -->
     <script src="/common/directives/navigation/navigation.directive.js"></script>
     <script src="/common/directives/navigation/navigation.controller.js"></script>
+    <script src="/common/directives/dashboard-navigation/dashboard-navigation.directive.js"></script>
+    <script src="/common/directives/dashboard-navigation/dashboard-navigation.controller.js"></script>
   </body>
 </html>
