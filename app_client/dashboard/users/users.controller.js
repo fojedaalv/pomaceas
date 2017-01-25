@@ -4,11 +4,11 @@ angular.module('PomaceasWebApp')
 function dashboardUsersCtrl($scope, usersSvc){
   var vm = this;
   vm.users = [];
-  vm.formError = "";
+  vm.errMessage = "";
 
   usersSvc.getUsersList()
   .error(function(err){
-    vm.formError = err.message;
+    vm.errMessage = err.message;
   })
   .then(function(data){
     vm.users = data.data;

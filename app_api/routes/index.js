@@ -21,6 +21,9 @@ router.delete('/events/:eventId', auth, ctrlEvents.eventsDeleteOne);
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
 
-router.get('/users', auth, ctrlUsers.list);
+router.get('/users',
+      auth,
+      ctrlAuth.roleAuthorization(['administrator']),
+      ctrlUsers.list);
 
 module.exports = router;

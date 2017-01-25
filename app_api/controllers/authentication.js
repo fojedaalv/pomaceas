@@ -66,18 +66,20 @@ module.exports.login = function(req, res){
 
 exports.roleAuthorization = function(roles){
   return function(req, res, next){
-    var user = req.user;
+    var user = req.payload;
+    console.log(user);
     User.findById(user._id, function(err, foundUser){
       if(err){
-        res.status(422).json({error: 'No user found.'});
+        res.status(422).json({message: 'Usuario no encontrado.'});
         return next(err);
       }
 
       if(roles.indexOf(foundUser.role) > -1){
         return next();
       }
-
-      res.status(401).json({error: 'You are not authorized to view this content'});
+      sendJSONresponse(res, 401, {
+        message: 'No tienes autorización para ver este contenido.'
+      });
       return next('Unauthorized');
     });
   };
