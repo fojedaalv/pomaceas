@@ -3,7 +3,7 @@
   <dashboard-navigation></dashboard-navigation>
 
   <div class="col-md-9">
-    <div class="panel panel-default">
+    <div class="panel panel-default" ng-if="vm.userRole=='administrator'">
       <div class="panel-heading">
         <h3 class="panel-title">Opciones de Administrador</h3>
       </div>
@@ -24,9 +24,7 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="col-md-9 col-md-offset-3">
     <div class="panel panel-default">
       <div class="panel-heading">
         Seleccione un archivo de datos

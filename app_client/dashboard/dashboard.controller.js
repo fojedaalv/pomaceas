@@ -1,12 +1,13 @@
 angular.module('PomaceasWebApp')
 .controller('dashboardCtrl', dashboardCtrl);
 
-function dashboardCtrl($scope){
+function dashboardCtrl($scope, authSvc){
   var vm = this;
   vm.fileData = [];
   vm.fileDataDisplay = [];
   vm.isDataLoaded = false;
   vm.loadProgress = 0;
+  vm.userRole = authSvc.currentUser().role;
   vm.loadFile = function(){
     // Adapted from http://stackoverflow.com/questions/18571001/file-upload-using-angularjs
     // http://jsfiddle.net/f8Hee/1/

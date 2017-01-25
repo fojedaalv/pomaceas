@@ -3,11 +3,13 @@
     <a href="/#/dashboard" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard')}">
       Inicio
     </a>
+    <div ng-show="navvm.userRole=='administrator'">
     <li class="list-group-item">
       <b>Administración</b>
     </li>
     <a href="/#/dashboard/users" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/users')}">
       Usuarios
     </a>
+    </div>
   </ul>
 </div>

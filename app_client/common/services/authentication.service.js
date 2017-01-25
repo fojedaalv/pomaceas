@@ -27,7 +27,8 @@ function authSvc($http, $window){
       var payload = JSON.parse(decodeURIComponent(escape($window.atob(token.split('.')[1]))));
       return {
         email : payload.email,
-        name: payload.name
+        name: payload.name,
+        role: payload.role
       };
     }
   };

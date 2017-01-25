@@ -6,4 +6,5 @@ function dashboardNavigationCtrl($location, authSvc){
   vm.isActive = function (viewLocation) {
     return viewLocation === $location.path();
   };
+  vm.userRole = authSvc.currentUser().role;
 }
