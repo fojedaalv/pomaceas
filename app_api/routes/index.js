@@ -25,5 +25,17 @@ router.get('/users',
       auth,
       ctrlAuth.roleAuthorization(['administrator']),
       ctrlUsers.list);
+router.get('/users/:userId',
+      auth,
+      ctrlAuth.roleAuthorization(['administrator']),
+      ctrlUsers.readOne);
+router.put('/users/:userId',
+      auth,
+      ctrlAuth.roleAuthorization(['administrator']),
+      ctrlUsers.updateOne);
+router.delete('/users/:userId',
+      auth,
+      ctrlAuth.roleAuthorization(['administrator']),
+      ctrlUsers.deleteOne);
 
 module.exports = router;

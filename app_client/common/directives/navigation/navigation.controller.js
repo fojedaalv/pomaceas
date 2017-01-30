@@ -9,7 +9,6 @@ function navigationCtrl($location, authSvc, $rootScope){
   vm.logout = function() {
     authSvc.logout();
     vm.isLoggedIn = authSvc.isLoggedIn();
-    console.log(vm.isLoggedIn);
     $location.path('/');
   };
   $rootScope.$on("UserLoggedIn", function(){

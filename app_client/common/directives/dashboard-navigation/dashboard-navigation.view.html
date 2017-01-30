@@ -3,6 +3,7 @@
     <a href="/#/dashboard" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard')}">
       Inicio
     </a>
+
     <div ng-show="navvm.userRole=='administrator'">
     <li class="list-group-item">
       <b>Administración</b>
@@ -11,5 +12,24 @@
       Usuarios
     </a>
     </div>
+
+    <div ng-show="navvm.userRole=='adviser'">
+    <li class="list-group-item">
+      <b>Opciones de Asesor</b>
+    </li>
+    <a href="/#/dashboard/asesorizacion" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/asesorizacion')}">
+      Asesorar xD
+    </a>
+    </div>
+
+    <div ng-show="navvm.userRole=='user'">
+    <li class="list-group-item">
+      <b>Opciones de Usuario</b>
+    </li>
+    <a href="/#/dashboard/usuarizacion" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/usuarizacion')}">
+      Usuariar xD
+    </a>
+    </div>
+
   </ul>
 </div>

@@ -67,7 +67,6 @@ module.exports.login = function(req, res){
 exports.roleAuthorization = function(roles){
   return function(req, res, next){
     var user = req.payload;
-    console.log(user);
     User.findById(user._id, function(err, foundUser){
       if(err){
         res.status(422).json({message: 'Usuario no encontrado.'});
