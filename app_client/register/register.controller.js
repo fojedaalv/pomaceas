@@ -27,8 +27,8 @@ function registerCtrl(authSvc){
     })
     .then(function(){
       vm.formInfo = "El usuario ha sido registrado.";
-      //$location.path('/dashboard/events');
-      //$rootScope.$emit("UserLoggedIn", {});
+      $location.path('/dashboard');
+      $rootScope.$emit("UserLoggedIn", {});
     });
   }
 }
