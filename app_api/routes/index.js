@@ -6,17 +6,9 @@ var auth = jwt({
   userProperty: 'payload'
 });
 
-//var ctrlEvents = require('../controllers/events');
 var ctrlAuth = require('../controllers/authentication');
 var ctrlUsers = require('../controllers/users');
-
-/*
-router.get('/events', ctrlEvents.eventsList);
-router.post('/events', auth, ctrlEvents.eventsCreate);
-router.get('/events/:eventId', ctrlEvents.eventsReadOne);
-router.put('/events/:eventId', auth, ctrlEvents.eventsUpdateOne);
-router.delete('/events/:eventId', auth, ctrlEvents.eventsDeleteOne);
-*/
+var ctrlStations = require('../controllers/stations');
 
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
@@ -37,5 +29,18 @@ router.delete('/users/:userId',
       auth,
       ctrlAuth.roleAuthorization(['administrator']),
       ctrlUsers.deleteOne);
+
+router.get('/stations',
+      auth,
+      ctrlAuth.roleAuthorization(['administrator']),
+      ctrlStations.list);
+router.post('/stations',
+      auth,
+      ctrlAuth.roleAuthorization(['administrator']),
+      ctrlStations.create);
+router.delete('/stations/:stationId',
+      auth,
+      ctrlAuth.roleAuthorization(['administrator']),
+      ctrlStations.deleteOne);
 
 module.exports = router;
