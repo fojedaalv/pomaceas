@@ -1,21 +1,10 @@
 angular.module('PomaceasWebApp')
-.controller('dashboardStationsCtrl', dashboardStationsCtrl);
+.controller('dashboardStationsNewCtrl', dashboardStationsNewCtrl);
 
-function dashboardStationsCtrl(stationsSvc, $scope){
+function dashboardStationsNewCtrl(stationsSvc, $scope){
   var vm = this;
   vm.stations = [];
   vm.errMessage = "";
-
-  vm.loadStations = function(){
-    stationsSvc.getStationsList()
-    .error(function(err){
-      vm.errMessage = err.message;
-    })
-    .then(function(data){
-      vm.stations = data.data;
-      vm.markers = vm.buildMarkers(vm.stations);
-    });
-  }
 
   vm.deleteStation = function(station){
     var stationId = station._id;
@@ -33,8 +22,6 @@ function dashboardStationsCtrl(stationsSvc, $scope){
       });;
     }
   }
-
-  vm.loadStations();
 
   vm.cursor = {
     id: 0,

@@ -1,0 +1,27 @@
+<div class="app-container container-fluid">
+<div class="row">
+  <dashboard-navigation></dashboard-navigation>
+
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Mapa de Estaciones</h3>
+      </div>
+      <div class="panel-body">
+        <ui-gmap-google-map
+          center='vm.map.center'
+          zoom='vm.map.zoom'
+          events="vm.map.events">
+          <ui-gmap-markers
+            models="vm.markers"
+            idKey="id"
+            coords="'self'"
+            icon="'icon'"
+            click="vm.clickMarker">
+          </ui-gmap-markers>
+        </ui-gmap-google-map>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

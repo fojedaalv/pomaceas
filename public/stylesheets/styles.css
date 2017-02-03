@@ -20,3 +20,6 @@ header{
 input[type="file"]{
   display: inline-block;
 }
+
+/* Valores para la directiva de mapas de Google */
+.angular-google-map-container { height: 400px; }

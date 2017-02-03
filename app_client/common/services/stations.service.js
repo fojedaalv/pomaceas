@@ -10,6 +10,10 @@ function stationsSvc($http, $window, authSvc){
     });
   }
 
+  var getPublicStationsList = function(){
+    return $http.get('/api/v1/stations-public');
+  }
+
   var createStation = function(station){
     return $http.post('/api/v1/stations', station,{
       headers: {
@@ -47,6 +51,7 @@ function stationsSvc($http, $window, authSvc){
     getStationsList : getStationsList,
     createStation : createStation,
     deleteStation : deleteStation,
+    getPublicStationsList : getPublicStationsList,
     getUser : getUser,
     updateUser : updateUser
   };

@@ -1,5 +1,6 @@
 angular.module('PomaceasWebApp', [
-  'ngRoute'
+  'ngRoute',
+  'uiGmapgoogle-maps'
 ]);
 
 function config($routeProvider, $logProvider){
@@ -38,6 +39,21 @@ function config($routeProvider, $logProvider){
     .when('/dashboard/stations', {
       templateUrl: 'dashboard/stations/stations.view.html',
       controller: 'dashboardStationsCtrl',
+      controllerAs: 'vm'
+    })
+    .when('/dashboard/stations-map', {
+      templateUrl: 'dashboard/stations-map/stations-map.view.html',
+      controller: 'dashboardStationsMapCtrl',
+      controllerAs: 'vm'
+    })
+    .when('/dashboard/stations-new', {
+      templateUrl: 'dashboard/stations-new/stations-new.view.html',
+      controller: 'dashboardStationsNewCtrl',
+      controllerAs: 'vm'
+    })
+    .when('/stations-public', {
+      templateUrl: 'stations-public/stations-public.view.html',
+      controller: 'stationsPublicCtrl',
       controllerAs: 'vm'
     })
     .when('/about', {

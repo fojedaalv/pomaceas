@@ -43,4 +43,6 @@ router.delete('/stations/:stationId',
       ctrlAuth.roleAuthorization(['administrator']),
       ctrlStations.deleteOne);
 
+router.get('/stations-public',
+      ctrlStations.list);
 module.exports = router;
