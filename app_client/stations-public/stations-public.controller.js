@@ -7,6 +7,10 @@ function stationsPublicCtrl(stationsSvc, $scope){
   vm.markers = [];
   vm.errMessage = "";
 
+  vm.windowOptions = {
+    visible: false
+  };
+
   vm.loadStations = function(){
     stationsSvc.getPublicStationsList()
     .error(function(err){
@@ -40,6 +44,8 @@ function stationsPublicCtrl(stationsSvc, $scope){
         id: stations[i]._id,
         latitude: stations[i].location.coordinates[0],
         longitude: stations[i].location.coordinates[1],
+        city: stations[i].city,
+        region: stations[i].region,
         title: stations[i].name
       }
       markers.push(marker);
@@ -47,8 +53,12 @@ function stationsPublicCtrl(stationsSvc, $scope){
     return markers;
   }
 
-  vm.clickMarker = function(i,e,obj){
+  vm.closeClick = function() {
+      vm.windowOptions.visible = false;
+  };
 
+  vm.clickMarker = function(marker, eventName, model){
+    model.show = !model.show;
   }
 
   vm.loadStations();
