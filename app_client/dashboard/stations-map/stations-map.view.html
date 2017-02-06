@@ -18,6 +18,13 @@
             coords="'self'"
             icon="'icon'"
             click="vm.clickMarker">
+            <ui-gmap-windows options="vm.windowOptions" closeClick="vm.closeClick()">
+              <div ng-non-bindable>
+                <h2>{{title}}</h2><br/>
+                Ciudad: {{city}}<br/>
+                Región: {{region}}
+              </div>
+            </ui-gmap-windows>
           </ui-gmap-markers>
         </ui-gmap-google-map>
       </div>

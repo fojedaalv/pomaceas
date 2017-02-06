@@ -17,10 +17,8 @@ function stationsPublicCtrl(stationsSvc, $scope){
       vm.errMessage = err.message;
     })
     .then(function(data){
-      console.log("Loading stations and markers.");
       vm.stations = data.data;
       vm.markers = vm.buildMarkers(vm.stations);
-      console.log("Hay: "+vm.markers.length+" marcadores.");
     });
   }
 
