@@ -10,7 +10,7 @@ var sendJSONresponse = function(res, status, content) {
 module.exports.list = function(req, res){
   Station.find(
     {},
-    '_id name city region location',
+    '_id name city region location owner',
     {},
     function(err, stations){
       if(err){
@@ -46,6 +46,7 @@ module.exports.create = function(req, res){
   station.name = req.body.name;
   station.city = req.body.city;
   station.region = req.body.region;
+  station.owner = req.body.owner;
   station.location = {
     type: "Point",
     coordinates: [Number(req.body.location[0]),
@@ -89,7 +90,7 @@ module.exports.readOne = function(req, res){
     {
       _id: req.params.stationId
     },
-    '_id name city region location',
+    '_id name city region owner location',
     {},
     function(err, station){
       if(err){
@@ -124,6 +125,11 @@ module.exports.updateOne = function(req, res){
       station.name = req.body.name;
       station.city = req.body.city;
       station.region = req.body.region;
+      if(req.body.owner == ""){
+        station.owner = null;
+      }else{
+        station.owner = req.body.owner;
+      }
       station.location = {
         type: "Point",
         coordinates: [Number(req.body.location[0]),
@@ -132,9 +138,11 @@ module.exports.updateOne = function(req, res){
       station.save(function(err){
         var token;
         if (err){
+          console.log(err);
           sendJSONresponse(res, 404, {
             "message": "Ha ocurrido un error en la actualización de los datos. Revise que los datos sean correctos."
           })
+          return;
         }else{
           sendJSONresponse(res, 200, station);
         }

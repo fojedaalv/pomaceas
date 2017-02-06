@@ -1,7 +1,6 @@
 <div class="app-container container-fluid">
 <div class="row">
   <dashboard-navigation></dashboard-navigation>
-
   <div class="col-md-9">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -22,6 +21,15 @@
             <label for="inputCity" class="col-lg-2 control-label">Ciudad</label>
             <div class="col-lg-10">
               <input class="form-control" id="inputCity" placeholder="Ciudad" type="text" ng-model="vm.newStation.city">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputOwner" class="col-lg-2 control-label">Dueño</label>
+            <div class="col-lg-10">
+              <select class="form-control" id="inputOwner" ng-model="vm.newStation.owner">
+                <option value=""></option>
+                <option ng-repeat="user in vm.users" value="{{user._id}}">{{user.name}}</option>
+              </select>
             </div>
           </div>
           <div class="form-group">

@@ -57,7 +57,6 @@ function dashboardStationsMapCtrl(stationsSvc, $scope){
 
   vm.clickMarker = function(marker, eventName, model){
     model.show = !model.show;
-    console.log("SWITCH");
   }
 
   vm.loadStations();

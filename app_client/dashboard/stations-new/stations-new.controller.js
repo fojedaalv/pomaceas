@@ -1,9 +1,13 @@
 angular.module('PomaceasWebApp')
 .controller('dashboardStationsNewCtrl', dashboardStationsNewCtrl);
 
-function dashboardStationsNewCtrl(stationsSvc, $scope, $location){
+function dashboardStationsNewCtrl(stationsSvc, usersSvc, $scope, $location){
   var vm = this;
+  vm.users = [];
   vm.errMessage = "";
+
+  // ==================================================
+  // ====== Código para la Funcionalidad del Mapa =====
 
   vm.cursor = {
     id: 0,
@@ -37,11 +41,13 @@ function dashboardStationsNewCtrl(stationsSvc, $scope, $location){
     name: "",
     city: "",
     region: "VII",
+    owner: "",
     location: [-35.433333,-71.666667]
   }
   vm.onSubmit = function(){
     vm.newStation.location[0] = vm.cursor.location.latitude;
     vm.newStation.location[1] = vm.cursor.location.longitude;
+    /*
     stationsSvc.createStation(vm.newStation)
     .success(function(station){
       $location.path('/dashboard/stations');
@@ -54,6 +60,16 @@ function dashboardStationsNewCtrl(stationsSvc, $scope, $location){
         region: "VII",
         location: [-35.433333,-71.666667]
       }
-    });
+    });*/
   }
+
+  // ==================================================
+  // ========= Código para Ejecutar al Inicio==========
+  usersSvc.getUsersList()
+  .success(function(users){
+    vm.users = users;
+  })
+  .error(function(e){
+    vm.errMessage = "No se pudo obtener la lista de usuarios. Detalles del error: "+e.message;
+  })
 }

@@ -1,10 +1,11 @@
 angular.module('PomaceasWebApp')
 .controller('dashboardStationsEditCtrl', dashboardStationsEditCtrl);
 
-function dashboardStationsEditCtrl(stationsSvc, $routeParams, $scope){
+function dashboardStationsEditCtrl(stationsSvc, usersSvc, $routeParams, $scope){
   var vm = this;
   vm.errMessage = "";
   vm.formInfo = "";
+  vm.users = []
 
   vm.cursor = {
     id: 0,
@@ -56,4 +57,14 @@ function dashboardStationsEditCtrl(stationsSvc, $routeParams, $scope){
   .error(function (e) {
     vm.errMessage = "La estación no pudo ser leída. Revise que la ruta esté correcta.";
   });
+
+  // ==================================================
+  // ========= Código para Ejecutar al Inicio==========
+  usersSvc.getUsersList()
+  .success(function(users){
+    vm.users = users;
+  })
+  .error(function(e){
+    vm.errMessage = "No se pudo obtener la lista de usuarios. Detalles del error: "+e.message;
+  })
 }

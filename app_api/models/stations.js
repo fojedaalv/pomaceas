@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var ObjectId = mongoose.Schema.ObjectId;
 
 var stationSchema = new mongoose.Schema({
   name: {
@@ -13,6 +14,9 @@ var stationSchema = new mongoose.Schema({
   region: {
     type: String,
     required: true
+  },
+  owner: {
+    type: ObjectId
   },
   location: {
     type: { type: String },
