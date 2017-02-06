@@ -2,7 +2,6 @@ angular.module('PomaceasWebApp')
 .controller('dashboardStationsEditCtrl', dashboardStationsEditCtrl);
 
 function dashboardStationsEditCtrl(stationsSvc, $routeParams, $scope){
-  // TODO: Add update endpoint
   var vm = this;
   vm.errMessage = "";
   vm.formInfo = "";
