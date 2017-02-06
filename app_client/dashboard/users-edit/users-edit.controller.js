@@ -8,7 +8,7 @@ function dashboardUsersEditCtrl(usersSvc, $routeParams, $location){
   vm.errMessage = "";
   usersSvc.getUser(vm.userId)
   .success(function (data) {
-    vm.user = data[0];
+    vm.user = data;
   })
   .error(function (e) {
     //vm.errMessage = e.message;

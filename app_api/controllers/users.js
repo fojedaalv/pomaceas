@@ -23,7 +23,7 @@ module.exports.list = function(req, res){
 };
 
 module.exports.readOne = function(req, res){
-  User.find(
+  User.findOne(
     {
       _id: req.params.userId
     },

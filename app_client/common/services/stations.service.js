@@ -30,17 +30,17 @@ function stationsSvc($http, $window, authSvc){
     });
   }
 
-  var getUser = function(userId){
-    return $http.get('/api/v1/users/'+userId, {
+  var getStation = function(stationId){
+    return $http.get('/api/v1/stations/'+stationId, {
       headers: {
         'Authorization': 'Bearer '+ authSvc.getToken()
       }
     });
   }
 
-  var updateUser = function(user){
-    var userId = user._id;
-    return $http.put('/api/v1/users/'+userId, user, {
+  var updateStation = function(station){
+    var stationId = station._id;
+    return $http.put('/api/v1/stations/'+stationId, station, {
       headers: {
         'Authorization': 'Bearer '+ authSvc.getToken()
       }
@@ -52,7 +52,7 @@ function stationsSvc($http, $window, authSvc){
     createStation : createStation,
     deleteStation : deleteStation,
     getPublicStationsList : getPublicStationsList,
-    getUser : getUser,
-    updateUser : updateUser
+    getStation : getStation,
+    updateStation : updateStation
   };
 }

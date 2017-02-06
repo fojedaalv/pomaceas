@@ -5,29 +5,30 @@
   <div class="col-md-9">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Crear una nueva estación</h3>
+        <h3 class="panel-title">Editar la estación</h3>
       </div>
       <div class="panel-body">
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
+        <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
         <form class="form-horizontal" ng-submit="vm.onSubmit()">
         <fieldset>
           <legend>Datos de la Estación</legend>
           <div class="form-group">
             <label for="inputName" class="col-lg-2 control-label">Nombre</label>
             <div class="col-lg-10">
-              <input class="form-control" id="inputName" placeholder="Nombre" type="text" ng-model="vm.newStation.name">
+              <input class="form-control" id="inputName" placeholder="Nombre" type="text" ng-model="vm.station.name">
             </div>
           </div>
           <div class="form-group">
             <label for="inputCity" class="col-lg-2 control-label">Ciudad</label>
             <div class="col-lg-10">
-              <input class="form-control" id="inputCity" placeholder="Ciudad" type="text" ng-model="vm.newStation.city">
+              <input class="form-control" id="inputCity" placeholder="Ciudad" type="text" ng-model="vm.station.city">
             </div>
           </div>
           <div class="form-group">
             <label for="inputRegion" class="col-lg-2 control-label">Región</label>
             <div class="col-lg-10">
-              <select class="form-control" id="inputRegion" ng-model="vm.newStation.region">
+              <select class="form-control" id="inputRegion" ng-model="vm.station.region">
                 <option value="XV">XV de Arica y Parinacota</option>
                 <option value="I">I de Tarapacá</option>
                 <option value="II">II de Antofagasta</option>
@@ -69,7 +70,7 @@
           </div>
           <div class="form-group">
             <div class="col-lg-10 col-lg-offset-2">
-              <button type="submit" class="btn btn-primary">Crear nueva estación</button>
+              <button type="submit" class="btn btn-primary">Guardar los cambios</button>
             </div>
           </div>
         </fieldset>

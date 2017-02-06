@@ -1,27 +1,9 @@
 angular.module('PomaceasWebApp')
 .controller('dashboardStationsNewCtrl', dashboardStationsNewCtrl);
 
-function dashboardStationsNewCtrl(stationsSvc, $scope){
+function dashboardStationsNewCtrl(stationsSvc, $scope, $location){
   var vm = this;
-  vm.stations = [];
   vm.errMessage = "";
-
-  vm.deleteStation = function(station){
-    var stationId = station._id;
-    var confDialog = "¿Desea eliminar la estación \""+ station.name +"\"?";
-    var conf = confirm(confDialog);
-    if(conf){
-      console.log("Eliminar la estación: " + stationId);
-      stationsSvc.deleteStation(stationId)
-      .success(function (data) {
-        var index = vm.stations.indexOf(station);
-        vm.stations.splice(index, 1);
-      })
-      .error(function (e) {
-        vm.errMessage = e.message;
-      });;
-    }
-  }
 
   vm.cursor = {
     id: 0,
@@ -46,22 +28,6 @@ function dashboardStationsNewCtrl(stationsSvc, $scope){
     }
   };
 
-  vm.markers = [];
-
-  vm.buildMarkers = function(stations){
-    var markers = [];
-    for (var i = 0; i < stations.length; i++) {
-      var marker = {
-        id: stations[i]._id,
-        latitude: stations[i].location.coordinates[0],
-        longitude: stations[i].location.coordinates[1],
-        title: stations[i].name
-      }
-      markers.push(marker);
-    }
-    return markers;
-  }
-
   vm.clickMarker = function(i,e,obj){
 
   }
@@ -78,7 +44,7 @@ function dashboardStationsNewCtrl(stationsSvc, $scope){
     vm.newStation.location[1] = vm.cursor.location.longitude;
     stationsSvc.createStation(vm.newStation)
     .success(function(station){
-      vm.loadStations();
+      $location.path('/dashboard/stations');
     })
     .error(function (e) {
       vm.errMessage = "La estación no pudo ser creada. Detalles del error: "+e.message;

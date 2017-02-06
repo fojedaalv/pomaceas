@@ -83,3 +83,62 @@ module.exports.deleteOne = function (req, res) {
     })
   }
 };
+
+module.exports.readOne = function(req, res){
+  Station.findOne(
+    {
+      _id: req.params.stationId
+    },
+    '_id name city region location',
+    {},
+    function(err, station){
+      if(err){
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+      }else{
+        sendJSONresponse(res, 201, station);
+      }
+    }
+  );
+};
+
+module.exports.updateOne = function(req, res){
+  if (!req.params.stationId) {
+    sendJSONresponse(res, 404, {
+      "message": "Estación no encontrada. Se requiere un ID para buscarla."
+    });
+    return;
+  }
+  Station.findById(req.params.stationId)
+  .exec(
+    function(err, station){
+      if (!station) {
+        sendJSONresponse(res, 404, {
+          "message": "ID de estación no encontrado."
+        });
+        return;
+      } else if (err) {
+        sendJSONresponse(res, 400, err);
+        return;
+      }
+      station.name = req.body.name;
+      station.city = req.body.city;
+      station.region = req.body.region;
+      station.location = {
+        type: "Point",
+        coordinates: [Number(req.body.location[0]),
+                      Number(req.body.location[1])]
+      }
+      station.save(function(err){
+        var token;
+        if (err){
+          sendJSONresponse(res, 404, {
+            "message": "Ha ocurrido un error en la actualización de los datos. Revise que los datos sean correctos."
+          })
+        }else{
+          sendJSONresponse(res, 200, station);
+        }
+      });
+    }
+  )
+};

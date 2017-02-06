@@ -13,6 +13,8 @@ var ctrlStations = require('../controllers/stations');
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
 
+// ================ User Endpoints =================
+
 router.get('/users',
       auth,
       ctrlAuth.roleAuthorization(['administrator']),
@@ -30,6 +32,8 @@ router.delete('/users/:userId',
       ctrlAuth.roleAuthorization(['administrator']),
       ctrlUsers.deleteOne);
 
+// ================ Stations Endpoints =============
+
 router.get('/stations',
       auth,
       ctrlAuth.roleAuthorization(['administrator']),
@@ -42,6 +46,13 @@ router.delete('/stations/:stationId',
       auth,
       ctrlAuth.roleAuthorization(['administrator']),
       ctrlStations.deleteOne);
+router.get('/stations/:stationId',
+      auth,
+      ctrlStations.readOne);
+router.put('/stations/:stationId',
+      auth,
+      ctrlAuth.roleAuthorization(['administrator']),
+      ctrlStations.updateOne);
 
 router.get('/stations-public',
       ctrlStations.list);
