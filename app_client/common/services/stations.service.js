@@ -47,12 +47,21 @@ function stationsSvc($http, $window, authSvc){
     });
   }
 
+  var getUserStations = function(userId){
+    return $http.get('/api/v1/userstations/'+userId, {
+      headers: {
+        'Authorization': 'Bearer '+ authSvc.getToken()
+      }
+    });
+  }
+
   return {
     getStationsList : getStationsList,
     createStation : createStation,
     deleteStation : deleteStation,
     getPublicStationsList : getPublicStationsList,
     getStation : getStation,
-    updateStation : updateStation
+    updateStation : updateStation,
+    getUserStations : getUserStations
   };
 }

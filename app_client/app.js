@@ -56,6 +56,16 @@ function config($routeProvider, $logProvider){
       controller: 'dashboardStationsEditCtrl',
       controllerAs: 'vm'
     })
+    .when('/dashboard/userstations', {
+      templateUrl: 'dashboard/userstations/userstations.view.html',
+      controller: 'dashboardUserStationsCtrl',
+      controllerAs: 'vm'
+    })
+    .when('/dashboard/userstations-view/:stationId', {
+      templateUrl: 'dashboard/userstations-view/userstations-view.view.html',
+      controller: 'dashboardUserStationsViewCtrl',
+      controllerAs: 'vm'
+    })
     .when('/stations-public', {
       templateUrl: 'stations-public/stations-public.view.html',
       controller: 'stationsPublicCtrl',

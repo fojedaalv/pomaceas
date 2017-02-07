@@ -54,6 +54,11 @@ router.put('/stations/:stationId',
       ctrlAuth.roleAuthorization(['administrator']),
       ctrlStations.updateOne);
 
+router.get('/userstations/:userId',
+      auth,
+      ctrlAuth.roleAuthorization(['administrator', 'user']),
+      ctrlStations.getByUser);
+
 router.get('/stations-public',
       ctrlStations.list);
 module.exports = router;

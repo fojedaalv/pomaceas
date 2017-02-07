@@ -150,3 +150,27 @@ module.exports.updateOne = function(req, res){
     }
   )
 };
+
+module.exports.getByUser = function(req, res){
+  if (!req.params.userId) {
+    sendJSONresponse(res, 404, {
+      "message": "No se especificó el ID del usuario para buscar estaciones. Revise que la ruta esté correcta."
+    });
+    return;
+  }
+  Station.find(
+    {
+      owner: req.params.userId
+    },
+    '_id name city region location owner',
+    {},
+    function(err, stations){
+      if(err){
+        console.log(err);
+        sendJSONresponse(res, 400, err);
+      }else{
+        sendJSONresponse(res, 201, stations);
+      }
+    }
+  );
+}
