@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.set('debug', true);
+//mongoose.set('debug', true);
 var dbpath = 'mongodb://localhost/pomaceas';
 if (process.env.NODE_ENV === 'production') {
   dbpath = process.env.MONGODB_URI;
@@ -45,3 +45,4 @@ process.on('SIGTERM', function() {
 
 require('./users');
 require('./stations');
+require('./sensor-data');

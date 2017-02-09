@@ -9,6 +9,7 @@ var auth = jwt({
 var ctrlAuth = require('../controllers/authentication');
 var ctrlUsers = require('../controllers/users');
 var ctrlStations = require('../controllers/stations');
+var ctrlSensorData = require('../controllers/sensor-data');
 
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
@@ -61,4 +62,8 @@ router.get('/userstations/:userId',
 
 router.get('/stations-public',
       ctrlStations.list);
+
+// ============= Sensor Data Endpoints =============
+router.post('/sensor-data',
+      ctrlSensorData.storeData);
 module.exports = router;

@@ -38,10 +38,14 @@
       <div class="panel-body">
         <input id="file" class="btn btn-default" type="file">
         <button class="btn btn-success" ng-click="vm.loadFile()">Cargar archivo</button>
+        <button class="btn btn-danger" ng-if="vm.isDataLoaded" ng-click="vm.uploadData()">Subir Archivo</button>
         <br/>
         <br/>
         <div class="progress">
           <div class="progress-bar" style="width: {{vm.loadProgress}}%"></div>
+        </div>
+        <div class="progress">
+          <div class="progress-bar" style="width: {{vm.uploadProgress}}%"></div>
         </div>
         <table class="table table-striped table-hover" ng-show="vm.isDataLoaded">
           <thead>

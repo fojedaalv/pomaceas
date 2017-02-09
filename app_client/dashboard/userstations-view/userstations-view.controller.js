@@ -1,7 +1,7 @@
 angular.module('PomaceasWebApp')
 .controller('dashboardUserStationsViewCtrl', dashboardUserStationsViewCtrl);
 
-function dashboardUserStationsViewCtrl(stationsSvc, $routeParams, $scope){
+function dashboardUserStationsViewCtrl(stationsSvc, $routeParams, $scope, sensorDataSvc){
   var vm = this;
   vm.station = {};
   vm.stationId = $routeParams.stationId;
@@ -23,6 +23,7 @@ function dashboardUserStationsViewCtrl(stationsSvc, $routeParams, $scope){
   vm.fileDataDisplay = [];
   vm.isDataLoaded = false;
   vm.loadProgress = 0;
+  vm.uploadProgress = 0;
   vm.loadFile = function(){
     // Adapted from http://stackoverflow.com/questions/18571001/file-upload-using-angularjs
     // http://jsfiddle.net/f8Hee/1/
@@ -30,7 +31,6 @@ function dashboardUserStationsViewCtrl(stationsSvc, $routeParams, $scope){
     var f = document.getElementById('file').files[0];
     var r = new FileReader();
     r.onprogress = function(e){
-      console.log(e.total+","+e.loaded);
       vm.loadProgress = e.loaded/e.total*100;
     }
 
@@ -52,5 +52,36 @@ function dashboardUserStationsViewCtrl(stationsSvc, $routeParams, $scope){
       $scope.$apply();
     }
     r.readAsText(f);
+  }
+
+  vm.uploadData = function(){
+    var chunkSize = 100;
+    var nData = vm.fileData.length;
+    var i;
+    var chunk = [];
+    for(i = 0; i < Math.floor(nData/chunkSize); i++){
+      chunk = vm.fileData.slice(chunkSize*i, chunkSize*(i+1));
+      sensorDataSvc.uploadData({
+        station: vm.stationId,
+        data: chunk
+      })
+      .success(function(result){
+        //vm.uploadProgress = (nData/(chunkSize*(i+1)))*100;
+      })
+      .error(function(e){
+        vm.errMessage = e.message;
+      })
+    }
+    chunk = vm.fileData.slice(chunkSize*i);
+    sensorDataSvc.uploadData({
+      station: vm.stationId,
+      data: chunk
+    })
+    .success(function(result){
+      vm.uploadProgress = 100;
+    })
+    .error(function(e){
+      vm.errMessage = e.message;
+    })
   }
 }
