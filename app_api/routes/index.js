@@ -66,4 +66,12 @@ router.get('/stations-public',
 // ============= Sensor Data Endpoints =============
 router.post('/sensor-data',
       ctrlSensorData.storeData);
+
+// ================= Test Endpoints ================
+router.get('/querytest',
+      ctrlSensorData.queryTest);
+
+
+
+// =================================================
 module.exports = router;

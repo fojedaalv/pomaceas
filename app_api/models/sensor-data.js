@@ -18,6 +18,10 @@ var sensorDataSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  lowTemp: {
+    type: Number,
+    required: true
+  },
   outHum: {
     type: Number,
     required: true

@@ -16,13 +16,14 @@ module.exports.storeData = function(req, res){
     objects.push({
       station: req.body.station,
       date: d,
-      tempOut: row[2],
-      hiTemp: row[3],
-      outHum: row[4],
-      windSpeed: row[5],
-      rain: row[6],
-      solarRad: row[7],
-      et: row[8]
+      tempOut: Number(row[2]),
+      hiTemp: Number(row[3]),
+      lowTemp: Number(row[4]),
+      outHum: Number(row[5]),
+      windSpeed: Number(row[6]),
+      rain: Number(row[7]),
+      solarRad: Number(row[8]),
+      et: Number(row[9])
     });
   });
   SensorData.collection.insert(objects, function(err, docs){
@@ -37,3 +38,64 @@ module.exports.storeData = function(req, res){
     }
   })
 };
+
+module.exports.queryTest = function(req, res){
+  console.log("Starting test query.");
+  SensorData.aggregate([
+    {
+      $match: {
+        date: {
+          $gte: "2016-12-01",
+          $lte: "2016-12-31"
+        }
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        date: 1,
+        tempOut: 1,
+        outHum: 1,
+        hr95: {
+          $cond: {
+            if: {
+              $gte: [ "$hr95", 95 ]
+            },
+            then: 0.25,
+            else: 0
+          }
+        },
+        uEstres: {
+          $cond: {
+            if: {
+              $and: [{
+                $gte: ["$tempOut", 10]
+              },{
+                $lte: ["$outHum", 75]
+              }]
+            },
+            then: {
+              $multiply: [{
+                $multiply: [{
+                  $subtract: ["$tempOut",10]
+                },{
+                  $add: [{
+                    $multiply: ["$outHum", -0.2]
+                  },15]
+                }]
+              }, 0.25]
+            },
+            else: 0
+          }
+        }
+      }
+    }
+  ], function (err, result) {
+    if (err) {
+      console.log(err);
+      return;
+    } else {
+      sendJSONresponse(res, 201, result);
+    }
+  });
+}
