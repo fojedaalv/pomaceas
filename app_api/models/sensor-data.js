@@ -41,6 +41,14 @@ var sensorDataSchema = new mongoose.Schema({
   et: {
     type: Number,
     required: true
+  },
+  hr95: {
+    type: Number,
+    required: true
+  },
+  uEstres: {
+    type: Number,
+    required: true
   }
 }, {
   timestamps: true
