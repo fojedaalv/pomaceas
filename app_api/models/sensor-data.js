@@ -55,4 +55,5 @@ var sensorDataSchema = new mongoose.Schema({
 });
 
 sensorDataSchema.index({ station: 1, date: 1 }, {unique: true});
+sensorDataSchema.index({ date: 1 });
 mongoose.model('SensorData', sensorDataSchema, 'sensordata');

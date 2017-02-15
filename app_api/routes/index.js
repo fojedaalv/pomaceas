@@ -66,6 +66,10 @@ router.get('/stations-public',
 // ============= Sensor Data Endpoints =============
 router.post('/sensor-data',
       ctrlSensorData.storeData);
+router.get('/check-datacount/:stationId',
+      ctrlSensorData.getDataCount);
+router.get('/get-report-byday/:stationId',
+      ctrlSensorData.getReportByDay);
 
 // ================= Test Endpoints ================
 router.get('/querytest',

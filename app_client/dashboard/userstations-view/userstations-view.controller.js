@@ -73,12 +73,15 @@ function dashboardUserStationsViewCtrl(stationsSvc, $routeParams, $scope, sensor
       })
     }
     chunk = vm.fileData.slice(chunkSize*i);
+    console.log("Final chunk size is: "+chunk.length);
+    console.log(chunk);
     sensorDataSvc.uploadData({
       station: vm.stationId,
       data: chunk
     })
     .success(function(result){
       vm.uploadProgress = 100;
+      console.log(result);
     })
     .error(function(e){
       vm.errMessage = e.message;
