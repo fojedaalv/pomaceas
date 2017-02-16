@@ -46,7 +46,7 @@ module.exports.create = function(req, res){
   station.name = req.body.name;
   station.city = req.body.city;
   station.region = req.body.region;
-  station.owner = req.body.owner;
+  station.owner = (req.body.owner == "") ? null : req.body.owner;
   station.location = {
     type: "Point",
     coordinates: [Number(req.body.location[0]),
@@ -56,7 +56,7 @@ module.exports.create = function(req, res){
   station.save(function(err){
     if (err){
       sendJSONresponse(res, 404, {
-        "message": "Ha ocurrido un error en la creación de la estación. Revise los datos e intente nuevamente."
+        "message": "Ha ocurrido un error en la creación de la estación. Revise los datos e intente nuevamente. Detalles del error: "+err
       });
       return;
     }else{

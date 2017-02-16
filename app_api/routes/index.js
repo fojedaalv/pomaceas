@@ -70,6 +70,8 @@ router.get('/check-datacount/:stationId',
       ctrlSensorData.getDataCount);
 router.get('/get-report-byday/:stationId',
       ctrlSensorData.getReportByDay);
+router.get('/get-station-summary/:stationId',
+      ctrlSensorData.getStationSummary);
 
 // ================= Test Endpoints ================
 router.get('/querytest',

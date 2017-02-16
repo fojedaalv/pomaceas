@@ -47,7 +47,6 @@ function dashboardStationsNewCtrl(stationsSvc, usersSvc, $scope, $location){
   vm.onSubmit = function(){
     vm.newStation.location[0] = vm.cursor.location.latitude;
     vm.newStation.location[1] = vm.cursor.location.longitude;
-    /*
     stationsSvc.createStation(vm.newStation)
     .success(function(station){
       $location.path('/dashboard/stations');
@@ -60,7 +59,7 @@ function dashboardStationsNewCtrl(stationsSvc, usersSvc, $scope, $location){
         region: "VII",
         location: [-35.433333,-71.666667]
       }
-    });*/
+    });
   }
 
   // ==================================================

@@ -1,7 +1,7 @@
 angular.module('PomaceasWebApp')
 .controller('registerCtrl', registerCtrl);
 
-function registerCtrl(authSvc){
+function registerCtrl(authSvc, $location, $rootScope){
   var vm = this;
   vm.formError="";
   vm.formInfo="";
@@ -27,8 +27,8 @@ function registerCtrl(authSvc){
     })
     .then(function(){
       vm.formInfo = "El usuario ha sido registrado.";
-      $location.path('/dashboard');
       $rootScope.$emit("UserLoggedIn", {});
+      $location.path('/dashboard');
     });
   }
 }

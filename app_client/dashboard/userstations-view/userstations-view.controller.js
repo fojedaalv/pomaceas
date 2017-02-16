@@ -24,6 +24,7 @@ function dashboardUserStationsViewCtrl(stationsSvc, $routeParams, $scope, sensor
   vm.isDataLoaded = false;
   vm.loadProgress = 0;
   vm.uploadProgress = 0;
+  vm.isUploading = true;
   vm.loadFile = function(){
     // Adapted from http://stackoverflow.com/questions/18571001/file-upload-using-angularjs
     // http://jsfiddle.net/f8Hee/1/
@@ -55,6 +56,8 @@ function dashboardUserStationsViewCtrl(stationsSvc, $routeParams, $scope, sensor
   }
 
   vm.uploadData = function(){
+    vm.isUploading = true;
+    vm.uploadProgress = 100;
     var chunkSize = 100;
     var nData = vm.fileData.length;
     var i;
@@ -69,7 +72,7 @@ function dashboardUserStationsViewCtrl(stationsSvc, $routeParams, $scope, sensor
         //vm.uploadProgress = (nData/(chunkSize*(i+1)))*100;
       })
       .error(function(e){
-        vm.errMessage = e.message;
+        vm.uploadError = e.message;
       })
     }
     chunk = vm.fileData.slice(chunkSize*i);
@@ -81,10 +84,13 @@ function dashboardUserStationsViewCtrl(stationsSvc, $routeParams, $scope, sensor
     })
     .success(function(result){
       vm.uploadProgress = 100;
-      console.log(result);
+      vm.uploadInfo = "Los datos fueron subidos exitosamente.";
+      vm.fileDataDisplay = [];
+      vm.isDataLoaded = false;
+      vm.isUploading = false;
     })
     .error(function(e){
-      vm.errMessage = e.message;
+      vm.uploadError = e.message;
     })
   }
 }

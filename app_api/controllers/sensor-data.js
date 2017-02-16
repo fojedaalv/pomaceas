@@ -472,3 +472,50 @@ module.exports.getReportByDay = function(req, res){
     return;
   }
 }
+
+module.exports.getStationSummary = function(req, res){
+  var stationId = req.params.stationId;
+  var summary = {
+    datesAvailable: []
+  }
+  Station.findOne({
+    _id: stationId
+  }, null, function(err, station){
+    if (err) {
+      console.log(err);
+      sendJSONresponse(res, 404, err);
+      return;
+    }else{
+      // Lista de fechas disponibles
+      SensorData.aggregate([
+        {
+          $match:{
+            station: stationId
+          }
+        },{
+          $sort: {
+            date: -1
+          }
+        },{
+          $group: {
+            _id : {
+              month: { $month: "$date" },
+              day: { $dayOfMonth: "$date" },
+              year: { $year: "$date" }
+            },
+            count: {$sum: 1}
+          }
+        }
+      ], function(err, result){
+        if (err) {
+          console.log(err);
+          sendJSONresponse(res, 404, err);
+          return;
+        } else {
+          summary.datesAvailable = result;
+          sendJSONresponse(res, 201, summary);
+        }
+      })
+    }
+  });
+}
