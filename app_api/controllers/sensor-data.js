@@ -505,6 +505,10 @@ module.exports.getStationSummary = function(req, res){
             },
             count: {$sum: 1}
           }
+        },{
+          $sort: {
+            _id: -1
+          }
         }
       ], function(err, result){
         if (err) {
@@ -518,4 +522,49 @@ module.exports.getStationSummary = function(req, res){
       })
     }
   });
+}
+
+module.exports.getSensorDataByDate = function(req, res){
+  var date = req.query.date;
+  var stationId = req.params.stationId;
+  var d = date.split("-");
+  if(d.length == 3){
+    //La fecha fue bien especificada
+    var startDate = new Date(Date.UTC(d[0],d[1]-1,d[2]))
+    var endDate = new Date(new Date(Date.UTC(d[0],d[1]-1,d[2])).getTime() + 60 * 60 * 24 * 1000);
+    Station.findOne({
+      _id: stationId
+    }, null, function(err, result){
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 404, "Al parecer estás intentando consultar una estación que no existe. Revisa que la dirección sea correcta.");
+        return;
+      } else {
+        SensorData.aggregate([{
+          $match: {
+            station: stationId,
+            date: {
+              $gte: startDate,
+              $lt: endDate
+            }
+          }
+        },{
+          $sort:{
+            date: 1
+          }
+        }], function(err, result){
+          if (err) {
+            console.log(err);
+            sendJSONresponse(res, 404, err);
+            return;
+          } else {
+            sendJSONresponse(res, 201, result);
+          }
+        });
+      }
+    });
+  }else{
+    sendJSONresponse(res, 400, "Aparentemente la expresión fue mal formada.");
+    return;
+  }
 }

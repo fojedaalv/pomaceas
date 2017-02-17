@@ -1,0 +1,38 @@
+<div class="app-container container-fluid">
+<div class="row">
+  <dashboard-navigation></dashboard-navigation>
+
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <button class="btn btn-default btn-xs" back-button>< Volver</button>
+          Datos de la Estación {{vm.station.name }}
+        </h3>
+      </div>
+      <div class="panel-body">
+        <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
+        <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
+        <div ng-if="vm.station">
+          <form class="form-inline">
+            <div class="form-group">
+              <label for="date" class="control-label">Fecha</label>
+              <select class="form-control" id="date" ng-model="vm.selection.date">
+                <option ng-repeat="date in vm.stationSummary.datesAvailable" value="{{date._id}}">
+                  {{date._id.year}}-{{date._id.month}}-{{date._id.day}}
+                </option>
+              </select>
+              <label for="category" class="control-label">Categoría</label>
+              <select class="form-control" id="date" ng-model="vm.selection.category">
+                <option ng-repeat="cat in vm.categories" value="{{cat.value}}">
+                  {{cat.name}}
+                </option>
+              </select>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
