@@ -23,3 +23,8 @@ input[type="file"]{
 
 /* Valores para la directiva de mapas de Google */
 .angular-google-map-container { height: 400px; }
+
+/* Valores para los gráficos de n3-charts */
+.sensorChart {
+  height: 300px;
+}

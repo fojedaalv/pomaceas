@@ -1,6 +1,7 @@
 angular.module('PomaceasWebApp', [
   'ngRoute',
-  'uiGmapgoogle-maps'
+  'uiGmapgoogle-maps',
+  'n3-line-chart'
 ]);
 
 function config($routeProvider, $logProvider){
