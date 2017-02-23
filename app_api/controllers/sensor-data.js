@@ -2,6 +2,7 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var SensorData = mongoose.model('SensorData');
 var Station = mongoose.model('Station');
+var moment = require('moment');
 
 var sendJSONresponse = function(res, status, content) {
   res.status(status);
@@ -31,8 +32,8 @@ module.exports.storeData = function(req, res){
     var hour = time[0];
     var minute = time[1];
     var date = new Date(Date.UTC(year, month-1, day, hour, minute));
-    console.log("Date:"+year+month+day);
-    console.log(date);
+    //console.log("Date:"+year+month+day);
+    //console.log(date);
     /* Cálculo de Indicadores extra */
     var hr95 = (outHum >= 95) ? 0.25 : 0.0;
     var uEstres = (tempOut >= 10 && outHum <= 75) ?
@@ -444,6 +445,24 @@ module.exports.getReportByDay = function(req, res){
               eS: {$avg: "$es"},
               hrsDPVmay2p5: {$sum: "$hrsDPVmay2p5"}
             }
+          },{
+            $addFields: {
+              min105hrs: {
+                $cond: [{$gte: ["$mineq10", 5]}, 1, 0]
+              },
+              diasHel:{
+                $cond: [{$gte: ["$hrmen0c", 1]}, 1, 0]
+              },
+              hrs275: {
+                $cond: [{$gte: ["$hrmay27c", 5]}, 1, 0]
+              },
+              hrs295: {
+                $cond: [{$gte: ["$hrmay29c", 5]}, 1, 0]
+              },
+              hrs325: {
+                $cond: [{$gte: ["$hrmay32c", 5]}, 1, 0]
+              }
+            }
           }
         ], function(err, result){
           if (err) {
@@ -456,11 +475,6 @@ module.exports.getReportByDay = function(req, res){
             result[0].maxymin = ((((result[0].maxHiTemp + result[0].minLowTemp) / 2) - 10)>0) ?
               (((result[0].maxHiTemp + result[0].minLowTemp) / 2) - 10) :
               0;
-            result[0].min105hrs = (result[0].mineq10 >= 5) ? 1 : 0;
-            result[0].diasHel = (result[0].hrmen0c >= 1) ? 1 : 0;
-            result[0].hrs275 = (result[0].hrmay27c >= 5) ? 1 : 0;
-            result[0].hrs295 = (result[0].hrmay29c >= 5) ? 1 : 0;
-            result[0].hrs325 = (result[0].hrmay32c >= 5) ? 1 : 0;
             sendJSONresponse(res, 201, result);
             return
           }
@@ -476,7 +490,8 @@ module.exports.getReportByDay = function(req, res){
 module.exports.getStationSummary = function(req, res){
   var stationId = req.params.stationId;
   var summary = {
-    datesAvailable: []
+    datesAvailable: [],
+    monthsAvailable: []
   }
   Station.findOne({
     _id: stationId
@@ -507,7 +522,9 @@ module.exports.getStationSummary = function(req, res){
           }
         },{
           $sort: {
-            _id: -1
+            "_id.year": -1,
+            "_id.month": -1,
+            "_id.day":-1
           }
         }
       ], function(err, result){
@@ -517,7 +534,39 @@ module.exports.getStationSummary = function(req, res){
           return;
         } else {
           summary.datesAvailable = result;
-          sendJSONresponse(res, 201, summary);
+          SensorData.aggregate([
+            {
+              $match:{
+                station: stationId
+              }
+            },{
+              $sort: {
+                date: -1
+              }
+            },{
+              $group: {
+                _id : {
+                  month: { $month: "$date" },
+                  year: { $year: "$date" }
+                },
+                count: {$sum: 1}
+              }
+            },{
+              $sort: {
+                "_id.year": -1,
+                "_id.month": -1
+              }
+            }
+          ],function(err, result){
+            if (err) {
+              console.log(err);
+              sendJSONresponse(res, 404, err);
+              return;
+            } else {
+              summary.monthsAvailable = result;
+              sendJSONresponse(res, 201, summary);
+            }
+          })
         }
       })
     }
@@ -563,6 +612,217 @@ module.exports.getSensorDataByDate = function(req, res){
         });
       }
     });
+  }else{
+    sendJSONresponse(res, 400, "Aparentemente la expresión fue mal formada.");
+    return;
+  }
+}
+
+module.exports.getReportByMonth = function(req, res){
+  var startDate = req.query.startdate;
+  var endDate = req.query.enddate;
+  var stationId = req.params.stationId;
+  var d;
+  var year, month, day;
+  // Check startDate
+  if(startDate != null){
+    d = startDate.split("-");
+    if(d.length == 3){
+      year = d[0];
+      month = d[1]-1;
+      day = d[2];
+      startDate = new Date(moment.utc([year, month, day]));
+    }else{
+      sendJSONresponse(res, 400, "Aparentemente la fecha de inicio es una expresión mal formada.");
+      return;
+    }
+  }else{
+    sendJSONresponse(res, 400, "Aparentemente la fecha de inicio es una expresión mal formada.");
+    return;
+  }
+
+  // Check endDate
+  if(endDate != null){
+    d = endDate.split("-");
+    year = d[0];
+    month = d[1]-1;
+    day = d[2];
+    if(d.length == 3){
+      endDate = new Date(moment.utc([year, month, day]).add(1, 'month'));
+    }else{
+      sendJSONresponse(res, 400, "Aparentemente la fecha de término es una expresión mal formada.");
+      return;
+    }
+  }else{
+    endDate = new Date(moment.utc([year, month]).add(1, 'month'));
+  }
+
+  if(startDate != null && endDate != null){
+    console.log("Consultando la fecha:"+startDate+","+endDate);
+    Station.findOne({
+      _id: stationId
+    }, null, function(err, result){
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 404, "Al parecer estás intentando consultar una estación que no existe. Revisa que la dirección sea correcta.");
+        return;
+      } else {
+        SensorData.aggregate([
+          {
+            $match: {
+              station: stationId,
+              date: {
+                $gte: startDate,
+                $lt: endDate
+              }
+            }
+          },{
+            $sort: {
+              date: -1
+            }
+          },{
+            $group: {
+              _id : {
+                month: { $month: "$date" },
+                day: { $dayOfMonth: "$date" },
+                year: { $year: "$date" }
+              },
+              count: { $sum: 1},
+              avgTemp : {$avg: "$tempOut"},
+              maxHiTemp : {$max: "$hiTemp"},
+              minLowTemp : {$min: "$lowTemp"},
+              avgOutHum : {$avg: "$outHum"},
+              maxOutHum : {$max: "$outHum"},
+              minOutHum : {$min: "$outHum"},
+              hrHR95: {$sum: "$hr95"},
+              hrHR40: {$sum: "$uEstres"},
+              gdh: {$sum: {$divide: ["$gdh", 4]}},
+              gdhora: {$sum: "$gd"},
+              mineq10: {$sum: "$hr10"},
+              mineq7: {$sum: "$hr7"},
+              richard: {$sum: {$divide: ["$richard", 4]}},
+              richardsonMod: {$sum: {$divide: ["$richardsonMod", 4]}},
+              unrath: {$sum: {$divide: ["$unrath", 4]}},
+              hrmen0c: {$sum: "$hrmen0c"},
+              hrmay27c: {$sum: "$hrmay27c"},
+              hrmay29c: {$sum: "$hrmay29c"},
+              hrmay32c: {$sum: "$hrmay32c"},
+              hrmen6c: {$sum: "$hrmen6c"},
+              hrmen12c: {$sum: "$hrmen12c"},
+              hrmen18c: {$sum: "$hrmen18c"},
+              hrmay15c: {$sum: "$hrmay15c"},
+              et0: {$sum: "$et"},
+              horasRad12: {$sum: "$hrrad"},
+              horasRad300: {$sum: "$hrrad300"},
+              maxRadDia: {$max: "$solarRad"},
+              energia: {$sum: {$multiply: ["$solarRad", 0.0009]}},
+              vmaxViento: {$max: "$windSpeed"},
+              hrAbe: {$sum: "$hrabe"},
+              pp: {$sum: "$rain"},
+              htTOpt: {$sum: "$hropt"},
+              dpv: {$avg: "$dpv"},
+              dpvMax: {$max: "$dpv"},
+              eS: {$avg: "$es"},
+              hrsDPVmay2p5: {$sum: "$hrsDPVmay2p5"}
+            }
+          },{
+            $addFields: {
+              min105hrs: {
+                $cond: [{$gte: ["$mineq10", 5]}, 1, 0]
+              },
+              diasHel:{
+                $cond: [{$gte: ["$hrmen0c", 1]}, 1, 0]
+              },
+              hrs275: {
+                $cond: [{$gte: ["$hrmay27c", 5]}, 1, 0]
+              },
+              hrs295: {
+                $cond: [{$gte: ["$hrmay29c", 5]}, 1, 0]
+              },
+              hrs325: {
+                $cond: [{$gte: ["$hrmay32c", 5]}, 1, 0]
+              },
+              tempMaxYMin: {
+                $cond: [
+                  {
+                    $gt: [
+                      {
+                        $subtract: [
+                          {
+                            $divide: [
+                              {
+                                $add: ["$maxHiTemp", "$minLowTemp"]
+                              },
+                              2
+                            ]
+                          },
+                          -10
+                        ]
+                      },
+                      0
+                    ]
+                  },
+                  {
+                    $subtract: [
+                      {
+                        $divide: [
+                          {
+                            $add: ["$maxHiTemp", "$minLowTemp"]
+                          },
+                          2
+                        ]
+                      },
+                      -10
+                    ]
+                  },
+                  0
+                ]
+              }
+            }
+          },{
+            $group: {
+              _id : {
+                month: "$_id.month",
+                year: "$_id.year"
+              },
+              tempMediaDiaria: {
+                $avg: "$avgTemp"
+              },
+              tempMediaMax: {
+                $avg: "$maxHiTemp"
+              },
+              tempMediaMin: {
+                $avg: "$minLowTemp"
+              },
+              tempMaxMax: {
+                $max: "$maxHiTemp"
+              },
+              tempMinMin: {
+                $min: "$minLowTemp"
+              }
+            }
+          },{
+            $sort: {
+              "_id.year": 1,
+              "_id.month":1
+            }
+          }
+        ], function(err, result){
+          if (err) {
+            console.log(err);
+            sendJSONresponse(res, 404, err);
+            return;
+          } else {
+            // Reemplazar por una etapa $addFields cuando se actualice a MongoDB 3.4
+            for(var i=0; i<result.length;i++){
+              result[i].date = new Date(moment.utc([result[i]._id.year, result[i]._id.month-1]));
+            }
+            sendJSONresponse(res, 201, result);
+            return
+          }
+        })
+      }
+    })
   }else{
     sendJSONresponse(res, 400, "Aparentemente la expresión fue mal formada.");
     return;

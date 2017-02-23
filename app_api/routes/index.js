@@ -74,6 +74,8 @@ router.get('/get-station-summary/:stationId',
       ctrlSensorData.getStationSummary);
 router.get('/get-sensordata-bydate/:stationId',
       ctrlSensorData.getSensorDataByDate);
+router.get('/get-report-bymonth/:stationId',
+      ctrlSensorData.getReportByMonth);
 
 // ================= Test Endpoints ================
 router.get('/querytest',

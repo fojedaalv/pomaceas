@@ -1,7 +1,7 @@
 angular.module('PomaceasWebApp')
-.controller('dashboardUserStationsMeasurementsCtrl', dashboardUserStationsMeasurementsCtrl);
+.controller('dashboardUserStationsMonthlyCtrl', dashboardUserStationsMonthlyCtrl);
 
-function dashboardUserStationsMeasurementsCtrl(stationsSvc, $routeParams, $scope, sensorDataSvc){
+function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sensorDataSvc){
   var vm = this;
   vm.station = {};
   vm.stationId = $routeParams.stationId;
@@ -11,43 +11,48 @@ function dashboardUserStationsMeasurementsCtrl(stationsSvc, $routeParams, $scope
   vm.categories = [
     {name:"Temperatura", value:"temperature"},
     {name:"Humedad Relativa", value:"humidity"},
-    {name:"Viento", value:"wind"},
-    {name:"Precipitaciones", value:"rain"},
-    {name:"Radiación", value:"rad"},
-    {name:"Evapotranspiración", value:"evtrans"}
+    {name:"Grados Día", value:"gd"},
+    {name:"Días de Frío", value:"cold"},
+    {name:"Heladas / Bajo 0°", value:"freeze"},
+    {name:"Horas a diferentes T° umbral", value:"tempThres"},
+    {name:"Cosas que me dan paja", value:"paja"}
   ]
   vm.selection = {
-    date: "",
+    startdate: "",
+    enddate: "",
     category: vm.categories[0].value
   }
-
 
   stationsSvc.getStation(vm.stationId)
   .success(function (data) {
     vm.station = data;
   })
   .error(function (e) {
-    //vm.errMessage = e.message;
     vm.errMessage = "La estación solicitada no se pudo encontrar.";
   });
 
   sensorDataSvc.getStationSummary(vm.stationId)
   .success(function(data){
     vm.stationSummary = data;
-    vm.selection.date = JSON.stringify(vm.stationSummary.datesAvailable[0]._id);
+    vm.selection.startdate = JSON.stringify(vm.stationSummary.monthsAvailable[vm.stationSummary.monthsAvailable.length-1]._id);
+    vm.selection.enddate = JSON.stringify(vm.stationSummary.monthsAvailable[0]._id);
   })
   .error(function(e){
     vm.errMessage = "Ha ocurrido un error en la obtención de los datos de la estación.";
   })
 
-  $scope.$watch('vm.selection.date', function(){
-    if(vm.selection.date != ""){
-      var jsonDate = JSON.parse(vm.selection.date);
-      var date = jsonDate.year+"-"+jsonDate.month+"-"+jsonDate.day;
-      console.log("Date:"+date);
-      sensorDataSvc.getSensorDataByDate(vm.station._id, date)
+  $scope.$watchGroup(['vm.selection.startdate', 'vm.selection.enddate'], function(){
+    if(vm.selection.startdate != "" && vm.selection.enddate != ""){
+      var jsonDate = JSON.parse(vm.selection.startdate);
+      jsonDate.day = 1;
+      var startdate = jsonDate.year+"-"+jsonDate.month+"-"+jsonDate.day;
+      jsonDate = JSON.parse(vm.selection.enddate);
+      jsonDate.day = 1;
+      enddate = jsonDate.year+"-"+jsonDate.month+"-"+jsonDate.day;
+      sensorDataSvc.getReportByMonth(vm.station._id, startdate, enddate)
       .success(function(data){
         vm.sensorData = data;
+        console.log(data);
         data.forEach(function(row) {
           // TODO: Arreglar cuando se implemente Moment.js
           // Parche cuma para ajustar la zona horaria
@@ -64,6 +69,7 @@ function dashboardUserStationsMeasurementsCtrl(stationsSvc, $routeParams, $scope
   })
 
   $scope.$watch('vm.selection.category', function(){
+    console.log("Category selected: "+vm.selection.category)
     switch(vm.selection.category){
       case "temperature":
         console.log("Displaying temperature.");
@@ -71,27 +77,43 @@ function dashboardUserStationsMeasurementsCtrl(stationsSvc, $routeParams, $scope
           {
             axis: "y",
             dataset: "dataset0",
-            key: "tempOut",
-            label: "Temperatura promedio",
+            key: "tempMediaDiaria",
+            label: "T° promedio diaria",
             color: "#c4ac2f",
             type: ['line', 'dot'],
             id: 'serieTempOut'
           },{
             axis: "y",
             dataset: "dataset0",
-            key: "lowTemp",
-            label: "Temperatura mínima",
+            key: "tempMediaMin",
+            label: "T° mínima promedio",
             color: "#349be3",
             type: ['line', 'dot'],
             id: 'serieTempMin'
           },{
             axis: "y",
             dataset: "dataset0",
-            key: "hiTemp",
-            label: "Temperatura máxima",
+            key: "tempMediaMax",
+            label: "T° máxima promedio",
             color: "#f14610",
             type: ['line', 'dot'],
             id: 'serieTempMax'
+          },{
+            axis: "y",
+            dataset: "dataset0",
+            key: "tempMaxMax",
+            label: "T° máxima",
+            color: "#9c2500",
+            type: ['line', 'dot'],
+            id: 'serieTempMaxMax'
+          },{
+            axis: "y",
+            dataset: "dataset0",
+            key: "tempMinMin",
+            label: "T° mínima",
+            color: "#146dab",
+            type: ['line', 'dot'],
+            id: 'serieTempMinMin'
           }
         ];
         return;
