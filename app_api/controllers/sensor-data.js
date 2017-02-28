@@ -372,13 +372,46 @@ module.exports.getDataCount = function(req, res){
 }
 
 module.exports.getReportByDay = function(req, res){
-  var date = req.query.date;
+  var startDate = req.query.startdate;
+  var endDate = req.query.enddate;
   var stationId = req.params.stationId;
-  var d = date.split("-");
-  if(d.length == 3){
-    //La fecha fue bien especificada
-    var startDate = new Date(Date.UTC(d[0],d[1]-1,d[2]))
-    var endDate = new Date(new Date(Date.UTC(d[0],d[1]-1,d[2])).getTime() + 60 * 60 * 24 * 1000);
+  var d;
+  var year, month, day;
+  // Check startDate
+  if(startDate != null){
+    d = startDate.split("-");
+    if(d.length == 3){
+      year = d[0];
+      month = d[1]-1;
+      day = d[2];
+      startDate = new Date(moment.utc([year, month, day]));
+    }else{
+      sendJSONresponse(res, 400, "Aparentemente la fecha de inicio es una expresión mal formada.");
+      return;
+    }
+  }else{
+    sendJSONresponse(res, 400, "Aparentemente la fecha de inicio es una expresión mal formada.");
+    return;
+  }
+
+  // Check endDate
+  if(endDate != null){
+    d = endDate.split("-");
+    year = d[0];
+    month = d[1]-1;
+    day = d[2];
+    if(d.length == 3){
+      endDate = new Date(moment.utc([year, month, day]).add(1, 'day'));
+    }else{
+      sendJSONresponse(res, 400, "Aparentemente la fecha de término es una expresión mal formada.");
+      return;
+    }
+  }else{
+    endDate = new Date(moment.utc([year, month, day]).add(1, 'day'));
+  }
+
+  if(startDate != null && endDate != null){
+    console.log("Consultando la fecha:"+startDate+","+endDate);
     Station.findOne({
       _id: stationId
     }, null, function(err, result){
@@ -439,7 +472,7 @@ module.exports.getReportByDay = function(req, res){
               vmaxViento: {$max: "$windSpeed"},
               hrAbe: {$sum: "$hrabe"},
               pp: {$sum: "$rain"},
-              htTOpt: {$sum: "$hropt"},
+              hrTOpt: {$sum: "$hropt"},
               dpv: {$avg: "$dpv"},
               dpvMax: {$max: "$dpv"},
               eS: {$avg: "$es"},
@@ -461,6 +494,42 @@ module.exports.getReportByDay = function(req, res){
               },
               hrs325: {
                 $cond: [{$gte: ["$hrmay32c", 5]}, 1, 0]
+              },
+              tempMaxYMin: {
+                $cond: [
+                  {
+                    $gt: [
+                      {
+                        $subtract: [
+                          {
+                            $divide: [
+                              {
+                                $add: ["$maxHiTemp", "$minLowTemp"]
+                              },
+                              2
+                            ]
+                          },
+                          10
+                        ]
+                      },
+                      0
+                    ]
+                  },
+                  {
+                    $subtract: [
+                      {
+                        $divide: [
+                          {
+                            $add: ["$maxHiTemp", "$minLowTemp"]
+                          },
+                          2
+                        ]
+                      },
+                      10
+                    ]
+                  },
+                  0
+                ]
               }
             }
           }
@@ -470,11 +539,10 @@ module.exports.getReportByDay = function(req, res){
             sendJSONresponse(res, 404, err);
             return;
           } else {
-            // Añade el campo maxymin al resultado obtenido
             // Reemplazar por una etapa $addFields cuando se actualice a MongoDB 3.4
-            result[0].maxymin = ((((result[0].maxHiTemp + result[0].minLowTemp) / 2) - 10)>0) ?
-              (((result[0].maxHiTemp + result[0].minLowTemp) / 2) - 10) :
-              0;
+            for(var i=0; i<result.length;i++){
+              result[i].date = new Date(moment.utc([result[i]._id.year, result[i]._id.month-1]));
+            }
             sendJSONresponse(res, 201, result);
             return
           }
@@ -719,7 +787,7 @@ module.exports.getReportByMonth = function(req, res){
               vmaxViento: {$max: "$windSpeed"},
               hrAbe: {$sum: "$hrabe"},
               pp: {$sum: "$rain"},
-              htTOpt: {$sum: "$hropt"},
+              hrTOpt: {$sum: "$hropt"},
               dpv: {$avg: "$dpv"},
               dpvMax: {$max: "$dpv"},
               eS: {$avg: "$es"},
@@ -756,7 +824,7 @@ module.exports.getReportByMonth = function(req, res){
                               2
                             ]
                           },
-                          -10
+                          10
                         ]
                       },
                       0
@@ -772,7 +840,7 @@ module.exports.getReportByMonth = function(req, res){
                           2
                         ]
                       },
-                      -10
+                      10
                     ]
                   },
                   0
@@ -799,6 +867,114 @@ module.exports.getReportByMonth = function(req, res){
               },
               tempMinMin: {
                 $min: "$minLowTemp"
+              },
+              hrMedia: {
+                $avg: "$avgOutHum"
+              },
+              hrMaxima: {
+                $avg: "$maxOutHum"
+              },
+              hrMinima: {
+                $avg: "$minOutHum"
+              },
+              horas95: {
+                $sum: "$hrHR95"
+              },
+              estres: {
+                $sum: "$hrHR40"
+              },
+              gdMaxYMin: {
+                $sum: "$tempMaxYMin"
+              },
+              gdh: {
+                $sum: "$gdh"
+              },
+              gd: {
+                $sum: "$gdhora"
+              },
+              mineq10: {
+                $sum: "$mineq10"
+              },
+              min105hrs: {
+                $sum: "$min105hrs"
+              },
+              mineq7: {
+                $sum: "$mineq7"
+              },
+              richardson: {
+                $sum: "$richard"
+              },
+              unrath: {
+                $sum: "$unrath"
+              },
+              diasHel: {
+                $sum: "$diasHel"
+              },
+              hrmen0c: {
+                $sum: "$hrmen0c"
+              },
+              hrmay27c: {
+                $sum: "$hrmay27c"
+              },
+              hrmay29c: {
+                $sum: "$hrmay29c"
+              },
+              hrmay32c: {
+                $sum: "$hrmay32c"
+              },
+              dias5hrsmay27: {
+                $sum: "$hrs275"
+              },
+              dias5hrsmay29: {
+                $sum: "$hrs295"
+              },
+              dias5hrsmay32: {
+                $sum: "$hrs325"
+              },
+              hrmen6c: {
+                $sum: "$hrmen6c"
+              },
+              hrmen12c: {
+                $sum: "$hrmen12c"
+              },
+              hrmen18c: {
+                $sum: "$hrmen18c"
+              },
+              hrmay15c: {
+                $sum: "$hrmay15c"
+              },
+              et0: {
+                $sum: "$et0"
+              },
+              horasRad12: {
+                $avg: "$horasRad12"
+              },
+              horasRad300: {
+                $sum: "$horasRad300"
+              },
+              maxRad: {
+                $avg: "$maxRadDia"
+              },
+              energia: {
+                $sum: "$energia"
+              },
+              vmaxViento: {
+                $avg: "$vmaxViento"
+              },
+              hrAbe: {
+                $sum: "$hrAbe"
+              },
+              pp: {
+                $sum: "$pp"
+              },
+              hrTOpt: {
+                $sum: "$hrTOpt"
+              },
+              dpv: {
+                $sum: "$dpv"
+              },
+              hrsDPVmay2p5: {
+                $sum: "$hrsDPVmay2p5"
               }
             }
           },{

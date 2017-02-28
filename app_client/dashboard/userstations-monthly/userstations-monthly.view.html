@@ -39,6 +39,8 @@
           <div style="max-height:350px;margin-top:30px;margin-bottom:30px;">
             <linechart class="sensorChart" data="vm.data" options="vm.options"></linechart>
           </div>
+
+          <!-- ============Tabla de temperatura=========== -->
           <table ng-if="vm.selection.category=='temperature'" class="table table-striped table-hover">
             <thead>
               <tr>
@@ -65,7 +67,7 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date}}
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
                 </td>
                 <td>
                   {{(row.tempMediaDiaria | number:1)}}°C
@@ -85,6 +87,537 @@
               </tr>
             </tbody>
           </table>
+
+          <!-- ============Tabla de Humedad Relativa=========== -->
+          <table ng-if="vm.selection.category=='humidity'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Media %
+                </th>
+                <th>
+                  Media Máxima
+                </th>
+                <th>
+                  Media Mínima
+                </th>
+                <th>
+                  h > 95%
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.hrMedia | number:1)}}
+                </td>
+                <td>
+                  {{(row.hrMaxima | number:1)}}
+                </td>
+                <td>
+                  {{(row.hrMinima | number:1)}}
+                </td>
+                <td>
+                  {{row.horas95 | number:1}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Estrés=========== -->
+          <table ng-if="vm.selection.category=='stress'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Estrés
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{row.estres | number:1}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Grados Día=========== -->
+          <table ng-if="vm.selection.category=='gd'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Max y Min
+                </th>
+                <th>
+                  GDH
+                </th>
+                <th>
+                  GD
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.gdMaxYMin | number:1)}}
+                </td>
+                <td>
+                  {{(row.gdh | number:1)}}
+                </td>
+                <td>
+                  {{(row.gd | number:1)}}
+                </td>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Frío=========== -->
+          <table ng-if="vm.selection.category=='cold'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  < 10°C
+                </th>
+                <th>
+                  5h < 10°C
+                </th>
+                <th>
+                  < 7°C
+                </th>
+                <th>
+                  Richardson
+                </th>
+                <th>
+                  Unrath
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.mineq10 | number:1)}}
+                </td>
+                <td>
+                  {{(row.min105hrs | number:1)}}
+                </td>
+                <td>
+                  {{(row.mineq7 | number:1)}}
+                </td>
+                <td>
+                  {{(row.richardson | number:1)}}
+                </td>
+                <td>
+                  {{(row.unrath | number:1)}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Heladas=========== -->
+          <table ng-if="vm.selection.category=='freeze'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Días con heladas
+                </th>
+                <th>
+                  T < 0°
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.diasHel | number:1)}}
+                </td>
+                <td>
+                  {{(row.hrmen0c | number:2)}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Horas de distinta temperatura umbral=========== -->
+          <table ng-if="vm.selection.category=='tempThres'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  T > 27°C
+                </th>
+                <th>
+                  T > 29°C
+                </th>
+                <th>
+                  T > 32°C
+                </th>
+                <th>
+                  Días con 5 hrs > 27°C
+                </th>
+                <th>
+                  Días con 5 hrs > 29°C
+                </th>
+                <th>
+                  Días con 5 hrs > 32°C
+                </th>
+                <th>
+                  T < 6°C
+                </th>
+                <th>
+                  T < 12°C
+                </th>
+                <th>
+                  T < 18°C
+                </th>
+                <th>
+                  T > 15°C
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.hrmay27c | number:2)}}
+                </td>
+                <td>
+                  {{(row.hrmay29c | number:2)}}
+                </td>
+                <td>
+                  {{(row.hrmay32c | number:2)}}
+                </td>
+                <td>
+                  {{(row.dias5hrsmay27 | number:2)}}
+                </td>
+                <td>
+                  {{(row.dias5hrsmay29 | number:2)}}
+                </td>
+                <td>
+                  {{(row.dias5hrsmay32 | number:2)}}
+                </td>
+                <td>
+                  {{(row.hrmen6c | number:2)}}
+                </td>
+                <td>
+                  {{(row.hrmen12c | number:2)}}
+                </td>
+                <td>
+                  {{(row.hrmen18c | number:2)}}
+                </td>
+                <td>
+                  {{(row.hrmay15c | number:2)}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Evapotranspiración=========== -->
+          <table ng-if="vm.selection.category=='et'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  ET0
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.et0 | number:1)}} mm
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Largo del día=========== -->
+          <table ng-if="vm.selection.category=='daylength'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Horas de luz
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.horasRad12 | number:1)}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Horas >300 W/m2=========== -->
+          <table ng-if="vm.selection.category=='horasRad300'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Horas >300 W/m2
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.horasRad300 | number:1)}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Radiación Máxima=========== -->
+          <table ng-if="vm.selection.category=='maxRad'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Radiación Máxima (W/m2)
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.maxRad | number:1)}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Energia Solar=========== -->
+          <table ng-if="vm.selection.category=='energy'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Energía Solar (MJ/m2)
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.energia | number:1)}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Velocidad del Viento=========== -->
+          <table ng-if="vm.selection.category=='windSpeed'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Velocidad del Viento (m/s)
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.vmaxViento | number:1)}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Precipitaciones=========== -->
+          <table ng-if="vm.selection.category=='pp'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Precipitaciones
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.pp | number:1)}} mm
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Horas Abejas=========== -->
+          <table ng-if="vm.selection.category=='hrAbe'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Horas de Abejas
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.hrAbe | number:1)}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Horas Abejas=========== -->
+          <table ng-if="vm.selection.category=='dpv'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  DPV
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.dpv | number:1)}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Horas Abejas=========== -->
+          <table ng-if="vm.selection.category=='h2p5DPV'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  h > 2.5 DPV
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.hrsDPVmay2p5 | number:1)}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Tabla de Horas a Temperatura Óptima=========== -->
+          <table ng-if="vm.selection.category=='tOpt'" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Horas a T° Óptima
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.data.dataset0">
+                <td>
+                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                </td>
+                <td>
+                  {{(row.hrTOpt | number:1)}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ============Exportar a CSV=========== -->
+          <button class="btn btn-block btn-success"
+            type="button"
+            ng-csv="vm.getDataInArray()"
+            csv-header="vm.getFileHeaders()"
+            filename="{{vm.getFileName()}}"
+            field-separator="{{vm.getFileSeparator()}}">
+            Exportar datos a CSV
+          </button>
         </div>
       </div>
     </div>
