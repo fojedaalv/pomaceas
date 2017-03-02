@@ -34,6 +34,39 @@ function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sen
     category: vm.categories[0].value
   }
 
+  // ========== Date selection code ==========
+  vm.startCalendar = {
+    format: 'MMMM yyyy',
+    isOpen: false
+  }
+  vm.endCalendar = {
+    format: 'MMMM yyyy',
+    isOpen: false
+  }
+  vm.dateOptions = {
+    dateDisabled: disabled,
+    formatYear: 'yy',
+    datepickerMode: 'month',
+    minMode:'month',
+    maxMode:'month',
+    initDate: null,
+    maxDate: null,
+    minDate: null,
+    startingDay: 1
+  };
+  function disabled(data) {
+    var date = data.date,
+      mode = data.mode;
+    return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+  }
+  vm.openCal1 = function(){
+    vm.startCalendar.isOpen = true;
+  }
+  vm.openCal2 = function(){
+    vm.endCalendar.isOpen = true;
+  }
+  // ========== End of Date selection code ==========
+
   stationsSvc.getStation(vm.stationId)
   .success(function (data) {
     vm.station = data;
@@ -47,6 +80,18 @@ function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sen
     vm.stationSummary = data;
     vm.selection.startdate = JSON.stringify(vm.stationSummary.monthsAvailable[vm.stationSummary.monthsAvailable.length-1]._id);
     vm.selection.enddate = JSON.stringify(vm.stationSummary.monthsAvailable[0]._id);
+
+
+    var jsonDate = vm.stationSummary.monthsAvailable[vm.stationSummary.monthsAvailable.length-1]._id;
+    vm.startDate = new Date(jsonDate.year, jsonDate.month-1);
+    vm.minDate = new Date(jsonDate.year, jsonDate.month-1);
+    jsonDate = vm.stationSummary.monthsAvailable[0]._id;
+    vm.endDate = new Date(jsonDate.year, jsonDate.month-1);
+    vm.maxDate = new Date(jsonDate.year, jsonDate.month-1);
+
+    vm.dateOptions.initDate = vm.minDate;
+    vm.dateOptions.maxDate = vm.maxDate;
+    vm.dateOptions.minDate = vm.minDate;
   })
   .error(function(e){
     vm.errMessage = "Ha ocurrido un error en la obtención de los datos de la estación.";

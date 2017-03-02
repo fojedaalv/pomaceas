@@ -4,7 +4,8 @@ angular.module('PomaceasWebApp', [
   'n3-line-chart',
   'angularMoment',
   'ngSanitize',
-  'ngCsv'
+  'ngCsv',
+  'ui.bootstrap'
 ]);
 
 function config($routeProvider, $logProvider){
