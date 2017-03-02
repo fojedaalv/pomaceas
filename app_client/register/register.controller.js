@@ -7,11 +7,12 @@ function registerCtrl(authSvc, $location, $rootScope){
   vm.formInfo="";
   vm.credentials = {
     email: "",
-    password: ""
+    password: "",
+    phone: "+569"
   }
   vm.onSubmit = function(){
     vm.formError = "";
-    if (!vm.credentials.email || !vm.credentials.password) {
+    if (!vm.credentials.email || !vm.credentials.password || !vm.credentials.phone) {
       vm.formError = "Todos los campos son requeridos. Por favor, intente nuevamente.";
       return false;
     } else {

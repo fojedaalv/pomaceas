@@ -10,7 +10,7 @@ var sendJSONresponse = function(res, status, content) {
 module.exports.list = function(req, res){
   User.find(
     {},
-    '_id name email role',
+    '_id name email role phone',
     {},
     function(err, users){
       if(err){
@@ -27,7 +27,7 @@ module.exports.readOne = function(req, res){
     {
       _id: req.params.userId
     },
-    '_id name email role',
+    '_id name email role phone',
     {},
     function(err, user){
       if(err){
@@ -62,6 +62,7 @@ module.exports.updateOne = function(req, res){
       user.name = req.body.name;
       user.email = req.body.email;
       user.role = req.body.role;
+      user.phone = req.body.phone;
       user.save(function(err){
         var token;
         if (err){

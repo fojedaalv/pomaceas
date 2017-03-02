@@ -5,15 +5,21 @@
       <div class="alert alert-danger" role="alert" ng-show="vm.formError">{{ vm.formError }}</div>
       <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
       <div class="form-group">
-        <label for="inputEmail" class="col-lg-2 control-label">Nombre</label>
+        <label for="inputName" class="col-lg-2 control-label">Nombre</label>
         <div class="col-lg-10">
-          <input class="form-control" id="inputEmail" placeholder="Nombre" type="text" ng-model="vm.credentials.name">
+          <input class="form-control" id="inputName" placeholder="Nombre" type="text" ng-model="vm.credentials.name">
         </div>
       </div>
       <div class="form-group">
         <label for="inputEmail" class="col-lg-2 control-label">Email</label>
         <div class="col-lg-10">
           <input class="form-control" id="inputEmail" placeholder="Email" type="email" ng-model="vm.credentials.email">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputPhone" class="col-lg-2 control-label">Telefono</label>
+        <div class="col-lg-10">
+          <input class="form-control" id="inputPhone" placeholder="+569" type="text" ng-model="vm.credentials.phone">
         </div>
       </div>
       <div class="form-group">
