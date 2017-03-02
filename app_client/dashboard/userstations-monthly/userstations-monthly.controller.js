@@ -29,8 +29,6 @@ function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sen
     {name:"h > 2.5 DPV", value:"h2p5DPV"}
   ]
   vm.selection = {
-    startdate: "",
-    enddate: "",
     category: vm.categories[0].value
   }
 
@@ -78,9 +76,6 @@ function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sen
   sensorDataSvc.getStationSummary(vm.stationId)
   .success(function(data){
     vm.stationSummary = data;
-    vm.selection.startdate = JSON.stringify(vm.stationSummary.monthsAvailable[vm.stationSummary.monthsAvailable.length-1]._id);
-    vm.selection.enddate = JSON.stringify(vm.stationSummary.monthsAvailable[0]._id);
-
 
     var jsonDate = vm.stationSummary.monthsAvailable[vm.stationSummary.monthsAvailable.length-1]._id;
     vm.startDate = new Date(jsonDate.year, jsonDate.month-1);
@@ -97,15 +92,11 @@ function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sen
     vm.errMessage = "Ha ocurrido un error en la obtención de los datos de la estación.";
   })
 
-  $scope.$watchGroup(['vm.selection.startdate', 'vm.selection.enddate'], function(){
-    if(vm.selection.startdate != "" && vm.selection.enddate != ""){
-      var jsonDate = JSON.parse(vm.selection.startdate);
-      jsonDate.day = 1;
-      var startdate = jsonDate.year+"-"+jsonDate.month+"-"+jsonDate.day;
-      jsonDate = JSON.parse(vm.selection.enddate);
-      jsonDate.day = 1;
-      enddate = jsonDate.year+"-"+jsonDate.month+"-"+jsonDate.day;
-      sensorDataSvc.getReportByMonth(vm.station._id, startdate, enddate)
+  $scope.$watchGroup(['vm.startDate', 'vm.endDate'], function(){
+    if(vm.startDate != "" && vm.endDate != "" && vm.station._id != null){
+      var start = moment(vm.startDate).format("YYYY-MM-DD");
+      var end = moment(vm.endDate).format("YYYY-MM-DD");
+      sensorDataSvc.getReportByMonth(vm.station._id, start, end)
       .success(function(data){
         console.log(data);
         data.forEach(function(row) {
@@ -510,7 +501,7 @@ function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sen
   // ======= Código para exportar en CSV ===========
   // ===============================================
   vm.getFileName = function(){
-    return "Datos.csv";
+    return "Datos desde "+ moment(vm.startDate).format("YYYY-MM") +" hasta "+moment(vm.endDate).format("YYYY-MM")+".csv";
   }
   vm.getFileSeparator = function(){
     return ',';
