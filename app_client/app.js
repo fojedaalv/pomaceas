@@ -76,6 +76,11 @@ function config($routeProvider, $logProvider){
       controller: 'dashboardUserStationsMeasurementsCtrl',
       controllerAs: 'vm'
     })
+    .when('/dashboard/station-measurements/:stationId', {
+      templateUrl: 'dashboard/station-measurements/station-measurements.view.html',
+      controller: 'dashboardStationMeasurementsCtrl',
+      controllerAs: 'vm'
+    })
     .when('/dashboard/userstations-monthly/:stationId', {
       templateUrl: 'dashboard/userstations-monthly/userstations-monthly.view.html',
       controller: 'dashboardUserStationsMonthlyCtrl',

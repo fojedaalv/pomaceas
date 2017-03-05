@@ -651,7 +651,9 @@ module.exports.getSensorDataByDate = function(req, res){
     var endDate = new Date(new Date(Date.UTC(d[0],d[1]-1,d[2])).getTime() + 60 * 60 * 24 * 1000);
     Station.findOne({
       _id: stationId
-    }, null, function(err, result){
+    },
+    null,
+    function(err, result){
       if (err) {
         console.log(err);
         sendJSONresponse(res, 404, "Al parecer estás intentando consultar una estación que no existe. Revisa que la dirección sea correcta.");
@@ -664,6 +666,19 @@ module.exports.getSensorDataByDate = function(req, res){
               $gte: startDate,
               $lt: endDate
             }
+          }
+        },{
+          $project: {
+            _id: 1,
+            date: 1,
+            tempOut: 1,
+            hiTemp: 1,
+            lowTemp: 1,
+            outHum: 1,
+            windSpeed: 1,
+            rain: 1,
+            solarRad: 1,
+            et: 1
           }
         },{
           $sort:{
