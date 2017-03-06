@@ -11,8 +11,12 @@ var ctrlUsers = require('../controllers/users');
 var ctrlStations = require('../controllers/stations');
 var ctrlSensorData = require('../controllers/sensor-data');
 
+// ========== Authentication Endpoints =============
+
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
+router.post('/request-password-reset', ctrlAuth.requestPasswordReset);
+router.post('/reset-password', ctrlAuth.resetPassword);
 
 // ================ User Endpoints =================
 

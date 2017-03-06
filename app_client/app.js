@@ -96,6 +96,16 @@ function config($routeProvider, $logProvider){
       controller: 'aboutCtrl',
       controllerAs: 'vm'
     })
+    .when('/forgot-password', {
+      templateUrl: 'forgot-password/forgot-password.view.html',
+      controller: 'forgotPasswordCtrl',
+      controllerAs: 'vm'
+    })
+    .when('/reset-password', {
+      templateUrl: 'reset-password/reset-password.view.html',
+      controller: 'resetPasswordCtrl',
+      controllerAs: 'vm'
+    })
     .otherwise({redirectTo: '/'});
 }
 

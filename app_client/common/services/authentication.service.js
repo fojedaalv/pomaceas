@@ -50,6 +50,16 @@ function authSvc($http, $window){
     $window.localStorage.removeItem('pomaceas-token');
   };
 
+  var requestPasswordReset = function(email){
+    return $http.post('/api/v1/request-password-reset', {
+      email: email
+    });
+  }
+
+  var resetPassword = function(userData){
+    return $http.post('/api/v1/reset-password', userData);
+  }
+
   return {
     currentUser : currentUser,
     saveToken : saveToken,
@@ -57,6 +67,8 @@ function authSvc($http, $window){
     isLoggedIn : isLoggedIn,
     register : register,
     login : login,
-    logout : logout
+    logout : logout,
+    requestPasswordReset: requestPasswordReset,
+    resetPassword: resetPassword
   };
 }

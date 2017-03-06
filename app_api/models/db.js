@@ -46,3 +46,4 @@ process.on('SIGTERM', function() {
 require('./users');
 require('./stations');
 require('./sensor-data');
+require('./password-requests');
