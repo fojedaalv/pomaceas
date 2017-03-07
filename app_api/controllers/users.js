@@ -1,5 +1,6 @@
 var passport = require('passport');
 var mongoose = require('mongoose');
+var validator = require('validator');
 var User = mongoose.model('User');
 
 var sendJSONresponse = function(res, status, content) {
@@ -64,7 +65,6 @@ module.exports.updateOne = function(req, res){
       user.role = req.body.role;
       user.phone = req.body.phone;
       user.save(function(err){
-        var token;
         if (err){
           sendJSONresponse(res, 404, {
             "message": "Ha ocurrido un error en la actualización de los datos. Revise que el correo no exista o los datos sean inconsistentes."
@@ -102,3 +102,46 @@ module.exports.deleteOne = function (req, res) {
     })
   }
 };
+
+module.exports.updateSelf = function(req, res){
+  //console.log(req.body);
+  if(req.payload._id == req.body._id){
+    User.findOne({
+      _id: req.body._id
+    }, function(err, user){
+      if(err){
+        sendJSONresponse(res, 404, {
+          message:"El usuario a modificar no se encontró en la base de datos."
+        });
+        return;
+      }else{
+        if(!validator.isEmail(req.body.email)){
+          sendJSONresponse(res, 400, {
+            message:"El correo enviado no es válido."
+          });
+          return;
+        }
+        user.email = req.body.email;
+        user.phone = req.body.phone;
+        user.name = req.body.name;
+        user.save(function(err){
+          if (err){
+            sendJSONresponse(res, 500, {
+              "message": "Ha ocurrido un error en la actualización de los datos. Revise que el correo no exista o los datos sean inconsistentes."
+            })
+          }else{
+            sendJSONresponse(res, 200, {
+              user: user,
+              token: user.generateJwt()
+            });
+          }
+        });
+      }
+    })
+  }else{
+    sendJSONresponse(res, 400, {
+      message:"Los ID del usuario autenticado y del usuario a modificar no coinciden. Un usuario no puede modificar los datos de otro usuario. Si cree que esto es un error, pruebe a salir del sistema y acceder nuevamente. Si el problema persiste, consulte a la administración."
+    });
+    return;
+  }
+}

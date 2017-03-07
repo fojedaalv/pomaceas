@@ -35,10 +35,19 @@ function usersSvc($http, $window, authSvc){
     });
   }
 
+  var updateSelfUser = function(user){
+    return $http.put('/api/v1/user-update/'+user._id, user, {
+      headers: {
+        'Authorization': 'Bearer '+ authSvc.getToken()
+      }
+    });
+  }
+
   return {
     getUsersList : getUsersList,
     getUser : getUser,
     updateUser : updateUser,
-    deleteUser : deleteUser
+    deleteUser : deleteUser,
+    updateSelfUser : updateSelfUser
   };
 }

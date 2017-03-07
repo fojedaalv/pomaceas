@@ -21,21 +21,24 @@ router.post('/reset-password', ctrlAuth.resetPassword);
 // ================ User Endpoints =================
 
 router.get('/users',
-      auth,
-      ctrlAuth.roleAuthorization(['administrator']),
-      ctrlUsers.list);
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlUsers.list);
 router.get('/users/:userId',
-      auth,
-      ctrlAuth.roleAuthorization(['administrator']),
-      ctrlUsers.readOne);
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlUsers.readOne);
 router.put('/users/:userId',
-      auth,
-      ctrlAuth.roleAuthorization(['administrator']),
-      ctrlUsers.updateOne);
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlUsers.updateOne);
 router.delete('/users/:userId',
-      auth,
-      ctrlAuth.roleAuthorization(['administrator']),
-      ctrlUsers.deleteOne);
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlUsers.deleteOne);
+router.put('/user-update/:userId',
+  auth,
+  ctrlUsers.updateSelf);
 
 // ================ Stations Endpoints =============
 
