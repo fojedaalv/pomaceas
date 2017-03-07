@@ -216,6 +216,29 @@ module.exports.resetPassword = function(req, res){
                       });
                       return;
                     }else{
+                      var transporter = nodemailer.createTransport({
+                        service: 'gmail',
+                        auth: {
+                          user: 'no.reply.pomaceas@gmail.com',
+                          pass: 'ce6d125e79ebe82ba84dffe15c911421'
+                        }
+                      });
+
+                      var mailOptions = {
+                        from: '"Servicio de cambio de clave " <no.reply.pomaceas@gmail.com>',
+                        to: userData.email,
+                        subject: 'Cambio de contraseña realizado', // Subject line
+                        text: 'Está recibiendo esto porque se realizó un cambio de contraseña en su cuenta.\n' +
+                          'En caso de que usted no haya solicitado este cambio, contacte a la administración.\n\n'+
+                          'Si usted solicitó el cambio de contraseña, haga caso omiso de este correo.\n'
+                      };
+
+                      transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                          return console.log(error);
+                        }
+                        console.log('Message %s sent: %s', info.messageId, info.response);
+                      });
                       sendJSONresponse(res, 200, {
                         message: 'La contraseña del usuario ha sido actualizada con éxito. Ahora puede ingresar con su nueva contraseña desde el menú Acceder.'
                       });
