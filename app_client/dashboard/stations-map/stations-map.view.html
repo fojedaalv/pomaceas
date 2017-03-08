@@ -22,7 +22,9 @@
               <div ng-non-bindable>
                 <h2>{{title}}</h2><br/>
                 Ciudad: {{city}}<br/>
-                Región: {{region}}
+                Región: {{region}}<br/>
+                <a href="/#/dashboard/stations-edit/{{id}}" class="btn btn-primary btn-xs">Editar Estación</a>
+                <a href="/#/dashboard/station-measurements/{{id}}" class="btn btn-primary btn-xs">Ver Mediciones</a>
               </div>
             </ui-gmap-windows>
           </ui-gmap-markers>
