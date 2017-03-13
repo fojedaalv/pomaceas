@@ -26,7 +26,6 @@ router.get('/users',
   ctrlUsers.list);
 router.get('/users/:userId',
   auth,
-  ctrlAuth.roleAuthorization(['administrator']),
   ctrlUsers.readOne);
 router.put('/users/:userId',
   auth,
@@ -43,50 +42,50 @@ router.put('/user-update/:userId',
 // ================ Stations Endpoints =============
 
 router.get('/stations',
-      auth,
-      ctrlAuth.roleAuthorization(['administrator']),
-      ctrlStations.list);
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlStations.list);
 router.post('/stations',
-      auth,
-      ctrlAuth.roleAuthorization(['administrator']),
-      ctrlStations.create);
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlStations.create);
 router.delete('/stations/:stationId',
-      auth,
-      ctrlAuth.roleAuthorization(['administrator']),
-      ctrlStations.deleteOne);
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlStations.deleteOne);
 router.get('/stations/:stationId',
-      auth,
-      ctrlStations.readOne);
+  auth,
+  ctrlStations.readOne);
 router.put('/stations/:stationId',
-      auth,
-      ctrlAuth.roleAuthorization(['administrator']),
-      ctrlStations.updateOne);
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlStations.updateOne);
 
 router.get('/userstations/:userId',
-      auth,
-      ctrlAuth.roleAuthorization(['administrator', 'user']),
-      ctrlStations.getByUser);
+  auth,
+  ctrlAuth.roleAuthorization(['administrator', 'user']),
+  ctrlStations.getByUser);
 
 router.get('/stations-public',
-      ctrlStations.list);
+  ctrlStations.list);
 
 // ============= Sensor Data Endpoints =============
 router.post('/sensor-data',
-      ctrlSensorData.storeData);
+  ctrlSensorData.storeData);
 router.get('/check-datacount/:stationId',
-      ctrlSensorData.getDataCount);
+  ctrlSensorData.getDataCount);
 router.get('/get-report-byday/:stationId',
-      ctrlSensorData.getReportByDay);
+  ctrlSensorData.getReportByDay);
 router.get('/get-station-summary/:stationId',
-      ctrlSensorData.getStationSummary);
+  ctrlSensorData.getStationSummary);
 router.get('/get-sensordata-bydate/:stationId',
-      ctrlSensorData.getSensorDataByDate);
+  ctrlSensorData.getSensorDataByDate);
 router.get('/get-report-bymonth/:stationId',
-      ctrlSensorData.getReportByMonth);
+  ctrlSensorData.getReportByMonth);
 
 // ================= Test Endpoints ================
 router.get('/querytest',
-      ctrlSensorData.queryTest);
+  ctrlSensorData.queryTest);
 
 
 

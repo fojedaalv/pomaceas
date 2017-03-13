@@ -21,7 +21,7 @@ function dashboardUserEditCtrl(usersSvc, authSvc, $routeParams, $location){
     usersSvc.updateSelfUser(vm.user)
     .success(function(data) {
       vm.errMessage ="";
-      vm.infoMessage ="Los datos del usuario han sido actualizados exitosamente.";
+      vm.formInfo ="Los datos del usuario han sido actualizados exitosamente.";
       vm.user = data.user;
       authSvc.saveToken(data.token);
     })
