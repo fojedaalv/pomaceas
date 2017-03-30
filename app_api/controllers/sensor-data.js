@@ -642,13 +642,48 @@ module.exports.getStationSummary = function(req, res){
 }
 
 module.exports.getSensorDataByDate = function(req, res){
-  var date = req.query.date;
   var stationId = req.params.stationId;
-  var d = date.split("-");
-  if(d.length == 3){
+
+  var startDate = req.query.startdate;
+  var endDate = req.query.enddate;
+  var d;
+  var year, month, day
+
+  if(startDate != null){
+    d = startDate.split("-");
+    if(d.length == 3){
+      year = d[0];
+      month = d[1]-1;
+      day = d[2];
+      startDate = new Date(moment.utc([year, month, day]));
+    }else{
+      sendJSONresponse(res, 400, "Aparentemente la fecha de inicio es una expresión mal formada.");
+      return;
+    }
+  }else{
+    sendJSONresponse(res, 400, "Aparentemente la fecha de inicio es una expresión mal formada.");
+    return;
+  }
+
+  // Check endDate
+  if(endDate != null){
+    d = endDate.split("-");
+    year = d[0];
+    month = d[1]-1;
+    day = d[2];
+    if(d.length == 3){
+      endDate = new Date(moment.utc([year, month, day]).add(1, 'day'));
+    }else{
+      sendJSONresponse(res, 400, "Aparentemente la fecha de término es una expresión mal formada.");
+      return;
+    }
+  }else{
+    endDate = new Date(moment.utc([year, month, day]).add(1, 'day'));
+  }
+
+  if(startDate != null && endDate != null){
+    console.log("Consultando la fecha:"+startDate+","+endDate);
     //La fecha fue bien especificada
-    var startDate = new Date(Date.UTC(d[0],d[1]-1,d[2]))
-    var endDate = new Date(new Date(Date.UTC(d[0],d[1]-1,d[2])).getTime() + 60 * 60 * 24 * 1000);
     Station.findOne({
       _id: stationId
     },
@@ -683,6 +718,92 @@ module.exports.getSensorDataByDate = function(req, res){
         },{
           $sort:{
             date: 1
+          }
+        }], function(err, result){
+          if (err) {
+            console.log(err);
+            sendJSONresponse(res, 404, err);
+            return;
+          } else {
+            sendJSONresponse(res, 201, result);
+          }
+        });
+      }
+    });
+  }else{
+    sendJSONresponse(res, 400, "Aparentemente la expresión fue mal formada.");
+    return;
+  }
+}
+
+module.exports.getDailySensorDataByMonth = function(req, res){
+  var date = req.query.date;
+  var stationId = req.params.stationId;
+  var d = date.split("-");
+  if(d.length == 2){
+    //La fecha fue bien especificada
+    var year = d[0];
+    var month = d[1]-1;
+    var startDate = new Date(moment.utc([year, month, 1]));
+    var endDate = new Date(moment.utc([year, month, 1]).add(1, 'month'));
+    console.log(startDate+"-"+endDate);
+    //new Date(new Date(Date.UTC(d[0],d[1]-1,d[2])).getTime() + 60 * 60 * 24 * 1000);
+    Station.findOne({
+      _id: stationId
+    },
+    null,
+    function(err, result){
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 404, "Al parecer estás intentando consultar una estación que no existe. Revisa que la dirección sea correcta.");
+        return;
+      } else {
+        SensorData.aggregate([{
+          $match: {
+            station: stationId,
+            date: {
+              $gte: startDate,
+              $lt: endDate
+            }
+          }
+        },{
+          $project: {
+            _id: 1,
+            date: 1,
+            tempOut: 1,
+            hiTemp: 1,
+            lowTemp: 1,
+            outHum: 1,
+            windSpeed: 1,
+            rain: 1,
+            solarRad: 1,
+            et: 1
+          }
+        },{
+          $sort:{
+            date: 1
+          }
+        },{
+          $group:{
+            _id: {
+              year: {$year: "$date"},
+              month: {$month: "$date"},
+              day: {$dayOfMonth: "$date"}
+            },
+            tempOut: {$avg: "$tempOut"},
+            hiTemp: {$avg: "$hiTemp"},
+            lowTemp: {$avg: "$lowTemp"},
+            outHum: {$avg: "$outHum"},
+            windSpeed: {$avg: "$windSpeed"},
+            rain: {$avg: "$rain"},
+            solarRad: {$avg: "$solarRad"},
+            et: {$avg: "$et"}
+          }
+        },{
+          $sort:{
+            "_id.year": 1,
+            "_id.month": 1,
+            "_id.day":1
           }
         }], function(err, result){
           if (err) {

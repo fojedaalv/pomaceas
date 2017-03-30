@@ -1,7 +1,7 @@
 angular.module('PomaceasWebApp')
 .controller('resetPasswordCtrl', resetPasswordCtrl);
 
-function resetPasswordCtrl(authSvc, $location, authSvc, $routeParams){
+function resetPasswordCtrl(authSvc, $location, $routeParams){
   var vm = this;
   vm.formError="";
   vm.formInfo="";

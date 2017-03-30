@@ -1,0 +1,123 @@
+<div class="app-container container-fluid">
+<div class="row">
+  <dashboard-navigation></dashboard-navigation>
+
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Sandbox</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <table class="table table-striped table-hover table-bordered">
+            <thead>
+              <tr>
+                <th class="col-md-1">CV</th>
+                <th class="col-md-2">Caída Hojas</th>
+                <th class="col-md-2">Pronóstico Frío</th>
+                <th class="col-md-2">Fin Receso</th>
+                <th class="col-md-2">Puntas Verdes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Real</td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control"
+                      uib-datepicker-popup="{{vm.calFormat}}"
+                      ng-model="vm.dates.caidaHojas"
+                      is-open="vm.calOpen[0]"
+                      datepicker-options="vm.dateOptions"
+                      ng-required="true"
+                      close-text="Cerrar"/>
+                    <span class="input-group-btn">
+                      <button type="button"
+                      class="btn btn-default"
+                      ng-click="vm.openCal(0)">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </button>
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control"
+                      uib-datepicker-popup="{{vm.calFormat}}"
+                      ng-model="vm.dates.pronosticoFrio"
+                      is-open="vm.calOpen[1]"
+                      datepicker-options="vm.dateOptions"
+                      ng-required="true"
+                      close-text="Cerrar"/>
+                    <span class="input-group-btn">
+                      <button type="button"
+                      class="btn btn-default"
+                      ng-click="vm.openCal(1)">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </button>
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control"
+                      uib-datepicker-popup="{{vm.calFormat}}"
+                      ng-model="vm.dates.finReceso"
+                      is-open="vm.calOpen[2]"
+                      datepicker-options="vm.dateOptions"
+                      ng-required="true"
+                      close-text="Cerrar"/>
+                    <span class="input-group-btn">
+                      <button type="button"
+                      class="btn btn-default"
+                      ng-click="vm.openCal(2)">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </button>
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control"
+                      uib-datepicker-popup="{{vm.calFormat}}"
+                      ng-model="vm.dates.puntasVerdes"
+                      is-open="vm.calOpen[3]"
+                      datepicker-options="vm.dateOptions"
+                      ng-required="true"
+                      close-text="Cerrar"/>
+                    <span class="input-group-btn">
+                      <button type="button"
+                      class="btn btn-default"
+                      ng-click="vm.openCal(3)">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </button>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Estimado
+                </td>
+                <td>{{vm.datesEst.caidaHojas | amDateFormat:'YYYY-MM-DD'}}</td>
+                <td>{{vm.datesEst.pronosticoFrio | amDateFormat:'YYYY-MM-DD'}}</td>
+                <td>{{vm.datesEst.finReceso | amDateFormat:'YYYY-MM-DD'}}</td>
+                <td>{{vm.datesEst.puntasVerdes | amDateFormat:'YYYY-MM-DD'}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row">
+            <div class="col-md-offset-9 col-md-3">
+              <button type="button" class="btn btn-success" ng-click="vm.saveDates()">Guardar Fechas Reales</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

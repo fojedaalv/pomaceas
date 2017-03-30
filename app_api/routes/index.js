@@ -19,7 +19,6 @@ router.post('/request-password-reset', ctrlAuth.requestPasswordReset);
 router.post('/reset-password', ctrlAuth.resetPassword);
 
 // ================ User Endpoints =================
-
 router.get('/users',
   auth,
   ctrlAuth.roleAuthorization(['administrator']),
@@ -54,7 +53,6 @@ router.delete('/stations/:stationId',
   ctrlAuth.roleAuthorization(['administrator']),
   ctrlStations.deleteOne);
 router.get('/stations/:stationId',
-  auth,
   ctrlStations.readOne);
 router.put('/stations/:stationId',
   auth,
@@ -70,16 +68,26 @@ router.get('/stations-public',
   ctrlStations.list);
 
 // ============= Sensor Data Endpoints =============
+// Uploads Sensor Data
 router.post('/sensor-data',
   ctrlSensorData.storeData);
+// Counts data per day
 router.get('/check-datacount/:stationId',
   ctrlSensorData.getDataCount);
-router.get('/get-report-byday/:stationId',
-  ctrlSensorData.getReportByDay);
+// Get available dates in sensordata per station id
 router.get('/get-station-summary/:stationId',
   ctrlSensorData.getStationSummary);
+// Get the sensor data organized by date
 router.get('/get-sensordata-bydate/:stationId',
   ctrlSensorData.getSensorDataByDate);
+router.get('/daily-avg-bymonth/:stationId',
+  ctrlSensorData.getDailySensorDataByMonth);
+// Queries indicators by station id and date range
+// If endDate not set, only one day
+// get-report-byday/XXXXX?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
+router.get('/get-report-byday/:stationId',
+  ctrlSensorData.getReportByDay);
+// Get indicators calculated by month
 router.get('/get-report-bymonth/:stationId',
   ctrlSensorData.getReportByMonth);
 

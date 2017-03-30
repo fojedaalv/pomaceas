@@ -111,6 +111,16 @@ function config($routeProvider, $logProvider){
       controller: 'resetPasswordCtrl',
       controllerAs: 'vm'
     })
+    .when('/sandbox', {
+      templateUrl: 'sandbox/sandbox.view.html',
+      controller: 'sandboxCtrl',
+      controllerAs: 'vm'
+    })
+    .when('/test', {
+      templateUrl: 'test/test.view.html',
+      controller: 'testCtrl',
+      controllerAs: 'vm'
+    })
     .otherwise({redirectTo: '/'});
 }
 

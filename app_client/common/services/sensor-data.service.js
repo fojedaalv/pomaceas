@@ -10,18 +10,28 @@ function sensorDataSvc($http, $window, authSvc){
     return $http.get('/api/v1/get-station-summary/'+stationId)
   }
 
-  var getSensorDataByDate = function(stationId, date){
-    return $http.get('/api/v1/get-sensordata-bydate/'+stationId+"?date="+date);
+  var getSensorDataByDate = function(stationId, startdate){
+    return $http.get('/api/v1/get-sensordata-bydate/'+stationId+"?startdate="+startdate);
+  }
+
+  var getSensorDataByDateRange = function(stationId, startdate, enddate){
+    return $http.get('/api/v1/get-sensordata-bydate/'+stationId+"?startdate="+startdate+"&enddate="+enddate);
   }
 
   var getReportByMonth = function(stationId, startdate, enddate){
     return $http.get('/api/v1/get-report-bymonth/'+stationId+"?startdate="+startdate+"&enddate="+enddate);
   }
 
+  var getSensorDataDailyAvgByMonth = function(stationId, date){
+    return $http.get('/api/v1/daily-avg-bymonth/'+stationId+"?date="+date);
+  }
+
   return {
     uploadData : uploadData,
     getStationSummary : getStationSummary,
     getSensorDataByDate : getSensorDataByDate,
-    getReportByMonth : getReportByMonth
+    getSensorDataByDateRange : getSensorDataByDateRange,
+    getReportByMonth : getReportByMonth,
+    getSensorDataDailyAvgByMonth : getSensorDataDailyAvgByMonth
   };
 }

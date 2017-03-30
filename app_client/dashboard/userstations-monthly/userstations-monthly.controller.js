@@ -520,9 +520,6 @@ function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sen
     var data = [];
     for(var i=0;i<vm.data.dataset0.length;i++){
       var row = vm.data.dataset0[i];
-      var newObject = {
-
-      }
       data.push({
         date: moment(row.date).format('YYYY-MM'),
         tempMediaDiaria: row.tempMediaDiaria.toLocaleString('es-CL'),

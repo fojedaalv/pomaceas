@@ -5,23 +5,24 @@
       <div class="panel-heading">
         <h3 class="panel-title">
           <button class="btn btn-default btn-xs" back-button>< Volver</button>
-          Datos de la Estación {{vm.station.name }}
+          Datos públicos de la Estación "{{vm.station.name }}"
         </h3>
       </div>
       <div class="panel-body">
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
         <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
         <div ng-if="vm.station">
+          <h2>Promedios diarios por mes</h2>
           <div class="row">
             <div class="col-md-4">
               <div class="input-group">
-                <span class="input-group-addon">Fecha: </span>
+                <span class="input-group-addon">Mes: </span>
                 <input type="text"
                   class="form-control"
-                  uib-datepicker-popup="{{vm.startCalendar.format}}"
-                  ng-model="vm.startDate"
-                  is-open="vm.startCalendar.isOpen"
-                  datepicker-options="vm.dateOptions"
+                  uib-datepicker-popup="{{vm.monthCalendar.format}}"
+                  ng-model="vm.monthSelection"
+                  is-open="vm.monthCalendar.isOpen"
+                  datepicker-options="vm.dateOptionsMonth"
                   ng-required="true"
                   close-text="Cerrar"/>
                   <span class="input-group-btn">
@@ -43,11 +44,82 @@
                 </select>
               </div>
             </div>
+            <div class="col-md-4">
+              <button class="btn btn-block btn-success"
+                type="button"
+                ng-csv="vm.getDataInArray('avgSensorDataByMonth')"
+                csv-header="vm.getFileHeaders()"
+                filename="{{vm.getFileName('avgSensorDataByMonth')}}"
+                field-separator="{{vm.getFileSeparator()}}">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                Exportar datos a CSV
+              </button>
+              <!--
+              <button type="button" ng-click="vm.saveChart()" class="btn btn-default">
+                <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                Guardar Gráfico
+              </button>
+              -->
+            </div>
           </div>
-          
+
           <div class="row" style="max-height:350px;margin-top:30px;margin-bottom:30px;">
             <div class="col-md-12">
-              <linechart class="sensorChart" data="vm.data" options="vm.options"></linechart>
+              <linechart id="chart01" class="sensorChart" data="vm.data" options="vm.options"></linechart>
+            </div>
+          </div>
+          <hr/>
+          <h2>Detalle por día del mes seleccionado</h2>
+
+          <div clas="row">
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-addon">Día: </span>
+                <input type="text"
+                  class="form-control"
+                  uib-datepicker-popup="{{vm.dayCalendar.format}}"
+                  ng-model="vm.dayInMonthSelection"
+                  is-open="vm.dayCalendar.isOpen"
+                  datepicker-options="vm.dateOptionsDay"
+                  ng-required="true"
+                  close-text="Cerrar"/>
+                  <span class="input-group-btn">
+                    <button type="button"
+                    class="btn btn-default"
+                    ng-click="vm.openCal2()">
+                      <i class="glyphicon glyphicon-calendar"></i>
+                    </button>
+                  </span>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-addon">Categoría: </span>
+                <select class="form-control" id="category" ng-model="vm.selection.category">
+                  <option ng-repeat="cat in vm.categories" value="{{cat.value}}">
+                    {{cat.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <button class="btn btn-block btn-success"
+                type="button"
+                ng-csv="vm.getDataInArray('sensorDataByDay')"
+                csv-header="vm.getFileHeaders()"
+                filename="{{vm.getFileName('sensorDataByDay')}}"
+                field-separator="{{vm.getFileSeparator()}}">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                Exportar datos a CSV
+              </button>
+            </div>
+          </div>
+
+          <div class="row" style="max-height:350px;margin-top:80px;margin-bottom:30px;">
+            <div class="col-md-12">
+              <linechart id="chart01" class="sensorChart" data="vm.data" options="vm.options2"></linechart>
             </div>
           </div>
         </div>
