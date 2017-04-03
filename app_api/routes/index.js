@@ -10,6 +10,7 @@ var ctrlAuth = require('../controllers/authentication');
 var ctrlUsers = require('../controllers/users');
 var ctrlStations = require('../controllers/stations');
 var ctrlSensorData = require('../controllers/sensor-data');
+var ctrlReports = require('../controllers/reports');
 
 // ========== Authentication Endpoints =============
 
@@ -94,6 +95,8 @@ router.get('/get-report-bymonth/:stationId',
 // ================= Test Endpoints ================
 router.get('/querytest',
   ctrlSensorData.queryTest);
+router.get('/testreport',
+  ctrlReports.generatePDF);
 
 
 

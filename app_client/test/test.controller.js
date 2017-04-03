@@ -3,5 +3,7 @@ angular.module('PomaceasWebApp')
 
 function testCtrl(stationsSvc, $routeParams, $scope, sensorDataSvc){
   var vm = this;
+  vm.getPDFReport = function(){
 
+  }
 }
