@@ -48,7 +48,7 @@
         text-justify: inter-word;
       }
       .chart{
-        max-width:250px;
+        max-width:300px;
       }
     </style>
   </head>
@@ -113,39 +113,32 @@
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </p>
-      <canvas id="skills" class="chart"></canvas>
+      <canvas id="lineChart" class="chart"></canvas>
       <script>
-      var pieData = {
+      var data = {
         labels: [
-            "Red",
-            "Blue",
-            "Yellow"
+          "Fecha 1",
+          "Fecha 2",
+          "Fecha 3"
         ],
         datasets: [
-            {
-                data: [300, 50, 100],
-                backgroundColor: [
-                    "#FF6384",
-                    "#36A2EB",
-                    "#FFCE56"
-                ],
-                hoverBackgroundColor: [
-                    "#FF6384",
-                    "#36A2EB",
-                    "#FFCE56"
-                ]
-            }]
-    };
-      var ctx = document.getElementById('skills').getContext('2d');
-      var myPieChart = new Chart(ctx,{
-          type: 'pie',
-          data: pieData,
-          options: {
-              animation:{
-                  animateScale:false,
-                  animateRotate:false
-              }
+          {
+            label: "GDH",
+            data: [0, 5000, 10000],
+            fill: false
           }
+        ]
+      };
+      var ctx = document.getElementById('lineChart').getContext('2d');
+      var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+          maintainAspectRatio: true,
+          animation:{
+            duration:0
+          }
+        }
       });
       </script>
     </div>
