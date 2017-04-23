@@ -1056,7 +1056,7 @@ module.exports.getReportByMonth = function(req, res){
                 tempMonth.hrTOpt = [item.hrTOpt];
                 tempMonth.dpv = [item.dpv];
                 tempMonth.hrsDPVmay2p5 = [item.hrsDPVmay2p5];
-                tempMonth.date = [item.date];
+                tempMonth.date = item.date;
               }
             }
             for(var i=0; i<groupedResult.length; i++){
