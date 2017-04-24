@@ -63,7 +63,8 @@ module.exports.updateOne = function(req, res){
       user.name = req.body.name;
       user.email = req.body.email;
       user.role = req.body.role;
-      user.phone = req.body.phone;
+      if(req.body.phone) user.phone = req.body.phone;
+      //user.phone = req.body.phone;
       user.save(function(err){
         if (err){
           sendJSONresponse(res, 404, {
