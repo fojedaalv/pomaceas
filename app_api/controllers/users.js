@@ -66,6 +66,7 @@ module.exports.updateOne = function(req, res){
       user.phone = (req.body.phone != null) ? req.body.phone : "";
       user.save(function(err){
         if (err){
+          console.log(user);
           console.log("Error: "+err);
           sendJSONresponse(res, 404, {
             "message": "Ha ocurrido un error en la actualización de los datos. Revise que el correo no exista o los datos sean inconsistentes."
