@@ -4,7 +4,7 @@ angular.module('PomaceasWebApp')
 function dashboardStationMeasurementsCtrl(stationsSvc, $routeParams, $scope, sensorDataSvc){
   var vm = this;
   vm.station = {};
-  vm.stationId = "5898a308bca4ab0f6fb308eb";
+  vm.stationId = $routeParams.stationId;;
   vm.errMessage = "";
   vm.stationSummary = {};
   vm.sensorData = [];
