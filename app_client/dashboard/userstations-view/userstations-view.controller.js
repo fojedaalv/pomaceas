@@ -1,20 +1,75 @@
 angular.module('PomaceasWebApp')
 .controller('dashboardUserStationsViewCtrl', dashboardUserStationsViewCtrl);
 
-function dashboardUserStationsViewCtrl(stationsSvc, $routeParams, $scope, sensorDataSvc){
+function dashboardUserStationsViewCtrl(
+    stationsSvc,
+    $routeParams,
+    $scope,
+    sensorDataSvc,
+    APPLE_CULTIVARS
+  ){
   var vm = this;
+  vm.apple_cultivars = APPLE_CULTIVARS;
   vm.station = {};
   vm.stationId = $routeParams.stationId;
   vm.errMessage = "";
+  vm.getData = () => {
+    stationsSvc.getStation(vm.stationId)
+    .success(function (data) {
+      vm.station = data;
+      if(!vm.station.sectors){
+        vm.station.sectors = [
+          {
+            name: "Sector 1",
+            cultivar: vm.apple_cultivars[0].value
+          }
+        ]
+      }
+    })
+    .error(function (e) {
+      //vm.errMessage = e.message;
+      vm.errMessage = "La estación solicitada no se pudo encontrar.";
+    });
+  }
 
-  stationsSvc.getStation(vm.stationId)
-  .success(function (data) {
-    vm.station = data;
-  })
-  .error(function (e) {
-    //vm.errMessage = e.message;
-    vm.errMessage = "La estación solicitada no se pudo encontrar.";
-  });
+  vm.getData();
+  vm.addSector = () => {
+    vm.station.sectors.push({
+      name: "Sector Nuevo",
+      cultivar: vm.apple_cultivars[0].value
+    })
+    vm.editSectors();
+  }
+
+  vm.editSectors = () => {
+    vm.editingSectors = true;
+  }
+
+  vm.removeSector = (sector) => {
+    if(vm.station.sectors.length>1){
+      var index = vm.station.sectors.indexOf(sector);
+      vm.station.sectors.splice(index, 1);
+    }else{
+      alert("No se puede eliminar el sector. Debe haber al menos un sector registrado para la estación.");
+    }
+  }
+
+  vm.updateSectors = () => {
+    vm.editingSectors = false;
+    stationsSvc.updateSectors(vm.station._id, vm.station.sectors)
+    .success(function (data) {
+      vm.getData();
+    })
+    .error(function (e) {
+      //vm.errMessage = e.message;
+      vm.errMessage = "Ocurrió un error al modificar los sectores.";
+    });
+  }
+
+  vm.cancelEditSectors = () => {
+    vm.editingSectors = false;
+    vm.getData();
+  }
 
   // ==================================================
   // ========= Código para Leer Archivo CSV ===========

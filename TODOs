@@ -1,0 +1,14 @@
+TODOs:
+[ ] Add sector to station data structure in view
+[ ] Add sector to station data structure in model
+[ ] Associate sector to a cultivar
+[ ] Add screen to view predictions per sector
+[ ]
+
+Factores a considerar para el cultivar Gala:
+1. Estimación de Fecha de Cosecha
+2. Estimación de Ventana de Cosecha (no especificarlo)
+3. Potencial de calibre (enviada)
+4. Potencial de almacenaje (la misma curva de potencial de calibre, pero falta agregar variable de estrés en verano)
+5. Desarrollo Color (enviada)
+6. Alteraciones postcosecha (no hubieron durante esta temporada, por lo que aún no se puede presentar indicador)

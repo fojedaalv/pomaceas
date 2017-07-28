@@ -126,3 +126,11 @@ function config($routeProvider, $logProvider){
 
 angular.module('PomaceasWebApp')
 .config(['$routeProvider', '$logProvider', config]);
+
+angular.module('PomaceasWebApp')
+.constant('APPLE_CULTIVARS',
+[
+  {value: 'gala', text: 'Gala'},
+  {value: 'fuji', text: 'Fuji'},
+  {value: 'cripps_pink', text: 'Cripps Pink'}
+]);

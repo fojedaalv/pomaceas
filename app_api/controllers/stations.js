@@ -90,7 +90,7 @@ module.exports.readOne = function(req, res){
     {
       _id: req.params.stationId
     },
-    '_id name city region owner location',
+    '_id name city region owner location sectors',
     {},
     function(err, station){
       if(err){
@@ -136,7 +136,6 @@ module.exports.updateOne = function(req, res){
                       Number(req.body.location[1])]
       }
       station.save(function(err){
-        var token;
         if (err){
           console.log(err);
           sendJSONresponse(res, 404, {
@@ -174,3 +173,44 @@ module.exports.getByUser = function(req, res){
     }
   );
 }
+
+module.exports.updateSectors = function(req, res){
+  if (!req.params.stationId) {
+    sendJSONresponse(res, 404, {
+      "message": "Estación no encontrada. Se requiere un ID para buscarla."
+    });
+    return;
+  }
+  Station.findById(req.params.stationId)
+  .exec(
+    function(err, station){
+      if (!station) {
+        sendJSONresponse(res, 404, {
+          "message": "ID de estación no encontrado."
+        });
+        return;
+      } else if (err) {
+        sendJSONresponse(res, 400, err);
+        return;
+      }
+      if(req.body.sectors.length<1){
+        sendJSONresponse(res, 400, {
+          "message": "Debe haber al menos un sector por estación."
+        });
+        return;
+      }
+      station.sectors = req.body.sectors;
+      station.save(function(err){
+        if (err){
+          console.log(err);
+          sendJSONresponse(res, 404, {
+            "message": "Ha ocurrido un error en la actualización de los datos. Revise que los datos sean correctos."
+          })
+          return;
+        }else{
+          sendJSONresponse(res, 200, station);
+        }
+      });
+    }
+  )
+};

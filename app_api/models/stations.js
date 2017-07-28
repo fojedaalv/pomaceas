@@ -22,6 +22,9 @@ var stationSchema = new mongoose.Schema({
     type: { type: String },
     coordinates: []
   },
+  sectors: [
+    
+  ]
 }, {
   timestamps: true
 });

@@ -59,6 +59,9 @@ router.put('/stations/:stationId',
   auth,
   ctrlAuth.roleAuthorization(['administrator']),
   ctrlStations.updateOne);
+router.patch('/stations_sectors/:stationId',
+  auth,
+  ctrlStations.updateSectors);
 
 router.get('/userstations/:userId',
   auth,

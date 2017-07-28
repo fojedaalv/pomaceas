@@ -47,6 +47,17 @@ function stationsSvc($http, $window, authSvc){
     });
   }
 
+  var updateSectors = function(stationId, sectors){
+    var stationId = stationId;
+    return $http.patch('/api/v1/stations_sectors/'+stationId, {
+      sectors: sectors
+    }, {
+      headers: {
+        'Authorization': 'Bearer '+ authSvc.getToken()
+      }
+    })
+  }
+
   var getUserStations = function(userId){
     return $http.get('/api/v1/userstations/'+userId, {
       headers: {
@@ -62,6 +73,7 @@ function stationsSvc($http, $window, authSvc){
     getPublicStationsList : getPublicStationsList,
     getStation : getStation,
     updateStation : updateStation,
-    getUserStations : getUserStations
+    getUserStations : getUserStations,
+    updateSectors : updateSectors
   };
 }
