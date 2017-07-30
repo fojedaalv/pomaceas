@@ -30,17 +30,19 @@
         </table>
         <a href="/#/dashboard/station-measurements/{{vm.station._id}}" class="btn btn-success">Ver mediciones de la estación</a>
         <a href="/#/dashboard/userstations-monthly/{{vm.station._id}}" class="btn btn-success">Ver reportes mensuales</a>
+        <a href="/#/dashboard/userstations-predictions/{{vm.station._id}}" class="btn btn-success">Ver predicciones de la estación</a>
       </div>
     </div>
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Sectores del huerto asociado a la estación</h3>
+        <h3 class="panel-title">Cuarteles del huerto asociado a la estación</h3>
       </div>
       <div class="panel-body">
+        <p>Los cuarteles representan divisiones del huerto. Debe existir al menos uno asociado a un tipo de cultivar para poder efectuar predicciones.</p>
         <table class="table table-striped table-hover">
           <thead>
-            <th class="col-md-5">Sector</th>
+            <th class="col-md-5">Cuartel</th>
             <th class="col-md-5">Cultivar</th>
             <th ng-if="vm.editingSectors" class="col-md-1">
               Opciones
@@ -79,10 +81,10 @@
           <p>Existen cambios sin guardar. Presione "Guardar Cambios" si quiere aplicarlos, o "Cancelar Edición" en caso contrario.</p>
         </span>
         <span ng-if="!vm.editingSectors">
-          <button type="button" class="btn btn-success" ng-click="vm.editSectors()">Editar Sectores</button>
+          <button type="button" class="btn btn-success" ng-click="vm.editSectors()">Editar Cuarteles</button>
         </span>
         <span ng-if="vm.editingSectors">
-          <button type="button" class="btn btn-success" ng-click="vm.addSector()">Añadir Sector</button>
+          <button type="button" class="btn btn-success" ng-click="vm.addSector()">Añadir Cuarteles</button>
           <button type="button" class="btn btn-success" ng-click="vm.cancelEditSectors()">Cancelar Edición</button>
           <button type="button" class="btn btn-success" ng-click="vm.updateSectors()">Guardar Cambios</button>
         </span>

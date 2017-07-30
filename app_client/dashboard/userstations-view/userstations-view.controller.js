@@ -20,7 +20,7 @@ function dashboardUserStationsViewCtrl(
       if(!vm.station.sectors){
         vm.station.sectors = [
           {
-            name: "Sector 1",
+            name: "Cuartel 1",
             cultivar: vm.apple_cultivars[0].value
           }
         ]

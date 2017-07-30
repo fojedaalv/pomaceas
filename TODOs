@@ -1,7 +1,7 @@
 TODOs:
-[ ] Add sector to station data structure in view
-[ ] Add sector to station data structure in model
-[ ] Associate sector to a cultivar
+[X] Add sector to station data structure in view
+[X] Add sector to station data structure in model
+[X] Associate sector to a cultivar
 [ ] Add screen to view predictions per sector
 [ ]
 

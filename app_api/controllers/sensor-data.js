@@ -4,6 +4,8 @@ var SensorData = mongoose.model('SensorData');
 var Station = mongoose.model('Station');
 var moment = require('moment');
 
+var isObjectIdValid = mongoose.Types.ObjectId.isValid;
+
 var sendJSONresponse = function(res, status, content) {
   res.status(status);
   res.json(content);
@@ -544,7 +546,8 @@ module.exports.getStationSummary = function(req, res){
   var stationId = req.params.stationId;
   var summary = {
     datesAvailable: [],
-    monthsAvailable: []
+    monthsAvailable: [],
+    yearsAvailable: []
   }
   Station.findOne({
     _id: stationId
@@ -617,7 +620,38 @@ module.exports.getStationSummary = function(req, res){
               return;
             } else {
               summary.monthsAvailable = result;
-              sendJSONresponse(res, 201, summary);
+              SensorData.aggregate([
+                {
+                  $match:{
+                    station: stationId
+                  }
+                },{
+                  $sort: {
+                    date: -1
+                  }
+                },{
+                  $group: {
+                    _id : {
+                      year: { $year: "$date" }
+                    },
+                    count: {$sum: 1}
+                  }
+                },{
+                  $sort: {
+                    "_id.year": -1,
+                    "_id.month": -1
+                  }
+                }
+              ],function(err, result){
+                if (err) {
+                  console.log(err);
+                  sendJSONresponse(res, 404, err);
+                  return;
+                } else {
+                  summary.yearsAvailable = result;
+                  sendJSONresponse(res, 201, summary);
+                }
+              })
             }
           })
         }
@@ -1312,3 +1346,162 @@ module.exports.getReportByMonth = function(req, res){
   }
 }
 */
+
+module.exports.getColorPrediction = (req, res) => {
+  var stationId = req.params.stationId;
+  var year = req.query.year;
+  if( isObjectIdValid(stationId) && year ){
+    SensorData.aggregate([{
+      $match: {
+        station: stationId,
+        date: {
+          $gte: new Date(Date.UTC(year, 0, 0, 0, 0, 0)),
+          $lt: new Date(Date.UTC(year, 1, 0, 0, 0, 0))
+        }
+      }
+    }, {
+      $project: {
+        _id: 1,
+        date: 1,
+        hr10: 1
+      }
+    }, {
+      $group: {
+        _id : {
+          month: { $month: "$date" }
+        },
+        hr10: {$sum: "$hr10"}
+      }
+    }], function(err, result){
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      } else {
+        var potential = null;
+        var hr10 = result[0].hr10;
+        if(hr10 <= 10){
+          potential = 'low-potential';
+        }else if(hr10 <= 20){
+          potential = 'mid-potential';
+        }else{
+          potential = 'high-potential';
+        }
+        sendJSONresponse(res, 201, {
+          stationId: stationId,
+          year: year,
+          hr10: hr10,
+          potential: potential
+        });
+        return;
+      }
+    });
+  }else{
+    sendJSONresponse(res, 400, {
+      error: "La expresión fue mal formada. Revise si los parámetros están completos."
+    });
+    return;
+  }
+}
+
+module.exports.getSizePrediction = (req, res) => {
+  var stationId = req.params.stationId;
+  var year = req.query.year;
+  if( isObjectIdValid(stationId) && year != 'undefined' ){
+    var tempArray = [10,10.1,10.2,10.3,10.4,10.5,10.6,10.7,10.8,10.9,11,11.1,11.2,11.3,11.4,11.5,11.6,11.7,11.8,11.9,12,12.1,12.2,12.3,12.4,12.5,12.6,12.7,12.8,12.9,13,13.1,13.2,13.3,13.4,13.5,13.6,13.7,13.8,13.9,14,14.1,14.2,14.3,14.4,14.5,14.6,14.7,14.8,14.9,15,15.1,15.2,15.3,15.4,15.5,15.6,15.7,15.8,15.9,16,16.1,16.2,16.3,16.4,16.5,16.6,16.7,16.8,16.9,17,17.1,17.2,17.3,17.4,17.5,17.6,17.7,17.8,17.9,18];
+    var bigSizePercent = [10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142003,10.1142014,10.1142068,10.1142306,10.1143272,10.1146896,10.115944,10.1199521,10.1317664,10.1638711,10.2442431,10.4294356,10.8217335,11.584557,12.9433925,15.1546138,18.428656,22.8130812,28.0723273,33.6278796,38.6207142,42.1128459,43.3711987,42.1177734,38.6294944,33.6387439,28.0833913,22.8228617,18.4363411,15.1600495,12.9468798,11.586596,10.8228238,10.42997,10.2444836,10.1639706,10.1318043,10.1199654,10.1159483,10.1146908,10.1143276,10.1142307,10.1142068,10.1142014,10.1142003,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142,10.1142];
+    var avgWeight = [154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.141201,154.141203,154.141209,154.14123,154.141291,154.141464,154.141931,154.143133,154.146075,154.152933,154.16814,154.200221,154.264567,154.387227,154.609322,154.991018,155.613121,156.573595,157.976285,159.910286,162.421199,165.479416,168.95445,172.60611,176.101348,179.059276,181.117661,182.005403,181.601134,179.960446,177.303348,173.96584,170.33031,166.754591,163.51751,160.791224,158.64113,157.046423,155.930752,155.192921,154.730923,154.45669,154.302233,154.219622,154.177638,154.157353,154.148032,154.143957,154.142261,154.14159,154.141337,154.141246,154.141215,154.141204,154.141201,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412,154.1412];
+    SensorData.aggregate([{
+      $match: {
+        station: stationId,
+        date: {
+          $gte: new Date(Date.UTC(year, 9, 0, 0, 0, 0)),
+          $lt: new Date(Date.UTC(year, 10, 0, 0, 0, 0))
+        }
+      }
+    }, {
+      $group: {
+        _id : null,
+        tempOut: {$avg: "$tempOut"}
+      }
+    }], function(err, result){
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      } else {
+        var temp = Math.round(result[0].tempOut*10)/10;
+        if(temp < 10) temp = 10;
+        if(temp > 18) temp = 18;
+        var index = tempArray.findIndex((element)=>{return element==temp});
+        sendJSONresponse(res, 201, {
+          stationId: stationId,
+          year: year,
+          temp: temp,
+          bigSizePercent: bigSizePercent[index],
+          avgWeight: avgWeight[index],
+          errorMargin: 5
+        });
+        return;
+      }
+    });
+  }else{
+    sendJSONresponse(res, 400, {
+      error: "La expresión fue mal formada. Revise si los parámetros están completos."
+    });
+    return;
+  }
+}
+
+module.exports.getHarvestPrediction = (req, res) => {
+  var stationId = req.params.stationId;
+  var year = req.query.year;
+  var month = req.query.month;
+  var day = req.query.day;
+  if( isObjectIdValid(stationId) && year != 'undefined' && month != 'undefined' && day != 'undefined' ){
+    var startDate = new Date(Date.UTC(year, month-1, day, 0, 0, 0));
+    var endDate = moment(startDate).add(30, 'days').toDate();
+    SensorData.aggregate([{
+      $match: {
+        station: stationId,
+        date: {
+          $gte: startDate,
+          $lt: endDate
+        }
+      }
+    }, {
+      $project: {
+        _id: 1,
+        date: 1,
+        gdh: 1,
+        gd: 1
+      }
+    }, {
+      $group: {
+        _id : null,
+        gdh: {$sum: "$gdh"},
+        gd: {$sum: "$gd"}
+      }
+    }], function(err, result){
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      } else {
+        var gd = result[0].gd;
+        var gdh = result[0].gdh;
+        sendJSONresponse(res, 200, {
+          daysToStartHarvest: Math.round(185.9-0.009*gd),
+          gd: gd,
+          gdh: gdh
+        });
+        return;
+      }
+    });
+  }else{
+    sendJSONresponse(res, 400, {
+      error: "La expresión fue mal formada. Revise si los parámetros están completos."
+    });
+    return;
+  }
+}
