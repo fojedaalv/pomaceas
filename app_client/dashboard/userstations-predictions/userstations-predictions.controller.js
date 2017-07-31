@@ -55,8 +55,8 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
         .success(function(data){
           vm.predictions.size = {
             temp: data.temp,
-            bigSizePercent: data.bigSizePercent,
-            avgWeight: data.avgWeight,
+            bigSizePercent: Number(data.bigSizePercent.toFixed(2)),
+            avgWeight: Number(data.avgWeight.toFixed(2)),
             errorMargin: data.errorMargin
           }
         })
