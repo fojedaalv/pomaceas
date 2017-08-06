@@ -61,6 +61,11 @@ function config($routeProvider, $logProvider){
       controller: 'dashboardStationsEditCtrl',
       controllerAs: 'vm'
     })
+    .when('/dashboard/variables-summary/', {
+      templateUrl: 'dashboard/variables-summary/variables-summary.view.html',
+      controller: 'variablesSummaryCtrl',
+      controllerAs: 'vm'
+    })
     .when('/dashboard/userstations', {
       templateUrl: 'dashboard/userstations/userstations.view.html',
       controller: 'dashboardUserStationsCtrl',
@@ -138,4 +143,11 @@ angular.module('PomaceasWebApp')
   {value: 'gala', text: 'Gala'},
   {value: 'fuji', text: 'Fuji'},
   {value: 'cripps_pink', text: 'Cripps Pink'}
+]);
+
+angular.module('PomaceasWebApp')
+.constant('APPLE_VARIABLES',
+[
+  {text:"Temperatura", value:"tempOut"},
+  {text:"Lluvia", value:"rain"}
 ]);

@@ -11,6 +11,7 @@ var ctrlUsers = require('../controllers/users');
 var ctrlStations = require('../controllers/stations');
 var ctrlSensorData = require('../controllers/sensor-data');
 var ctrlReports = require('../controllers/reports');
+var ctrlSummaries = require('../controllers/summaries');
 
 // ========== Authentication Endpoints =============
 
@@ -102,6 +103,19 @@ router.get('/pred-size-gala/:stationId',
   ctrlSensorData.getSizePrediction);
 router.get('/pred-harvest-gala/:stationId',
   ctrlSensorData.getHarvestPrediction);
+
+// ======== Variables Summaries Endpoints ==========
+router.get('/summaries',
+  ctrlSummaries.listSummaries);
+router.post('/summaries',
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlSummaries.createSummary);
+router.delete('/summaries/:summaryId',
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlSummaries.deleteSummary);
+
 
 // ================= Test Endpoints ================
 router.get('/querytest',
