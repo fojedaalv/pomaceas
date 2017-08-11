@@ -35,6 +35,19 @@ var avgArray = function(arr){
   return sum/arr.length;
 }
 
+function variableIsInArray(variable, array){
+  var isInArray = -1;
+  var index = 0;
+  for(arrVar of array){
+    if (variable == arrVar) {
+      isInArray = index;
+      break;
+    }
+    index+=1;
+  }
+  return isInArray;
+}
+
 module.exports.storeData = function(req, res){
   var arr = req.body.data;
   var objects = [];
@@ -1489,9 +1502,9 @@ module.exports.getHarvestPrediction = (req, res) => {
         return;
       } else {
         var gd = result[0].gd;
-        var gdh = result[0].gdh;
+        var gdh = result[0].gdh / 4;
         sendJSONresponse(res, 200, {
-          daysToStartHarvest: Math.round(185.9-0.009*gd),
+          daysToStartHarvest: Math.round(185.9-0.009*gdh),
           gd: gd,
           gdh: gdh
         });
@@ -1504,4 +1517,144 @@ module.exports.getHarvestPrediction = (req, res) => {
     });
     return;
   }
+}
+
+module.exports.getVariable = (req, res) => {
+  console.log(req.query);
+  var splitDate = req.query.startDate.split("-");
+  var startDate = startDate = new Date(moment.utc([splitDate[0], splitDate[1]-1, splitDate[2]]));
+      splitDate = req.query.endDate.split("-");
+  var endDate = new Date(moment.utc([splitDate[0], splitDate[1]-1, splitDate[2]]).add(1, 'day'));
+  var stationId = req.query.station;
+  var variableToQuery = req.query.variable;
+  var operation = req.query.operation;
+
+  if(!isObjectIdValid(stationId)){
+    sendJSONresponse(res, 400, {
+      error: "La expresión fue mal formada. Revise si los parámetros están completos."
+    });
+    return;
+  }
+
+  // Aggregation Stages
+  var matchStage = {
+    $match: {
+      station: stationId,
+      date: {
+        $gte: startDate,
+        $lt: endDate
+      }
+    }
+  };
+
+  // Variables que se consultan por días
+  var variablesByDay = ['5hrsmay27C', '5hrsmay29C', '5hrsmay32C', 'diasHel', '5hrsmin10C'];
+  var variablesToGroup = ['hrmay27c', 'hrmay29c', 'hrmay32c', 'hrmen0c', 'hr10'];
+
+  var inArray = variableIsInArray(variableToQuery, variablesByDay);
+  if(inArray>=0){
+    // La variable se agrupa por día
+    var variableToGroup = variablesToGroup[inArray];
+
+    // Se definen las variables a consultar
+    var projectionQuery = {
+      _id: 1,
+      date: 1
+    }
+    projectionQuery[variableToGroup]=1;
+    var projectionStage = {
+      $project: projectionQuery
+    };
+
+    // Se agrupan por día
+    var groupStage = {
+      $group: {
+        _id : {
+          month: { $month: "$date" },
+          day: { $dayOfMonth: "$date" },
+          year: { $year: "$date" }
+        },
+        count: { $sum: 1}
+      }
+    }
+    groupStage['$group'][variableToGroup] = {$sum: '$' + variableToGroup};
+
+    SensorData.aggregate([
+      matchStage,
+      projectionStage,
+      groupStage
+    ], (err, result) => {
+      var daysCount = 0;
+      for(row of result){
+        // Revisa qué variable se está consultando para ejecutar la
+        // condición correspondiente para contar los días
+        if(variableIsInArray(variableToQuery, ['5hrsmay27C', '5hrsmay29C', '5hrsmay32C', '5hrsmin10C']) >= 0){
+          if(row[variableToGroup] >= 5) { daysCount += 1 }
+        }
+        if(variableIsInArray(variableToQuery, ['diasHel']) >= 0){
+          if(row[variableToGroup] >= 1) { daysCount += 1 }
+        }
+      }
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      }else{
+        sendJSONresponse(res, 200, {
+          variable:variableToQuery,
+          value: daysCount
+        });
+        return;
+      }
+    })
+  }else{
+    // La variable se consulta individualmente
+
+    // Operaciones Específicas:
+    // Si la variable es humedad relativa, usar promedio
+    if(variableToQuery=='outHum') operation = 'avg';
+
+    var projectionQuery = {
+      _id: 1,
+      date: 1
+    }
+    projectionQuery[variableToQuery]=1;
+
+    var variableOperation = {};
+        variableOperation['$' + operation] = '$'+variableToQuery;
+
+    var groupingQuery = {
+      _id: null,
+      count: { $sum: 1},
+      variable: variableOperation
+    }
+
+    SensorData.aggregate([
+      matchStage, {
+        $project: projectionQuery
+      }, {
+        $group: groupingQuery
+      }
+    ], (err, result) => {
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      }else{
+        console.log(result[0]);
+        // Los GDH se aplican divididos por 4
+        if(variableToQuery=='gdh'){
+          result[0].variable = result[0].variable / 4;
+        }
+        sendJSONresponse(res, 200, {
+          variable:variableToQuery,
+          value: result[0].variable
+        });
+        return;
+      }
+    })
+  }
+
+  //Días con T° > 29°C
+  //result[i].hrs295 = (result[i].hrmay29c >= 5) ? 1 : 0;
 }

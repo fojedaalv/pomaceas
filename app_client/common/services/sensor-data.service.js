@@ -26,12 +26,19 @@ function sensorDataSvc($http, $window, authSvc){
     return $http.get('/api/v1/daily-avg-bymonth/'+stationId+"?date="+date);
   }
 
+  var getVariable = function(data){
+    return $http.get('/api/v1/get-variable/', {
+      params: data
+    });
+  }
+
   return {
     uploadData : uploadData,
     getStationSummary : getStationSummary,
     getSensorDataByDate : getSensorDataByDate,
     getSensorDataByDateRange : getSensorDataByDateRange,
     getReportByMonth : getReportByMonth,
-    getSensorDataDailyAvgByMonth : getSensorDataDailyAvgByMonth
+    getSensorDataDailyAvgByMonth : getSensorDataDailyAvgByMonth,
+    getVariable: getVariable
   };
 }

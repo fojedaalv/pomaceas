@@ -25,17 +25,17 @@ function variablesSummaryCtrl(usersSvc, authSvc, $routeParams, $location, APPLE_
       factor: vm.newVariable.factor,
       variable: vm.newVariable.variable,
       startDate: {
-        month: vm.newVariable.startDate.getMonth()+1,
+        month: vm.newVariable.startDate.getMonth(),
         day: vm.newVariable.startDate.getDate()
       },
       endDate: {
-        month: vm.newVariable.endDate.getMonth()+1,
+        month: vm.newVariable.endDate.getMonth(),
         day: vm.newVariable.endDate.getDate()
       }
     });
 
     vm.newVariable = {
-      factor: "",
+      factor: vm.newVariable.factor,
       variable: vm.variables[0].value,
       startDate: moment().subtract(3, 'months').toDate(),
       endDate: moment().subtract(1, 'month').toDate()
@@ -57,16 +57,20 @@ function variablesSummaryCtrl(usersSvc, authSvc, $routeParams, $location, APPLE_
     }else if(vm.newSummary.variables.length==0){
       alert("Debe haber al menos una variable para crear el cuadro.");
     }else{
+      for(index in vm.newSummary.variables){
+        vm.newSummary.variables[index].startDate.month +=1;
+        vm.newSummary.variables[index].endDate.month   +=1;
+      }
       summariesSvc.createSummary({
         name: vm.newSummary.name,
         variables: vm.newSummary.variables
       })
       .success(function(summary){
-        alert('Resumen creado exitosamente.')
         vm.newSummary = {
           name: "",
           variables: []
         }
+        alert('Resumen creado exitosamente.')
         vm.getSummariesList();
       })
       .error(function (e) {
@@ -114,6 +118,7 @@ function variablesSummaryCtrl(usersSvc, authSvc, $routeParams, $location, APPLE_
   vm.dateOptions = {
     formatYear: 'yy',
     datepickerMode: 'day',
+    formatDayTitle: 'MMMM',
     minMode:'day',
     maxMode:'day',
     initDate: null,

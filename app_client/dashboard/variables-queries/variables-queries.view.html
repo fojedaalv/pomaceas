@@ -1,0 +1,61 @@
+<div class="app-container container-fluid">
+<div class="row">
+  <dashboard-navigation></dashboard-navigation>
+
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Consultar Resumen de Variables</h3>
+      </div>
+      <div class="panel-body">
+        <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
+        <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
+
+        <form class="form-inline well clearfix">
+          <div class="form-group col-md-4">
+            <label for="station" class="control-label">Estación</label><br/>
+            <select class="form-control" id="station" ng-model="vm.stationId">
+              <option ng-repeat="stat in vm.stations" value="{{ stat._id }}">
+                {{ stat.name }}, {{ stat.city}}, {{ stat.region }} Región
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="summary" class="control-label">Resumen de Variables</label><br/>
+            <select class="form-control" id="summary" ng-model="vm.selectedSummary">
+              <option ng-repeat="summ in vm.summaries" value="{{ summ._id }}">
+                {{ summ.name }}
+              </option>
+            </select>
+          </div>
+        </form>
+        <hr/>
+
+        <div ng-if="vm.hasData == false">
+          <p>No existen datos para la estación seleccionada</p>
+        </div>
+
+
+        <div ng-if="vm.table && vm.hasData">
+          <p>Existen datos diponibles desde: {{ vm.minDate | amDateFormat:'DD [de] MMMM [de] YYYY' }} hasta: {{ vm.maxDate | amDateFormat:'DD [de] MMMM [de] YYYY' }}</p>
+          <table class="table table-stripped table-hover table-bordered">
+            <thead>
+              <tr>
+                <th ng-repeat="head in vm.table.header">{{ head }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in vm.table.rows">
+                <td class="col-md-2">{{ row[0] }}</td>
+                <td class="col-md-2">{{ row[1] | variableTranslate }}</td>
+                <td class="col-md-2">{{ row[2] }}</td>
+                <td ng-repeat="item in row.slice(3)">{{ (item | number:2) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

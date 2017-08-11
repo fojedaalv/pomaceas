@@ -61,9 +61,14 @@ function config($routeProvider, $logProvider){
       controller: 'dashboardStationsEditCtrl',
       controllerAs: 'vm'
     })
-    .when('/dashboard/variables-summary/', {
+    .when('/dashboard/variables-summary', {
       templateUrl: 'dashboard/variables-summary/variables-summary.view.html',
       controller: 'variablesSummaryCtrl',
+      controllerAs: 'vm'
+    })
+    .when('/dashboard/variables-queries', {
+      templateUrl: 'dashboard/variables-queries/variables-queries.view.html',
+      controller: 'variablesQueriesCtrl',
       controllerAs: 'vm'
     })
     .when('/dashboard/userstations', {
@@ -148,6 +153,15 @@ angular.module('PomaceasWebApp')
 angular.module('PomaceasWebApp')
 .constant('APPLE_VARIABLES',
 [
-  {text:"Temperatura", value:"tempOut"},
-  {text:"Lluvia", value:"rain"}
+  {text:"GD (Base 10 °C)", value:"gd"},
+  {text:"GDH (Base 4,5 °C)", value:"gdh"},
+  {text:"Índice de estrés", value:"uEstres"},
+  {text:"Días 5 h T° > 27°C", value:"5hrsmay27C"},
+  {text:"Días 5 h T° > 29°C", value:"5hrsmay29C"},
+  {text:"Días 5 h T° > 32°C", value:"5hrsmay32C"},
+  {text:"Horas con T°> 29°C", value:"hrmay29c"},
+  {text:"Días con heladas", value:"diasHel"},
+  {text:"Días 5 h T° < 10°C", value:"5hrsmin10C"},
+  {text:"Horas con T°< 10°C", value:"hr10"},
+  {text:"HR", value:"outHum"}
 ]);

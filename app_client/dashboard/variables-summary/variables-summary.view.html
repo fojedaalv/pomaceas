@@ -11,7 +11,14 @@
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
         <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
 
-        <form class="form-inline well clearfix">
+        <form class="clearfix">
+          <div class="form-group col-md-12">
+            <label for="name" class="control-label">Título del Resumen: </label>
+            <input class="form-control" id="name" placeholder="Nombre del Resumen" type="text" ng-model="vm.newSummary.name">
+          </div>
+        </form>
+
+        <form class="form-inline well well-sm clearfix">
           <div class="form-group col-md-3">
             <label for="factor" class="control-label">Factor Productivo</label>
             <input class="form-control" id="factor" placeholder="Factor Productivo" type="text" ng-model="vm.newVariable.factor">
@@ -69,12 +76,6 @@
             <button type="button" class="btn btn-primary btn-block" ng-click="vm.addToNewSummary()">Añadir</button>
           </div>
         </form>
-        <hr/>
-        <p>Nuevo cuadro de resumen de variables</p>
-        <div class="form-group col-md-12">
-          <label for="name" class="control-label">Nombre: </label>
-          <input class="form-control" id="name" placeholder="Nombre del Resumen" type="text" ng-model="vm.newSummary.name">
-        </div>
         <div ng-if="!vm.newSummary.variables.length">
           <p>No se han añadido variables. Si desea crear un nuevo cuadro resumen de variables, añada variables con el formulario de arriba.</p>
         </div>

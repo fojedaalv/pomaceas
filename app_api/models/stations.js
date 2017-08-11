@@ -4,7 +4,6 @@ var ObjectId = mongoose.Schema.ObjectId;
 var stationSchema = new mongoose.Schema({
   name: {
     type: String,
-    unique: true,
     required: true
   },
   city: {
@@ -16,14 +15,15 @@ var stationSchema = new mongoose.Schema({
     required: true
   },
   owner: {
-    type: ObjectId
+    type: ObjectId,
+    unique: false
   },
   location: {
     type: { type: String },
     coordinates: []
   },
   sectors: [
-    
+
   ]
 }, {
   timestamps: true

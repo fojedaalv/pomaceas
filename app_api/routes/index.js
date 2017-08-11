@@ -96,6 +96,9 @@ router.get('/get-report-byday/:stationId',
 router.get('/get-report-bymonth/:stationId',
   ctrlSensorData.getReportByMonth);
 
+router.get('/get-variable/',
+  ctrlSensorData.getVariable);
+
 // ============== Prediction Endpoints =============
 router.get('/pred-color-gala/:stationId',
   ctrlSensorData.getColorPrediction);
