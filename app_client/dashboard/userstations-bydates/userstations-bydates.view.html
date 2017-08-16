@@ -7,17 +7,18 @@
       <div class="panel-heading">
         <h3 class="panel-title">
           <button class="btn btn-default btn-xs" back-button>< Volver</button>
-          Estadísticas mensuales para la estación <strong>{{ vm.station.name }}</strong>
+          Estadísticas por rango de fechas para la estación <strong>{{ vm.station.name }}</strong>
         </h3>
       </div>
       <div class="panel-body">
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
         <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
+
+        <p>
+          Si desea consultar las estadísticas organizadas por mes, haga click <a href="/#/dashboard/userstations-monthly/{{vm.station._id}}" class="">AQUÍ</a>
+        </p>
         <div ng-if="vm.station">
 
-          <p>
-            Si desea consultar las estadísticas organizadas por fechas específicas, haga click <a href="/#/dashboard/userstations-bydates/{{vm.station._id}}" class="">AQUÍ</a>
-          </p>
           <div class="row">
             <div class="col-md-4">
               <div class="input-group">
@@ -92,12 +93,6 @@
                   Media Diaria
                 </th>
                 <th>
-                  Media Máxima
-                </th>
-                <th>
-                  Media Mínima
-                </th>
-                <th>
                   Máxima
                 </th>
                 <th>
@@ -108,22 +103,16 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
-                  {{(row.tempMediaDiaria | number:1)}}°C
+                  {{(row.tempOut | number:1)}}°C
                 </td>
                 <td>
-                  {{(row.tempMediaMax | number:1)}}°C
+                  {{(row.maxHiTemp | number:1)}}°C
                 </td>
                 <td>
-                  {{(row.tempMediaMin | number:1)}}°C
-                </td>
-                <td>
-                  {{(row.tempMaxMax | number:1)}}°C
-                </td>
-                <td>
-                  {{(row.tempMinMin | number:1)}}°C
+                  {{(row.minLowTemp | number:1)}}°C
                 </td>
               </tr>
             </tbody>
@@ -153,19 +142,19 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
-                  {{(row.hrMedia | number:1)}}
+                  {{(row.avgOutHum | number:1)}}
                 </td>
                 <td>
-                  {{(row.hrMaxima | number:1)}}
+                  {{(row.maxOutHum | number:1)}}
                 </td>
                 <td>
-                  {{(row.hrMinima | number:1)}}
+                  {{(row.minOutHum | number:1)}}
                 </td>
                 <td>
-                  {{row.horas95 | number:1}}
+                  {{row.hrHR95 | number:1}}
                 </td>
               </tr>
             </tbody>
@@ -186,10 +175,10 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
-                  {{row.estres | number:1}}
+                  {{row.hrHR40 | number:1}}
                 </td>
               </tr>
             </tbody>
@@ -216,16 +205,16 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
-                  {{(row.gdMaxYMin | number:1)}}
+                  {{(row.tempMaxYMin | number:1)}}
                 </td>
                 <td>
                   {{(row.gdh | number:1)}}
                 </td>
                 <td>
-                  {{(row.gd | number:1)}}
+                  {{(row.gdhora | number:1)}}
                 </td>
             </tbody>
           </table>
@@ -257,7 +246,7 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
                   {{(row.mineq10 | number:1)}}
@@ -269,7 +258,7 @@
                   {{(row.mineq7 | number:1)}}
                 </td>
                 <td>
-                  {{(row.richardson | number:1)}}
+                  {{(row.richard | number:1)}}
                 </td>
                 <td>
                   {{(row.unrath | number:1)}}
@@ -289,14 +278,14 @@
                   Días con heladas
                 </th>
                 <th>
-                  T < 0°
+                  Horas con T < 0°
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
                   {{(row.diasHel | number:1)}}
@@ -350,7 +339,7 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
                   {{(row.hrmay27c | number:2)}}
@@ -362,13 +351,13 @@
                   {{(row.hrmay32c | number:2)}}
                 </td>
                 <td>
-                  {{(row.dias5hrsmay27 | number:2)}}
+                  {{(row.hrs275 | number:2)}}
                 </td>
                 <td>
-                  {{(row.dias5hrsmay29 | number:2)}}
+                  {{(row.hrs295 | number:2)}}
                 </td>
                 <td>
-                  {{(row.dias5hrsmay32 | number:2)}}
+                  {{(row.hrs325 | number:2)}}
                 </td>
                 <td>
                   {{(row.hrmen6c | number:2)}}
@@ -401,7 +390,7 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
                   {{(row.et0 | number:1)}} mm
@@ -425,7 +414,7 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
                   {{(row.horasRad12 | number:1)}}
@@ -449,7 +438,7 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
                   {{(row.horasRad300 | number:1)}}
@@ -473,10 +462,10 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
-                  {{(row.maxRad | number:1)}}
+                  {{(row.maxRadDia | number:1)}}
                 </td>
               </tr>
             </tbody>
@@ -497,7 +486,7 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
                   {{(row.energia | number:1)}}
@@ -521,7 +510,7 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
                   {{(row.vmaxViento | number:1)}}
@@ -545,7 +534,7 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
                   {{(row.pp | number:1)}} mm
@@ -569,7 +558,7 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
                   {{(row.hrAbe | number:1)}}
@@ -593,7 +582,7 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
                   {{(row.dpv | number:1)}}
@@ -617,7 +606,7 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
                   {{(row.hrsDPVmay2p5 | number:1)}}
@@ -641,7 +630,7 @@
             <tbody>
               <tr ng-repeat="row in vm.data.dataset0">
                 <td>
-                  {{row.date | amDateFormat:'MMMM YYYY'}}
+                  {{row.date | amDateFormat:'DD [de] MMMM YYYY'}}
                 </td>
                 <td>
                   {{(row.hrTOpt | number:1)}}

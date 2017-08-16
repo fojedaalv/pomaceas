@@ -480,7 +480,7 @@ module.exports.getReportByDay = function(req, res){
                 year: { $year: "$date" }
               },
               count: { $sum: 1},
-              avgTemp : {$avg: "$tempOut"},
+              tempOut : {$avg: "$tempOut"},
               maxHiTemp : {$max: "$hiTemp"},
               minLowTemp : {$min: "$lowTemp"},
               avgOutHum : {$avg: "$outHum"},
@@ -532,7 +532,7 @@ module.exports.getReportByDay = function(req, res){
           } else {
             // Reemplazar por una etapa $addFields cuando se actualice a MongoDB 3.4
             for(var i=0; i<result.length;i++){
-              result[i].date = new Date(moment.utc([result[i]._id.year, result[i]._id.month-1]));
+              result[i].date = new Date(moment.utc([result[i]._id.year, result[i]._id.month-1, result[i]._id.day]));
               //Eliminar las siguientes operaciones al usar la etapa $addFields
               result[i].tempMaxYMin = ((((result[i].maxHiTemp + result[i].minLowTemp) / 2) - 10)>0) ?
                 (((result[i].maxHiTemp + result[i].minLowTemp) / 2) - 10) :
@@ -541,7 +541,7 @@ module.exports.getReportByDay = function(req, res){
               result[i].diasHel = (result[i].hrmen0c >= 1) ? 1 : 0;
               result[i].hrs275 = (result[i].hrmay27c >= 5) ? 1 : 0;
               result[i].hrs295 = (result[i].hrmay29c >= 5) ? 1 : 0;
-              result[0].hrs325 = (result[0].hrmay32c >= 5) ? 1 : 0;
+              result[i].hrs325 = (result[i].hrmay32c >= 5) ? 1 : 0;
             }
             sendJSONresponse(res, 201, result);
             return

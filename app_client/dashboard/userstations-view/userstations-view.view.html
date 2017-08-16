@@ -34,6 +34,7 @@
           <div class="col-md-4">
             <a href="/#/dashboard/station-measurements/{{vm.station._id}}" class="btn btn-success btn-block">Ver mediciones de la estación</a>
             <a href="/#/dashboard/userstations-monthly/{{vm.station._id}}" class="btn btn-success btn-block">Ver reportes mensuales       </a>
+            <a href="/#/dashboard/userstations-bydates/{{vm.station._id}}" class="btn btn-success btn-block">Ver reportes por rango de fechas   </a>
             <a href="/#/dashboard/userstations-predictions/{{vm.station._id}}" class="btn btn-success btn-block">Ver predicciones de la estación</a>
             <a href="/#/dashboard/userstations-variable-summary/{{vm.station._id}}" class="btn btn-success btn-block">Ver resumen de variables</a>
           </div>
@@ -105,6 +106,36 @@
       <div class="panel-body">
         <div class="alert alert-danger" role="alert" ng-show="vm.uploadError">{{ vm.uploadError }}</div>
         <div class="alert alert-info" role="alert" ng-show="vm.uploadInfo">{{vm.uploadInfo}}</div>
+        <div class="alert">
+          <p>Para subir datos a la estación se debe considerar:</p>
+          <ol>
+            <li>
+              Verifique que el archivo a subir sea un archivo de texto o .csv
+            </li>
+            <li>
+              Las dos primeras líneas del archivo se considerarán como etiquetas de las variables y las demás líneas como datos
+            </li>
+            <li>
+              Las columnas del archivo deben estar separadas por tabulaciones
+            </li>
+          </ol>
+          <p>Pasos para subir datos a la estación:</p>
+          <ol>
+            <li>
+              Seleccionar el archivo a importar presionando en 'Examinar'
+            </li>
+            <li>
+              Cargar el archivo a la memoria presionando en 'Cargar'
+            </li>
+            <li>
+              Al Cargar, se mostrarán las 100 primeras líneas del archivo para verificar que se cargó correctamente
+            </li>
+            <li>
+              Si el archivo se cargó correctamente, presionar 'Subir' para enviar los datos al servidor
+            </li>
+          </ol>
+          <p>* La subida puede demorar unos minutos dependiendo del tamaño de los datos</p>
+        </div>
         <input id="file" class="btn btn-default" type="file">
         <button class="btn btn-success" ng-click="vm.loadFile()">Cargar archivo</button>
         <button class="btn btn-danger" ng-if="vm.isDataLoaded" ng-click="vm.uploadData()">Subir Archivo</button>

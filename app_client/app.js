@@ -106,6 +106,11 @@ function config($routeProvider, $logProvider){
       controller: 'dashboardUserStationsMonthlyCtrl',
       controllerAs: 'vm'
     })
+    .when('/dashboard/userstations-bydates/:stationId', {
+      templateUrl: 'dashboard/userstations-bydates/userstations-bydates.view.html',
+      controller: 'dashboardUserStationsByDatesCtrl',
+      controllerAs: 'vm'
+    })
     .when('/dashboard/user-edit', {
       templateUrl: 'dashboard/user-edit/user-edit.view.html',
       controller: 'dashboardUserEditCtrl',
