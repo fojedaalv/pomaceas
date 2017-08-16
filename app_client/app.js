@@ -91,6 +91,11 @@ function config($routeProvider, $logProvider){
       controller: 'dashboardUserStationsPredictionsCtrl',
       controllerAs: 'vm'
     })
+    .when('/dashboard/userstations-variable-summary/:stationId', {
+      templateUrl: 'dashboard/userstations-variable-summary/userstations-variable-summary.view.html',
+      controller: 'dashboardUserStationsVariableSummaryCtrl',
+      controllerAs: 'vm'
+    })
     .when('/dashboard/station-measurements/:stationId', {
       templateUrl: 'dashboard/station-measurements/station-measurements.view.html',
       controller: 'dashboardStationMeasurementsCtrl',
