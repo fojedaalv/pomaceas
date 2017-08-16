@@ -102,7 +102,7 @@ function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sen
         data.forEach(function(row) {
           // TODO: Arreglar cuando se implemente Moment.js
           // Parche cuma para ajustar la zona horaria
-          row.date = row.date.replace('Z','-03:00');
+          row.date = row.date.replace('Z','-04:00');
           row.date = new Date(row.date);
         });
         vm.data.dataset0 = data;

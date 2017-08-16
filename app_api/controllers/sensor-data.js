@@ -1052,7 +1052,7 @@ module.exports.getReportByMonth = function(req, res){
               }else{
                 // Guardar el objeto anterior
                 if(tempMonth._id.year != null){
-                  console.log("tempMonth:"+tempMonth);
+                  //console.log("tempMonth:"+JSON.stringify(tempMonth));
                   groupedResult.push(tempMonth);
                   tempMonth = {
                     _id: {}
@@ -1612,7 +1612,33 @@ module.exports.getVariable = (req, res) => {
 
     // Operaciones Específicas:
     // Si la variable es humedad relativa, usar promedio
-    if(variableToQuery=='outHum') operation = 'avg';
+    if(variableToQuery == 'tempOut') operation = 'avg';
+    if(variableToQuery == 'hiTemp') operation = 'avg';
+    if(variableToQuery == 'lowTemp') operation = 'avg';
+    if(variableToQuery == 'outHum') operation = 'avg';
+    if(variableToQuery == 'windSpeed') operation = 'avg';
+    if(variableToQuery == 'rain') operation = 'avg';
+    if(variableToQuery == 'solarRad') operation = 'avg';
+    if(variableToQuery == 'maxRadDia') {
+      operation = 'max';
+      variableToQuery = 'solarRad';
+    }
+    var factor = 1;
+    if(variableToQuery == 'energia') {
+      variableToQuery = 'solarRad';
+      factor = 0.0009;
+    }
+    if(variableToQuery == 'maxWindSpeed') {
+      operation = 'max';
+      variableToQuery = 'windSpeed';
+    }
+    if(variableToQuery == 'totalRain') {
+      operation = 'sum';
+      variableToQuery = 'rain';
+    }
+    if(variableToQuery == 'dpv') operation = 'avg';
+    // La et se devuelve en mm
+    //if(variableToQuery == 'et') operation = 'avg';
 
     var projectionQuery = {
       _id: 1,
@@ -1643,9 +1669,10 @@ module.exports.getVariable = (req, res) => {
       }else{
         console.log(result[0]);
         // Los GDH se aplican divididos por 4
-        if(variableToQuery=='gdh'){
+        if(variableToQuery == 'gdh' || variableToQuery == 'richard' || variableToQuery == 'richardsonMod' || variableToQuery == 'unrath'){
           result[0].variable = result[0].variable / 4;
         }
+        result[0].variable*=factor;
         sendJSONresponse(res, 200, {
           variable:variableToQuery,
           value: result[0].variable

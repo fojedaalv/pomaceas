@@ -13,4 +13,8 @@ Factores a considerar para el cultivar Gala:
 5. Desarrollo Color (enviada)
 6. Alteraciones postcosecha (no hubieron durante esta temporada, por lo que aún no se puede presentar indicador)
 
-Las estadísticas mensuales duplican mayo. Revisar.
+1.[X] Agregar las variables que faltan al menú para crear tablas
+2.[ ] Agregar un componente para que el usuario pueda ver tablas
+3.[ ] Agregar que puedan seleccionar por días los mismos informes que se hacen por mes
+4.[ ] Añadir nota sobre el formato del archivo a subir
+5.[ ] Añadir formulario para eliminar datos
