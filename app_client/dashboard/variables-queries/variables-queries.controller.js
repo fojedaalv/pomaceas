@@ -66,10 +66,10 @@ function variablesQueriesCtrl(
         vm.hasData = false;
       }else{
         vm.hasData = true;
-        var jsonDate = vm.stationSummary.monthsAvailable[vm.stationSummary.monthsAvailable.length-1]._id;
-        vm.minDate = new Date(jsonDate.year, jsonDate.month-1);
-        jsonDate = vm.stationSummary.monthsAvailable[0]._id;
-        vm.maxDate = new Date(jsonDate.year, jsonDate.month-1);
+        var jsonDate = vm.stationSummary.datesAvailable[vm.stationSummary.datesAvailable.length-1]._id;
+        vm.minDate = new Date(jsonDate.year, jsonDate.month-1, jsonDate.day);
+        jsonDate = vm.stationSummary.datesAvailable[0]._id;
+        vm.maxDate = new Date(jsonDate.year, jsonDate.month-1, jsonDate.day);
         console.log("La estación tiene datos entre las siguientes fechas:");
         console.log(vm.minDate);
         console.log(vm.maxDate);
