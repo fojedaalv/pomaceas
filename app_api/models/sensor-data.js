@@ -3,7 +3,7 @@ var ObjectId = mongoose.Schema.ObjectId;
 
 var sensorDataSchema = new mongoose.Schema({
   station: {
-    type: ObjectId,
+    type: String,
     required: true
   },
   date: {

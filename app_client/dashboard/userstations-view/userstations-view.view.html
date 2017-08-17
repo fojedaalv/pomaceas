@@ -173,6 +173,69 @@
       </div>
     </div>
 
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Eliminar datos de la estación
+      </div>
+      <div class="panel-body">
+        <div ng-if="vm.stationSummary.datesAvailable.length>0">
+          <p>Para eliminar datos de la estación, seleccione la fecha de inicio y la fecha de fin. Luego, presione Eliminar.</p>
+          <p>Se borrarán los datos desde el día de inicio hasta el día de término incluido, y no se podrán recuperar.</p>
+          <p>Existen datos diponibles desde: {{ vm.startDate | amDateFormat:'DD [de] MMMM [de] YYYY' }} hasta: {{ vm.endDate | amDateFormat:'DD [de] MMMM [de] YYYY' }}</p>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-addon">Desde: </span>
+                <input type="text"
+                  class="form-control"
+                  uib-datepicker-popup="{{vm.startCalendar.format}}"
+                  ng-model="vm.startDate"
+                  is-open="vm.startCalendar.isOpen"
+                  datepicker-options="vm.dateOptions"
+                  ng-required="true"
+                  close-text="Cerrar"/>
+                  <span class="input-group-btn">
+                    <button type="button"
+                    class="btn btn-default"
+                    ng-click="vm.openCal1()">
+                      <i class="glyphicon glyphicon-calendar"></i>
+                    </button>
+                  </span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-addon">Hasta: </span>
+                <input type="text"
+                  class="form-control"
+                  uib-datepicker-popup="{{vm.endCalendar.format}}"
+                  ng-model="vm.endDate"
+                  is-open="vm.endCalendar.isOpen"
+                  datepicker-options="vm.dateOptions"
+                  ng-required="true"
+                  close-text="Cerrar"/>
+                  <span class="input-group-btn">
+                    <button type="button"
+                    class="btn btn-default"
+                    ng-click="vm.openCal2()">
+                      <i class="glyphicon glyphicon-calendar"></i>
+                    </button>
+                  </span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-danger btn-block" ng-click="vm.removeSensorData()">Eliminar Datos</button>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="!vm.stationSummary.datesAvailable.length>0">
+          <p>La estación aún no tiene datos disponibles</p>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </div>
 </div>

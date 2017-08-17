@@ -1685,3 +1685,81 @@ module.exports.getVariable = (req, res) => {
   //Días con T° > 29°C
   //result[i].hrs295 = (result[i].hrmay29c >= 5) ? 1 : 0;
 }
+
+module.exports.deleteDataByDate = function(req, res){
+  var startDate = req.query.startdate;
+  var endDate = req.query.enddate;
+  var stationId = req.params.stationId;
+  var d;
+  var year, month, day;
+  // Check startDate
+  if(startDate != null){
+    d = startDate.split("-");
+    if(d.length == 3){
+      year = d[0];
+      month = d[1]-1;
+      day = d[2];
+      startDate = new Date(moment.utc([year, month, day]));
+    }else{
+      sendJSONresponse(res, 400, "Aparentemente la fecha de inicio es una expresión mal formada.");
+      return;
+    }
+  }else{
+    sendJSONresponse(res, 400, "Aparentemente la fecha de inicio es una expresión mal formada.");
+    return;
+  }
+
+  // Check endDate
+  if(endDate != null){
+    d = endDate.split("-");
+    year = d[0];
+    month = d[1]-1;
+    day = d[2];
+    if(d.length == 3){
+      endDate = new Date(moment.utc([year, month, day]).add(1, 'day'));
+    }else{
+      sendJSONresponse(res, 400, "Aparentemente la fecha de término es una expresión mal formada.");
+      return;
+    }
+  }else{
+    endDate = new Date(moment.utc([year, month, day]).add(1, 'day'));
+  }
+
+  if(startDate != null && endDate != null){
+    console.log("Consultando la fecha:"+startDate+","+endDate);
+    Station.findOne({
+      _id: stationId
+    }, null, function(err, station){
+      if (err || station == null) {
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      }else{
+        if(req.payload._id == station.owner || req.payload.role == 'administrator'){
+          SensorData.remove({
+            station: stationId,
+            date: {
+              $gte: startDate,
+              $lt: endDate
+            }
+          }, function(err) {
+            if (!err) {
+              sendJSONresponse(res, 204, null);
+              return;
+            }
+            else {
+              sendJSONresponse(res, 500, "Ocurrió un error al eliminar los datos.");
+              return;
+            }
+          });
+        }else{
+          sendJSONresponse(res, 401, "No se tiene autorización para eliminar los datos.");
+          return;
+        }
+      }
+    });
+  }else{
+    sendJSONresponse(res, 400, "Aparentemente la expresión fue mal formada.");
+    return;
+  }
+}

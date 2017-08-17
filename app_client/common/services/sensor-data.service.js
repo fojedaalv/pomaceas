@@ -30,6 +30,14 @@ function sensorDataSvc($http, $window, authSvc){
     return $http.get('/api/v1/daily-avg-bymonth/'+stationId+"?date="+date);
   }
 
+  var deleteDataByDate = function(stationId, startdate, enddate){
+    return $http.delete('/api/v1/sensordata/'+stationId+"?startdate="+startdate+"&enddate="+enddate, {
+      headers: {
+        'Authorization': 'Bearer '+ authSvc.getToken()
+      }
+    });
+  }
+
   var getVariable = function(data){
     return $http.get('/api/v1/get-variable/', {
       params: data
@@ -44,6 +52,7 @@ function sensorDataSvc($http, $window, authSvc){
     getReportByMonth : getReportByMonth,
     getReportByDay : getReportByDay,
     getSensorDataDailyAvgByMonth : getSensorDataDailyAvgByMonth,
-    getVariable: getVariable
+    getVariable: getVariable,
+    deleteDataByDate : deleteDataByDate
   };
 }

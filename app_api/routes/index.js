@@ -99,6 +99,10 @@ router.get('/get-report-bymonth/:stationId',
 router.get('/get-variable/',
   ctrlSensorData.getVariable);
 
+router.delete('/sensordata/:stationId',
+  auth,
+  ctrlSensorData.deleteDataByDate);
+
 // ============== Prediction Endpoints =============
 router.get('/pred-color-gala/:stationId',
   ctrlSensorData.getColorPrediction);

@@ -143,9 +143,77 @@ function dashboardUserStationsViewCtrl(
       vm.fileDataDisplay = [];
       vm.isDataLoaded = false;
       vm.isUploading = false;
+      vm.loadStationSummary();
     })
     .error(function(e){
       vm.uploadError = e.message;
     })
+  }
+
+  // ========== Date selection code ==========
+  vm.startCalendar = {
+    format: 'dd MMMM yyyy',
+    isOpen: false
+  }
+  vm.endCalendar = {
+    format: 'dd MMMM yyyy',
+    isOpen: false
+  }
+  vm.dateOptions = {
+    formatYear: 'yy',
+    datepickerMode: 'day',
+    minMode:'day',
+    maxMode:'day',
+    initDate: null,
+    maxDate: null,
+    minDate: null,
+    startingDay: 1
+  };
+  vm.openCal1 = function(){
+    vm.startCalendar.isOpen = true;
+  }
+  vm.openCal2 = function(){
+    vm.endCalendar.isOpen = true;
+  }
+
+  vm.stationSummary = {};
+  vm.loadStationSummary = () => {
+    sensorDataSvc.getStationSummary(vm.stationId)
+    .success(function(data){
+      vm.stationSummary = data;
+      if(vm.stationSummary.datesAvailable.length>0){
+        var jsonDate = vm.stationSummary.datesAvailable[vm.stationSummary.datesAvailable.length-1]._id;
+        vm.startDate = new Date(jsonDate.year, jsonDate.month-1, jsonDate.day);
+        vm.minDate = new Date(jsonDate.year, jsonDate.month-1, jsonDate.day);
+        jsonDate = vm.stationSummary.datesAvailable[0]._id;
+        vm.endDate = new Date(jsonDate.year, jsonDate.month-1, jsonDate.day);
+        vm.maxDate = new Date(jsonDate.year, jsonDate.month-1);
+
+        vm.dateOptions.initDate = vm.minDate;
+        vm.dateOptions.maxDate = vm.maxDate;
+        vm.dateOptions.minDate = vm.minDate;
+      }
+    })
+    .error(function(e){
+      vm.errMessage = "Ha ocurrido un error en la obtención de los datos de la estación.";
+    })
+  }
+  vm.loadStationSummary();
+
+  vm.removeSensorData = () => {
+    var initialDate = moment(vm.startDate).format('YYYY-MM-DD');
+    var endingDate = moment(vm.endDate).format('YYYY-MM-DD');
+    var conf = confirm("Se eliminarán datos entre las fechas: "+initialDate+" y "+endingDate+". ¿Está seguro?");
+    if(conf){
+      sensorDataSvc.deleteDataByDate(vm.stationId, initialDate, endingDate)
+      .success(function(data){
+        alert("Datos eliminados con éxito.");
+        vm.loadStationSummary();
+      })
+      .error(function(e){
+        alert("Ha ocurrido un error en la eliminación de los datos de la estación.");
+        console.log(e);
+      })
+    }
   }
 }
