@@ -38,9 +38,9 @@
           <h1>Sistema de predicciones</h1>
           <div ng-show="vm.selectedSector.cultivar=='gala'">
             <h2>Calibre</h2>
-            <p>Se realizan estimaciones para el porcentaje de frutos con calibres grandes y el peso medio para los frutos. El rango se define considerando un {{ vm.predictions.size.errorMargin }}% de error.</p>
-
-            <table class="table table-stripped table-hover table-bordered"  ng-if="vm.predictions.size!='no-data'">
+            <p>Se realizan estimaciones para el porcentaje de frutos con calibres grandes y el peso medio para los frutos.</p>
+            <p ng-if="vm.predictions.size!='no-data'">El rango se define considerando un {{ vm.predictions.size.errorMargin }}% de margen de error.</p>
+            <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.size!='no-data'">
               <thead>
                 <td>Característica</td>
                 <td>Rango de valores</td>
