@@ -8,13 +8,14 @@ header{
 }
 
 .homepage-logos{
-  background-color: rgba(92,155,63,0.75);
+  background-color: #18bc9c;
 }
 
 /* Bootstrap template overrides */
 /* (Valores que sobreescriben a los originales en la plantilla de Bootstrap */
 .navbar-inverse{
-  background-color: rgba(92,155,63,0.75);
+  background-color: #18bc9c;
+  /*background-color: rgba(92,155,63,0.75);*/
 }
 
 input[type="file"]{
