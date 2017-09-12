@@ -44,7 +44,10 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
       if(vm.selectedSector.cultivar == 'gala'){
         predictionsSvc.getPredictionColorGala(vm.stationId, vm.selectedYear)
         .success(function(data){
-          vm.predictions.colorPotential = data.potential;
+          vm.predictions.colorPotential = {
+            potential : data.potential,
+            hours     : data.hr10
+          }
         })
         .error(function(e){
           vm.errMessage = e.error;

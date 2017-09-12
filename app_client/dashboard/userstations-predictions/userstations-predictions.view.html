@@ -48,15 +48,15 @@
               <tbody>
                 <tr>
                   <td>Porcentaje de frutos en calibres grandes</td>
-                  <td>{{ vm.predictions.size.bigSizePercent - vm.predictions.size.errorMargin }}% - {{ vm.predictions.size.bigSizePercent + vm.predictions.size.errorMargin }}%</td>
+                  <td>{{ vm.predictions.size.bigSizePercent - vm.predictions.size.errorMargin | number:0 }}% - {{ vm.predictions.size.bigSizePercent + vm.predictions.size.errorMargin | number:0 }}%</td>
                 </tr>
                 <tr>
                   <td>Peso medio de los frutos (g)</td>
-                  <td>{{ vm.predictions.size.avgWeight }} g.</td>
+                  <td>Entre {{ (vm.predictions.size.avgWeight | number:0) - 10 }} g. y {{ (vm.predictions.size.avgWeight | number:0)*1 + 10 }} g.</td>
                 </tr>
               </tbody>
             </table>
-            <div class="alert alert-warning" ng-if="vm.predictions.colorPotential=='no-data'">
+            <div class="alert alert-warning" ng-if="vm.predictions.size=='no-data'">
               <strong>Se necesitan datos.</strong> No existen datos durante Octubre durante el año seleccionado. Se deben subir datos de Octubre al sistema para poder llevar acabo las predicciones.
             </div>
 
@@ -94,27 +94,27 @@
 
             <h2>Color</h2>
             <p>La estimación del potencial de color de los frutos se calcula con relación a la cantidad de horas a temperaturas menores a 10°C que experimenten los frutos durante enero.</p>
-            <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.colorPotential!='no-data'">
+            <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.colorPotential.potential!='no-data'">
               <thead>
                 <td>Potencial</td>
                 <td>Horas con t < 10°C</td>
               </thead>
               <tbody>
-                <tr ng-if="vm.predictions.colorPotential=='low-potential'">
-                  <td>Bajo Potencial</td>
-                  <td>0 < hrs. < 10</td>
+                <tr ng-if="vm.predictions.colorPotential.potential=='low-potential'">
+                  <td>Bajo Potencial (entre 0 y 10 horas)</td>
+                  <td>{{ vm.predictions.colorPotential.hours | number:0 }} horas</td>
                 </tr>
-                <tr ng-if="vm.predictions.colorPotential=='mid-potential'">
-                  <td>Medio Potencial</td>
-                  <td>10 < hrs. < 20</td>
+                <tr ng-if="vm.predictions.colorPotential.potential=='mid-potential'">
+                  <td>Medio Potencial (entre 10 y 20 horas)</td>
+                  <td>{{ vm.predictions.colorPotential.hours | number:0 }} horas</td>
                 </tr>
-                <tr ng-if="vm.predictions.colorPotential=='high-potential'">
-                  <td>Alto Potencial</td>
-                  <td>20 < hrs.</td>
+                <tr ng-if="vm.predictions.colorPotential.potential=='high-potential'">
+                  <td>Alto Potencial (más de 20 horas)</td>
+                  <td>{{ vm.predictions.colorPotential.hours | number:0 }} horas</td>
                 </tr>
               </tbody>
             </table>
-            <div class="alert alert-warning" ng-if="vm.predictions.colorPotential=='no-data'">
+            <div class="alert alert-warning" ng-if="vm.predictions.colorPotential.potential=='no-data'">
               <strong>Se necesitan datos.</strong> No existen datos durante Enero durante el año seleccionado. Se deben subir datos de Enero al sistema para poder llevar acabo las predicciones.
             </div>
 
