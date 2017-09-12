@@ -53,11 +53,16 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
 
         predictionsSvc.getPredictionSizeGala(vm.stationId, vm.selectedYear)
         .success(function(data){
-          vm.predictions.size = {
-            temp: data.temp,
-            bigSizePercent: Number(data.bigSizePercent.toFixed(2)),
-            avgWeight: Number(data.avgWeight.toFixed(2)),
-            errorMargin: data.errorMargin
+          if(data.error){
+            vm.predictions.size = 'no-data';
+          }else{
+            vm.predictions.size = {
+              temp: data.temp,
+              bigSizePercent: Number(data.bigSizePercent.toFixed(2)),
+              avgWeight: Number(data.avgWeight.toFixed(2)),
+              errorMargin: data.errorMargin,
+              status: data.status
+            }
           }
         })
         .error(function(e){

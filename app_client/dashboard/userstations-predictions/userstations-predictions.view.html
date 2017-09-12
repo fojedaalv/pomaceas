@@ -37,28 +37,29 @@
           <hr/>
           <h1>Sistema de predicciones</h1>
           <div ng-show="vm.selectedSector.cultivar=='gala'">
-            <h2>Color</h2>
-            <p>La estimación del potencial de color de los frutos se calcula con relación a la cantidad de horas a temperaturas menores a 10°C que experimenten los frutos durante enero.</p>
-            <table class="table table-stripped table-hover table-bordered">
+            <h2>Calibre</h2>
+            <p>Se realizan estimaciones para el porcentaje de frutos con calibres grandes y el peso medio para los frutos. El rango se define considerando un {{ vm.predictions.size.errorMargin }}% de error.</p>
+
+            <table class="table table-stripped table-hover table-bordered"  ng-if="vm.predictions.size!='no-data'">
               <thead>
-                <td>Potencial</td>
-                <td>Horas con t < 10°C</td>
+                <td>Característica</td>
+                <td>Rango de valores</td>
               </thead>
               <tbody>
-                <tr ng-if="vm.predictions.colorPotential=='low-potential'">
-                  <td>Bajo Potencial</td>
-                  <td>0 < hrs. < 10
+                <tr>
+                  <td>Porcentaje de frutos en calibres grandes</td>
+                  <td>{{ vm.predictions.size.bigSizePercent - vm.predictions.size.errorMargin }}% - {{ vm.predictions.size.bigSizePercent + vm.predictions.size.errorMargin }}%</td>
                 </tr>
-                <tr ng-if="vm.predictions.colorPotential=='mid-potential'">
-                  <td>Medio Potencial</td>
-                  <td>10 < hrs. < 20
-                </tr>
-                <tr ng-if="vm.predictions.colorPotential=='high-potential'">
-                  <td>Alto Potencial</td>
-                  <td>20 < hrs.
+                <tr>
+                  <td>Peso medio de los frutos (g)</td>
+                  <td>{{ vm.predictions.size.avgWeight }} g.</td>
                 </tr>
               </tbody>
             </table>
+            <div class="alert alert-warning" ng-if="vm.predictions.colorPotential=='no-data'">
+              <strong>Se necesitan datos.</strong> No existen datos durante Octubre durante el año seleccionado. Se deben subir datos de Octubre al sistema para poder llevar acabo las predicciones.
+            </div>
+
             <h2>Maduración</h2>
             <p>Para calcular la maduración se requiere la fecha de floración. Por favor, ingrésela haciendo click en el ícono del calendario y luego presione calcular.</p>
             <div class="row">
@@ -86,30 +87,38 @@
               </div>
               <div class="col-md-8">
                 <p ng-if="vm.predictions.harvestDate">
-                  Según los datos obtenidos por el sistema, se estima como día de cosecha: {{vm.predictions.harvestDate | amDateFormat:'DD [de] MMMM [de] YYYY' }}
+                  Según los datos obtenidos por el sistema, se estima como día de cosecha entre: {{vm.predictions.harvestDate | amSubtract : '3' : 'days' | amDateFormat:'DD [de] MMMM [de] YYYY' }} y {{vm.predictions.harvestDate | amAdd : '3' : 'days' | amDateFormat:'DD [de] MMMM [de] YYYY' }}
                 </p>
               </div>
             </div>
 
-            <h2>Calibre</h2>
-            <p>Se realizan estimaciones para el porcentaje de frutos con calibres grandes y el peso medio para los frutos. El rango se define considerando un {{ vm.predictions.size.errorMargin }}% de error.</p>
-            <table class="table table-stripped table-hover table-bordered">
+            <h2>Color</h2>
+            <p>La estimación del potencial de color de los frutos se calcula con relación a la cantidad de horas a temperaturas menores a 10°C que experimenten los frutos durante enero.</p>
+            <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.colorPotential!='no-data'">
               <thead>
-                <td>Característica</td>
-                <td>Rango de valores</td>
+                <td>Potencial</td>
+                <td>Horas con t < 10°C</td>
               </thead>
               <tbody>
-                <tr>
-                  <td>Porcentaje de frutos en calibres grandes</td>
-                  <td>{{ vm.predictions.size.bigSizePercent - vm.predictions.size.errorMargin }}% - {{ vm.predictions.size.bigSizePercent + vm.predictions.size.errorMargin }}%</td>
+                <tr ng-if="vm.predictions.colorPotential=='low-potential'">
+                  <td>Bajo Potencial</td>
+                  <td>0 < hrs. < 10</td>
                 </tr>
-                <tr>
-                  <td>Peso medio de los frutos (g)</td>
-                  <td>{{ vm.predictions.size.avgWeight }} g.</td>
+                <tr ng-if="vm.predictions.colorPotential=='mid-potential'">
+                  <td>Medio Potencial</td>
+                  <td>10 < hrs. < 20</td>
+                </tr>
+                <tr ng-if="vm.predictions.colorPotential=='high-potential'">
+                  <td>Alto Potencial</td>
+                  <td>20 < hrs.</td>
                 </tr>
               </tbody>
             </table>
-            <h2>Lenticelosis</h2>
+            <div class="alert alert-warning" ng-if="vm.predictions.colorPotential=='no-data'">
+              <strong>Se necesitan datos.</strong> No existen datos durante Enero durante el año seleccionado. Se deben subir datos de Enero al sistema para poder llevar acabo las predicciones.
+            </div>
+
+            <h2>Alteraciones de la Piel</h2>
             <p>Durante esta temporada no se presentó lenticelosis, por lo que no se pueden hacer predicciones.</p>
           </div>
           <div ng-show="vm.selectedSector.cultivar!='gala'">

@@ -1391,22 +1391,33 @@ module.exports.getColorPrediction = (req, res) => {
         sendJSONresponse(res, 404, err);
         return;
       } else {
-        var potential = null;
-        var hr10 = result[0].hr10;
-        if(hr10 <= 10){
-          potential = 'low-potential';
-        }else if(hr10 <= 20){
-          potential = 'mid-potential';
+        if(result.length==0){
+          sendJSONresponse(res, 201, {
+            stationId: stationId,
+            year: year,
+            hr10: hr10,
+            potential: 'no-data'
+          });
+          return;
         }else{
-          potential = 'high-potential';
+          var potential = null;
+          console.log(result);
+          var hr10 = result[0].hr10;
+          if(hr10 <= 10){
+            potential = 'low-potential';
+          }else if(hr10 <= 20){
+            potential = 'mid-potential';
+          }else{
+            potential = 'high-potential';
+          }
+          sendJSONresponse(res, 201, {
+            stationId: stationId,
+            year: year,
+            hr10: hr10,
+            potential: potential
+          });
+          return;
         }
-        sendJSONresponse(res, 201, {
-          stationId: stationId,
-          year: year,
-          hr10: hr10,
-          potential: potential
-        });
-        return;
       }
     });
   }else{
@@ -1443,19 +1454,26 @@ module.exports.getSizePrediction = (req, res) => {
         sendJSONresponse(res, 404, err);
         return;
       } else {
-        var temp = Math.round(result[0].tempOut*10)/10;
-        if(temp < 10) temp = 10;
-        if(temp > 18) temp = 18;
-        var index = tempArray.findIndex((element)=>{return element==temp});
-        sendJSONresponse(res, 201, {
-          stationId: stationId,
-          year: year,
-          temp: temp,
-          bigSizePercent: bigSizePercent[index],
-          avgWeight: avgWeight[index],
-          errorMargin: 5
-        });
-        return;
+        if(result.length==0){
+          sendJSONresponse(res, 201, {
+            error: 'no-data'
+          });
+          return;
+        }else{
+          var temp = Math.round(result[0].tempOut*10)/10;
+          if(temp < 10) temp = 10;
+          if(temp > 18) temp = 18;
+          var index = tempArray.findIndex((element)=>{return element==temp});
+          sendJSONresponse(res, 201, {
+            stationId: stationId,
+            year: year,
+            temp: temp,
+            bigSizePercent: bigSizePercent[index],
+            avgWeight: avgWeight[index],
+            errorMargin: 5
+          });
+          return;
+        }
       }
     });
   }else{
