@@ -37,8 +37,8 @@ function variablesSummaryCtrl(usersSvc, authSvc, $routeParams, $location, APPLE_
     vm.newVariable = {
       factor: vm.newVariable.factor,
       variable: vm.variables[0].value,
-      startDate: moment().subtract(3, 'months').toDate(),
-      endDate: moment().subtract(1, 'month').toDate()
+      startDate: vm.newVariable.startDate,
+      endDate: vm.newVariable.endDate
     }
   }
 
