@@ -83,7 +83,11 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
     predictionsSvc.getPredictionHarvestGala(vm.stationId, year, month, day)
     .success(function(data){
       console.log(data);
-      vm.predictions.harvestDate = moment(vm.floweringDate).add(data.daysToStartHarvest, 'days').toDate();
+      if(data.error){
+        vm.predictions.harvestDate = data.error;
+      }else{
+        vm.predictions.harvestDate = moment(vm.floweringDate).add(data.daysToStartHarvest, 'days').toDate();
+      }
     })
     .error(function(e){
       vm.errMessage = e.error;

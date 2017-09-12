@@ -63,7 +63,7 @@
             <h2>Maduración</h2>
             <p>Para calcular la maduración se requiere la fecha de floración. Por favor, ingrésela haciendo click en el ícono del calendario y luego presione calcular.</p>
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-5">
                 <div class="input-group">
                   <span class="input-group-addon">Floración: </span>
                   <input type="text" readonly
@@ -85,10 +85,13 @@
                 <br/>
                 <button type="button" class="btn btn-primary btn-block" ng-click="vm.getHarvestDate()">Calcular</button>
               </div>
-              <div class="col-md-8">
-                <p ng-if="vm.predictions.harvestDate">
+              <div class="col-md-7">
+                <p ng-if="vm.predictions.harvestDate && vm.predictions.harvestDate!='no-data'">
                   Según los datos obtenidos por el sistema, se estima como día de cosecha entre: {{vm.predictions.harvestDate | amSubtract : '3' : 'days' | amDateFormat:'DD [de] MMMM [de] YYYY' }} y {{vm.predictions.harvestDate | amAdd : '3' : 'days' | amDateFormat:'DD [de] MMMM [de] YYYY' }}
                 </p>
+                <div class="alert alert-warning" ng-if="vm.predictions.harvestDate=='no-data'">
+                  <strong>Se necesitan datos.</strong> No existen datos suficientes para estimar la fecha de cosecha. Se necesitan datos de al menos 30 días desde la fecha de floración.
+                </div>
               </div>
             </div>
 

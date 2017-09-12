@@ -1519,14 +1519,21 @@ module.exports.getHarvestPrediction = (req, res) => {
         sendJSONresponse(res, 404, err);
         return;
       } else {
-        var gd = result[0].gd;
-        var gdh = result[0].gdh / 4;
-        sendJSONresponse(res, 200, {
-          daysToStartHarvest: Math.round(185.9-0.009*gdh),
-          gd: gd,
-          gdh: gdh
-        });
-        return;
+        if(result.length==0){
+          sendJSONresponse(res, 201, {
+            error: 'no-data'
+          });
+          return;
+        }else{
+          var gd = result[0].gd;
+          var gdh = result[0].gdh / 4;
+          sendJSONresponse(res, 200, {
+            daysToStartHarvest: Math.round(185.9-0.009*gdh),
+            gd: gd,
+            gdh: gdh
+          });
+          return;
+        }        
       }
     });
   }else{
