@@ -684,6 +684,7 @@ module.exports.getStationSummary = function(req, res){
                       return;
                     }else{
                       //summary.lastReading = result[0].maxDate;
+                      summary.lastReading = new Date();
                       sendJSONresponse(res, 201, summary);
                     }
                   })
