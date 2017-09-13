@@ -268,10 +268,12 @@ module.exports.storeData = function(req, res){
       hrsDPVmay2p5: hrsDPVmay2p5
     });
   });
-  SensorData.collection.insert(objects, function(err, docs){
+  SensorData.collection.insert(objects, {ordered: false}, function(err, docs){
     if (err) {
+      //console.log(JSON.stringify(err, null, "\t"));
       sendJSONresponse(res, 400, {
-        "message": "Se ha producido un error en la inserción de los datos. Detalles: "+ err
+        message: "Se ha producido un error en la inserción de los datos. Probablemente se hayan subido datos que ya estaban en el sistema.",
+        error: err
       });
       return;
     } else {
@@ -1533,7 +1535,7 @@ module.exports.getHarvestPrediction = (req, res) => {
             gdh: gdh
           });
           return;
-        }        
+        }
       }
     });
   }else{

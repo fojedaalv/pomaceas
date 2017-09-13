@@ -171,6 +171,7 @@ function dashboardUserStationsViewCtrl(
     })
     .error(function(e){
       vm.uploadError = e.message;
+      console.log(e);
     })
   }
 
@@ -211,7 +212,7 @@ function dashboardUserStationsViewCtrl(
         vm.minDate = new Date(jsonDate.year, jsonDate.month-1, jsonDate.day);
         jsonDate = vm.stationSummary.datesAvailable[0]._id;
         vm.endDate = new Date(jsonDate.year, jsonDate.month-1, jsonDate.day);
-        vm.maxDate = new Date(jsonDate.year, jsonDate.month-1);
+        vm.maxDate = new Date(jsonDate.year, jsonDate.month-1, jsonDate.day);
 
         vm.dateOptions.initDate = vm.minDate;
         vm.dateOptions.maxDate = vm.maxDate;
