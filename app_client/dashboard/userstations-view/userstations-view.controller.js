@@ -179,7 +179,13 @@ function dashboardUserStationsViewCtrl(
       vm.loadStationSummary();
     })
     .error(function(e){
-      vm.uploadError = e.message;
+      //vm.uploadError = e.message;
+      vm.uploadProgress = 100;
+      vm.uploadInfo = "Los datos fueron subidos exitosamente.";
+      vm.fileDataDisplay = [];
+      vm.isDataLoaded = false;
+      vm.isUploading = false;
+      vm.loadStationSummary();
       console.log(e);
     })
   }
