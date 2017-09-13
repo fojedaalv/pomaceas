@@ -99,7 +99,31 @@ function dashboardUserStationsViewCtrl(
       var lines = e.target.result.split("\n").slice(2);
       var data = [];
       for(var line = 0; line < lines.length; line++){
-        var datum = lines[line].split("\t");
+        var datum = [];
+        var lineData = lines[line].split("\t");
+        // Default file has 33 columns
+        if(lineData.length==33){
+          datum = [];
+          // Fix date length
+          var tempDate = lineData[0].split("-");
+          if(tempDate[2].length==2){
+            lineData[0] = tempDate[0]+"-"+tempDate[1]+"-20"+tempDate[2];
+          }
+
+          // Build datum from corresponding fields
+          datum.push(lineData[0]);
+          datum.push(lineData[1]);
+          datum.push(lineData[2]);
+          datum.push(lineData[3]);
+          datum.push(lineData[4]);
+          datum.push(lineData[5]);
+          datum.push(lineData[7]);
+          datum.push(lineData[17]);
+          datum.push(lineData[19]);
+          datum.push(lineData[28]);
+        }else{
+          datum = lineData;
+        }
         vm.fileData.push(datum);
       }
       vm.fileDataDisplay = vm.fileData.slice(0,100);
