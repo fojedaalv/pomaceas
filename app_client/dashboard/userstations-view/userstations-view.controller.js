@@ -124,7 +124,16 @@ function dashboardUserStationsViewCtrl(
         }else{
           datum = lineData;
         }
-        vm.fileData.push(datum);
+        if(datum.indexOf('---') > -1){
+          //alert("Este dato está pifiao: " + datum);
+          var lastDatum = vm.fileData[vm.fileData.length-1];
+          for(var i=2; i < datum.length; i++){
+            datum[i]=lastDatum[i];
+          }
+          vm.fileData.push(datum);
+        }else{
+          vm.fileData.push(datum);
+        }
       }
       vm.fileDataDisplay = vm.fileData.slice(0,100);
       vm.isDataLoaded = true;

@@ -562,7 +562,8 @@ module.exports.getStationSummary = function(req, res){
   var summary = {
     datesAvailable: [],
     monthsAvailable: [],
-    yearsAvailable: []
+    yearsAvailable: [],
+    lastReading: null
   }
   Station.findOne({
     _id: stationId
@@ -664,7 +665,28 @@ module.exports.getStationSummary = function(req, res){
                   return;
                 } else {
                   summary.yearsAvailable = result;
-                  sendJSONresponse(res, 201, summary);
+                  SensorData.aggregate([
+                    {
+                      $match:{
+                        station: stationId
+                      }
+                    },
+                    {
+                      $group: {
+                        _id: null,
+                        maxDate: {$max: "$date"}
+                      }
+                    }
+                  ],function(err, result){
+                    if (err) {
+                      console.log(err);
+                      sendJSONresponse(res, 404, err);
+                      return;
+                    }else{
+                      summary.lastReading = result[0].maxDate;
+                      sendJSONresponse(res, 201, summary);
+                    }
+                  })
                 }
               })
             }

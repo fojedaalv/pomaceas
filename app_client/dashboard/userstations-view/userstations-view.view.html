@@ -11,38 +11,109 @@
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
         <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
         <div class="row">
-          <div class="col-md-8">
-            <table class="table table-stripped table-hover">
-              <tr>
-                <td>Nombre: </td>
-                <td>{{ vm.station.name }}</td>
-              </tr>
-              <tr>
-                <td>Ciudad: </td>
-                <td>{{ vm.station.city }}</td>
-              </tr>
-              <tr>
-                <td>Región: </td>
-                <td>{{ vm.station.region }}</td>
-              </tr>
-              <tr>
-                <td>Ubicación: </td>
-                <td>{{ vm.station.location.coordinates }}</td>
-              </tr>
-            </table>
+          <div class="col-md-3">
+            <strong>Nombre</strong>: {{ vm.station.name }}
+          </div>
+          <div class="col-md-5">
+            <strong>Último Registro</strong>: {{ vm.stationSummary.lastReading | amUtc | amDateFormat:'DD [de] MMMM [de] YYYY HH:mm:ss' }}
           </div>
           <div class="col-md-4">
-            <!--
+            <strong>Ubicación</strong>: {{ vm.station.city }}, {{ vm.station.region | regionTranslate }}
+            <!-- Coordenadas: ({{vm.station.location.coordinates[0]}}, {{vm.station.location.coordinates[1]}}) -->
+          </div>
+          <div class="col-md-12">
+            <strong>Datos disponibles</strong>:
+            <span ng-if="vm.stationSummary.datesAvailable.length>0">
+              desde {{ vm.startDate | amDateFormat:'DD [de] MMMM [de] YYYY' }} hasta {{ vm.endDate | amDateFormat:'DD [de] MMMM [de] YYYY' }}
+            </span>
+            <span ng-if="!vm.stationSummary.datesAvailable.length>0">
+              No hay datos agregados a la estación
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Opciones de consulta
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-3">
+            <a href="/#/dashboard/userstations-variable-summary/{{vm.station._id}}">
+              <div class="panel panel-success">
+                <div class="panel-heading" style="min-height:150px;">
+                  <h3 class="panel-title text-center">Resumen de Variables</h3>
+                  <p class="text-center">Resumen de variables relevantes</p>
+                  <h2 class="text-center">
+                    <span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
+                  </h2>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-3">
+            <a href="/#/dashboard/userstations-predictions/{{vm.station._id}}">
+              <div class="panel panel-success">
+                <div class="panel-heading" style="min-height:150px;">
+                  <h3 class="panel-title text-center">Predicciones</h3>
+                  <p class="text-center">Estimaciones de calidad y fechas</p>
+                  <h2 class="text-center">
+                    <span class="glyphicon glyphicon-leaf" aria-hidden="true"></span>
+                  </h2>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-3">
+            <a href="/#/dashboard/userstations-monthly/{{vm.station._id}}">
+              <div class="panel panel-success">
+                <div class="panel-heading" style="min-height:150px;">
+                  <h3 class="panel-title text-center">Estadísticas Mensuales</h3>
+                  <p class="text-center">Consultar indicadores por mes</p>
+                  <h2 class="text-center">
+                    <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+                  </h2>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-3">
+            <a href="/#/dashboard/userstations-bydates/{{vm.station._id}}">
+              <div class="panel panel-success">
+                <div class="panel-heading" style="min-height:150px;">
+                  <h3 class="panel-title text-center">Estadísticas por Fechas</h3>
+                  <p class="text-center">Consultar indicadores por rangos de días</p>
+                  <h2 class="text-center">
+                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                  </h2>
+                </div>
+              </div>
+            </a>
+          </div>
+
+        <!--
+        <div class="row">
+          <div class="col-md-4">
             <a href="/#/dashboard/station-measurements/{{vm.station._id}}" class="btn btn-success btn-block">Ver mediciones de la estación</a>
-            -->
+
             <a href="/#/dashboard/userstations-monthly/{{vm.station._id}}" class="btn btn-success btn-block">Ver reportes mensuales       </a>
             <a href="/#/dashboard/userstations-bydates/{{vm.station._id}}" class="btn btn-success btn-block">Ver reportes por rango de fechas   </a>
             <a href="/#/dashboard/userstations-predictions/{{vm.station._id}}" class="btn btn-success btn-block">Ver predicciones de la estación</a>
             <a href="/#/dashboard/userstations-variable-summary/{{vm.station._id}}" class="btn btn-success btn-block">Ver resumen de variables</a>
           </div>
         </div>
+        -->
+        </div>
       </div>
     </div>
+
+
+
 
     <div class="panel panel-default">
       <div class="panel-heading">

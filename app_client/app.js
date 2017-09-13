@@ -201,3 +201,23 @@ angular.module('PomaceasWebApp')
   {text:"Precipitaciones (Prom.)", value:"rain"},
   {text:"Radiación (Prom.)", value:"solarRad"}
 ]);
+
+angular.module('PomaceasWebApp')
+.constant('REGION_NAMES',
+[
+  {value:"XV", text:"XV Región de Arica y Parinacota"},
+  {value:"I", text:"I Región de Tarapacá"},
+  {value:"II", text:"II Región de Antofagasta"},
+  {value:"III", text:"III Región de Atacama"},
+  {value:"IV", text:"IV Región de Coquimbo"},
+  {value:"V", text:"V Región de Valparaíso"},
+  {value:"M", text:"Región Metropolitana"},
+  {value:"VI", text:"VI Región del Libertador General Bernardo O'Higgins"},
+  {value:"VII", text:"VII Región del Maule"},
+  {value:"VIII", text:"VIII Región del Biobío"},
+  {value:"IX", text:"IX Región de la Araucanía"},
+  {value:"XIV", text:"XIV Región de los Ríos"},
+  {value:"X", text:"X Región de los Lagos"},
+  {value:"XI", text:"XI Región de Aysén"},
+  {value:"XII", text:"XII Región de Magallanes y Antártica"},
+]);
