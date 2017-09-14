@@ -35,7 +35,7 @@ function dashboardUserStationsViewCtrl(
   vm.getData();
   vm.addSector = () => {
     vm.station.sectors.push({
-      name: "Sector Nuevo",
+      name: "Cuartel Nuevo",
       cultivar: vm.apple_cultivars[0].value
     })
     vm.editSectors();
@@ -221,6 +221,7 @@ function dashboardUserStationsViewCtrl(
     sensorDataSvc.getStationSummary(vm.stationId)
     .success(function(data){
       vm.stationSummary = data;
+      console.log(data);
       if(vm.stationSummary.datesAvailable.length>0){
         var jsonDate = vm.stationSummary.datesAvailable[vm.stationSummary.datesAvailable.length-1]._id;
         vm.startDate = new Date(jsonDate.year, jsonDate.month-1, jsonDate.day);

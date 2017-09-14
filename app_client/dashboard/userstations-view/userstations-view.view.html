@@ -15,7 +15,13 @@
             <strong>Nombre</strong>: {{ vm.station.name }}
           </div>
           <div class="col-md-5">
-            <strong>Último Registro</strong>: {{ vm.stationSummary.lastReading | amUtc | amDateFormat:'DD [de] MMMM [de] YYYY HH:mm:ss' }}
+            <strong>Último Registro</strong>:
+            <span ng-if="vm.stationSummary.lastReading">
+            {{ vm.stationSummary.lastReading | amUtc | amDateFormat:'DD [de] MMMM [de] YYYY HH:mm:ss' }}
+            </span>
+            <span ng-if="!vm.stationSummary.lastReading">
+            No hay datos en la estación.
+            </span>
           </div>
           <div class="col-md-4">
             <strong>Ubicación</strong>: {{ vm.station.city }}, {{ vm.station.region | regionTranslate }}

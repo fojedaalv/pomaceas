@@ -11,11 +11,17 @@
         </h3>
       </div>
       <div class="panel-body">
-
         <h1>Sistema de predicciones</h1>
+        <div ng-if="vm.isSectorEmpty()">
+          <p>Aún no se ha registrado un cuartel para la estación.</p>
+          <p>Se debe registrar al menos un cuartel por estación con su variedad de cultivar correspondiente para efectuar las predicciones.</p>
+        </div>
+        <div ng-if="!vm.stationSummary.lastReading">
+          La estación no tiene datos para hacer predicciones. Se deben subir datos a la estación para poder efectuar cálculos.
+        </div>
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
         <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
-        <div ng-if="vm.station">
+        <div ng-if="vm.station && !vm.isSectorEmpty() && vm.stationSummary.lastReading">
           <form class="form-inline well clearfix">
             <div class="form-group col-md-4">
               <label for="sector" class="control-label">Cuartel</label>

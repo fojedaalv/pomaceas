@@ -11,14 +11,16 @@
         </h3>
       </div>
       <div class="panel-body">
+        <span ng-if="!vm.stationSummary.lastReading">
+        No hay datos en la estación. Se deben añadir datos para poder mostrar los gráficos y estadísticas.
+        </span>
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
         <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
 
-        <p>
-          Si desea consultar las estadísticas organizadas por mes, haga click <a href="/#/dashboard/userstations-monthly/{{vm.station._id}}" class="">AQUÍ</a>
-        </p>
-        <div ng-if="vm.station">
-
+        <div ng-if="vm.station && vm.stationSummary.lastReading">
+          <p>
+            Si desea consultar las estadísticas organizadas por mes, haga click <a href="/#/dashboard/userstations-monthly/{{vm.station._id}}" class="">AQUÍ</a>
+          </p>
           <div class="row">
             <div class="col-md-4">
               <div class="input-group">

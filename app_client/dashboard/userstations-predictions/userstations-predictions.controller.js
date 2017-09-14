@@ -12,11 +12,17 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
   vm.selectedYear = null;
   vm.yearsAvailable = [];
 
+  vm.isSectorEmpty = () => {
+    return Object.keys(vm.selectedSector).length === 0;
+  }
+
   vm.getData = () => {
     stationsSvc.getStation(vm.stationId)
     .success(function (data) {
       vm.station = data;
-      vm.selectedSector = vm.station.sectors[0];
+      if(data.sectors.length>0){
+        vm.selectedSector = vm.station.sectors[0];
+      }
 
       sensorDataSvc.getStationSummary(vm.stationId)
       .success(function(data){
@@ -39,7 +45,7 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
   $scope.$watchGroup(['vm.selectedSector', 'vm.selectedYear'], (newValues, oldValues, scope) => {
     //alert(JSON.stringify(vm.selectedSector, null, '\t'));
     vm.predictions = {};
-    if(!angular.equals(vm.selectedSector,{}) && vm.selectedYear != null){
+    if(!angular.equals(vm.selectedSector,{}) && vm.selectedYear != null && vm.stationSummary.lastReading){
       console.log("Consultar Predicciones...");
       if(vm.selectedSector.cultivar == 'gala'){
         predictionsSvc.getPredictionColorGala(vm.stationId, vm.selectedYear)

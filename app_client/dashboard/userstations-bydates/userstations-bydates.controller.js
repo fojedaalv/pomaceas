@@ -70,6 +70,7 @@ function dashboardUserStationsByDatesCtrl(stationsSvc, $routeParams, $scope, sen
   sensorDataSvc.getStationSummary(vm.stationId)
   .success(function(data){
     vm.stationSummary = data;
+    if(vm.stationSummary.lastReading==null) return;
 
     var jsonDate = vm.stationSummary.datesAvailable[vm.stationSummary.datesAvailable.length-1]._id;
     vm.startDate = new Date(jsonDate.year, jsonDate.month-1, jsonDate.day);
