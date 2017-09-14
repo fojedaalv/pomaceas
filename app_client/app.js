@@ -61,6 +61,11 @@ function config($routeProvider, $logProvider){
       controller: 'dashboardStationsEditCtrl',
       controllerAs: 'vm'
     })
+    .when('/dashboard/stations-upload/', {
+      templateUrl: 'dashboard/stations-upload/stations-upload.view.html',
+      controller: 'dashboardStationsUploadCtrl',
+      controllerAs: 'vm'
+    })
     .when('/dashboard/variables-summary', {
       templateUrl: 'dashboard/variables-summary/variables-summary.view.html',
       controller: 'variablesSummaryCtrl',
