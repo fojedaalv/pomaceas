@@ -6,6 +6,7 @@ function dashboardUserStationsViewCtrl(
     $routeParams,
     $scope,
     sensorDataSvc,
+    Upload,
     APPLE_CULTIVARS
   ){
   var vm = this;
@@ -79,12 +80,21 @@ function dashboardUserStationsViewCtrl(
   vm.isDataLoaded = false;
   vm.loadProgress = 0;
   vm.uploadProgress = 0;
-  vm.isUploading = true;
+  vm.isUploading = false;
+  vm.clearMessages = () => {
+    vm.uploadInfo  = "";
+    vm.uploadError = "";
+  }
   vm.loadFile = function(){
     // Adapted from http://stackoverflow.com/questions/18571001/file-upload-using-angularjs
     // http://jsfiddle.net/f8Hee/1/
     console.log("Loading file.");
+    vm.uploadProgress = 0;
+    vm.fileData = [];
+    vm.clearMessages();
+
     var f = document.getElementById('file').files[0];
+    console.log(document.getElementById('file').files);
     var r = new FileReader();
     r.onprogress = function(e){
       vm.loadProgress = e.loaded/e.total*100;
@@ -139,55 +149,44 @@ function dashboardUserStationsViewCtrl(
       vm.isDataLoaded = true;
       vm.loadProgress = 100;
       $scope.$apply();
+      console.log(vm.fileData);
     }
     r.readAsText(f);
   }
 
-  vm.uploadData = function(){
+  vm.uploadData = () => {
+    console.log("UPLOAD DATA");
     vm.isUploading = true;
-    vm.uploadProgress = 100;
-    var chunkSize = 100;
-    var nData = vm.fileData.length;
-    var i;
-    var chunk = [];
-    for(i = 0; i < Math.floor(nData/chunkSize); i++){
-      chunk = vm.fileData.slice(chunkSize*i, chunkSize*(i+1));
-      sensorDataSvc.uploadData({
-        station: vm.stationId,
-        data: chunk
-      })
-      .success(function(result){
-        //vm.uploadProgress = (nData/(chunkSize*(i+1)))*100;
-      })
-      .error(function(e){
-        vm.uploadError = e.message;
-      })
-    }
-    chunk = vm.fileData.slice(chunkSize*i);
-    console.log("Final chunk size is: "+chunk.length);
-    console.log(chunk);
-    sensorDataSvc.uploadData({
-      station: vm.stationId,
-      data: chunk
-    })
-    .success(function(result){
-      vm.uploadProgress = 100;
-      vm.uploadInfo = "Los datos fueron subidos exitosamente.";
+    vm.clearMessages();
+    vm.fileDataDisplay = [];
+    vm.isDataLoaded = false;
+
+    console.log(vm.fileData.length);
+    Upload.upload({
+      url: '/api/v1/uploadsensordata/' + vm.stationId,
+      data: {
+        file: 'nofile',
+        data: vm.fileData
+      }
+    }).then(function (resp) {
+      //console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+      console.log('Upload successful');
+      console.log(resp.data.message);
       vm.fileDataDisplay = [];
+      vm.fileData = [];
       vm.isDataLoaded = false;
       vm.isUploading = false;
+      vm.uploadInfo = resp.data.message;
       vm.loadStationSummary();
-    })
-    .error(function(e){
-      //vm.uploadError = e.message;
-      vm.uploadProgress = 100;
-      vm.uploadInfo = "Los datos fueron subidos exitosamente.";
-      vm.fileDataDisplay = [];
-      vm.isDataLoaded = false;
+    }, function (resp) {
+      console.log('Error status: ' + resp.status);
       vm.isUploading = false;
-      vm.loadStationSummary();
-      console.log(e);
-    })
+      vm.uploadError = resp.data.message;
+    }, function (evt) {
+      var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+      vm.uploadProgress = progressPercentage;
+      console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+    });
   }
 
   // ========== Date selection code ==========
