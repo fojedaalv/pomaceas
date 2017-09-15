@@ -47,13 +47,27 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-md-3">
-            <a href="/#/dashboard/userstations-variable-summary/{{vm.station._id}}">
+            <a href="/#/dashboard/userstations-bydates/{{vm.station._id}}">
               <div class="panel panel-success">
                 <div class="panel-heading" style="min-height:150px;">
-                  <h3 class="panel-title text-center">Resumen de Variables</h3>
-                  <p class="text-center">Resumen de variables relevantes</p>
+                  <h3 class="panel-title text-center">Variables por Fechas</h3>
+                  <p class="text-center">Consultar variables por rangos de días</p>
                   <h2 class="text-center">
-                    <span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                  </h2>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-3">
+            <a href="/#/dashboard/userstations-monthly/{{vm.station._id}}">
+              <div class="panel panel-success">
+                <div class="panel-heading" style="min-height:150px;">
+                  <h3 class="panel-title text-center">Variables Mensuales</h3>
+                  <p class="text-center">Consultar variables por mes</p>
+                  <h2 class="text-center">
+                    <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
                   </h2>
                 </div>
               </div>
@@ -75,32 +89,24 @@
           </div>
 
           <div class="col-md-3">
-            <a href="/#/dashboard/userstations-monthly/{{vm.station._id}}">
+            <a href="/#/dashboard/userstations-variable-summary/{{vm.station._id}}">
               <div class="panel panel-success">
                 <div class="panel-heading" style="min-height:150px;">
-                  <h3 class="panel-title text-center">Estadísticas Mensuales</h3>
-                  <p class="text-center">Consultar indicadores por mes</p>
+                  <h3 class="panel-title text-center">Resumen de Variables</h3>
+                  <p class="text-center">Resumen de variables relevantes</p>
                   <h2 class="text-center">
-                    <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
                   </h2>
                 </div>
               </div>
             </a>
           </div>
 
-          <div class="col-md-3">
-            <a href="/#/dashboard/userstations-bydates/{{vm.station._id}}">
-              <div class="panel panel-success">
-                <div class="panel-heading" style="min-height:150px;">
-                  <h3 class="panel-title text-center">Estadísticas por Fechas</h3>
-                  <p class="text-center">Consultar indicadores por rangos de días</p>
-                  <h2 class="text-center">
-                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                  </h2>
-                </div>
-              </div>
-            </a>
-          </div>
+
+
+
+
+
 
         <!--
         <div class="row">
