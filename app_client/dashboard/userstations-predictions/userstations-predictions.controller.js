@@ -11,6 +11,7 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
   vm.predictions = {};
   vm.selectedYear = null;
   vm.yearsAvailable = [];
+  vm.predictionsList = [];
 
   vm.isSectorEmpty = () => {
     return Object.keys(vm.selectedSector).length === 0;
@@ -21,6 +22,7 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
     .success(function (data) {
       vm.station = data;
       if(data.sectors.length>0){
+        vm.selectedSectorIndex = 0+"";
         vm.selectedSector = vm.station.sectors[0];
       }
 
@@ -41,6 +43,36 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
       vm.errMessage = "La estación solicitada no se pudo encontrar.";
     });
   }
+
+  $scope.$watch('vm.selectedSectorIndex', () => {
+    if(!angular.equals(vm.selectedSector, {})){
+      vm.selectedSector = vm.station.sectors[vm.selectedSectorIndex];
+
+      switch(vm.selectedSector.cultivar){
+        case 'gala':{
+          vm.predictionsList = [
+            {value:"size", name:"Calibre"},
+            {value:"harvestDate", name:"Maduración"},
+            {value:"color", name:"Color"},
+            {value:"skinAlterations", name:"Alteraciones de la Piel"}
+          ]
+          vm.predictionDisplayed = vm.predictionsList[0].value;
+          break;
+        }
+        case 'fuji':{
+          vm.predictionsList = []
+          break;
+        }
+        case 'cripps_pink':{
+          vm.predictionsList = []
+          break;
+        }
+        default:
+          vm.predictionsList = []
+          break;
+      }
+    }
+  })
 
   $scope.$watchGroup(['vm.selectedSector', 'vm.selectedYear'], (newValues, oldValues, scope) => {
     //alert(JSON.stringify(vm.selectedSector, null, '\t'));

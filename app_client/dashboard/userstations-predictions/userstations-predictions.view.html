@@ -25,9 +25,9 @@
           <form class="form-inline well clearfix">
             <div class="form-group col-md-4">
               <label for="sector" class="control-label">Cuartel</label>
-              <select class="form-control" id="sector" ng-model="vm.selectedSector.name">
-                <option ng-repeat="sector in vm.station.sectors" value="{{sector.name}}">
-                  {{ sector.name }}
+              <select class="form-control" id="sector" ng-model="vm.selectedSectorIndex">
+                <option ng-repeat="sector in vm.station.sectors" value="{{$index}}">
+                  {{ sector.name}}
                 </option>
               </select>
             </div>
@@ -45,8 +45,18 @@
           <hr/>
 
           <div ng-show="vm.selectedSector.cultivar=='gala'">
+            <form class="form-inline well clearfix">
+              <div class="form-group col-md-6">
+                <label for="sector" class="control-label">Seleccione una predicción:</label>
+                <select class="form-control" id="prediction" ng-model="vm.predictionDisplayed">
+                  <option ng-repeat="prediction in vm.predictionsList" value="{{prediction.value}}">
+                    {{ prediction.name }}
+                  </option>
+                </select>
+              </div>
+            </form>
 
-            <div class="panel panel-success">
+            <div class="panel panel-success" ng-if="vm.predictionDisplayed=='size'">
               <div class="panel-heading"><h3>Calibre</h3></div>
               <div class="panel-body">
                 <p>Se realizan estimaciones para el porcentaje de frutos con calibres grandes y el peso medio para los frutos.</p>
@@ -79,7 +89,7 @@
             </div>
 
 
-            <div class="panel panel-success">
+            <div class="panel panel-success" ng-if="vm.predictionDisplayed=='harvestDate'">
               <div class="panel-heading"><h3>Maduración</h3></div>
               <div class="panel-body">
                 <p>Para calcular la maduración se requiere la fecha de floración. Por favor, ingrésela haciendo click en el ícono del calendario y luego presione calcular.</p>
@@ -125,7 +135,7 @@
             </div>
 
 
-            <div class="panel panel-success">
+            <div class="panel panel-success" ng-if="vm.predictionDisplayed=='color'">
               <div class="panel-heading"><h3>Color</h3></div>
               <div class="panel-body">
                 <p>La estimación del potencial de color de los frutos se calcula con relación a la cantidad de horas a temperaturas menores a 10°C que experimenten los frutos durante enero.</p>
@@ -156,7 +166,7 @@
               </div>
             </div>
 
-            <div class="panel panel-success">
+            <div class="panel panel-success" ng-if="vm.predictionDisplayed=='skinAlterations'">
               <div class="panel-heading"><h3>Alteraciones de la Piel</h3></div>
               <div class="panel-body">
                 <p>Durante esta temporada no se presentó lenticelosis, por lo que no se pueden hacer predicciones.</p>
