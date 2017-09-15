@@ -62,6 +62,7 @@ module.exports.dataUpload = function (req, res) {
       return;
     }
     console.log(req.body.data.length);
+    
     if(false){
       // Code to save uploaded data as CSV
       var fs = require('fs');
@@ -88,7 +89,6 @@ module.exports.dataUpload = function (req, res) {
       );
       file.end();
     }
-    /*
     var objects = [];
     req.body.data.forEach(function(row){
       /* Getting variables */
