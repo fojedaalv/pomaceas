@@ -4,7 +4,8 @@ angular.module('PomaceasWebApp')
 function dashboardStationsUploadCtrl(
   stationsSvc,
   sensorDataSvc,
-  $scope
+  $scope,
+  Upload
 ){
   var vm = this;
   vm.errMessage = "";
@@ -36,6 +37,9 @@ function dashboardStationsUploadCtrl(
         vm.minDate = new Date(jsonDate.year, jsonDate.month-1, jsonDate.day);
         jsonDate = vm.stationSummary.datesAvailable[0]._id;
         vm.maxDate = new Date(jsonDate.year, jsonDate.month-1, jsonDate.day);
+
+        vm.startDate = new Date(vm.minDate.getTime());
+        vm.endDate   = new Date(vm.maxDate.getTime());
       }
     })
     .error(function(e){
@@ -51,12 +55,21 @@ function dashboardStationsUploadCtrl(
   vm.isDataLoaded = false;
   vm.loadProgress = 0;
   vm.uploadProgress = 0;
-  vm.isUploading = true;
+  vm.isUploading = false;
+  vm.clearMessages = () => {
+    vm.uploadInfo  = "";
+    vm.uploadError = "";
+  }
   vm.loadFile = function(){
     // Adapted from http://stackoverflow.com/questions/18571001/file-upload-using-angularjs
     // http://jsfiddle.net/f8Hee/1/
     console.log("Loading file.");
+    vm.uploadProgress = 0;
+    vm.fileData = [];
+    vm.clearMessages();
+
     var f = document.getElementById('file').files[0];
+    console.log(document.getElementById('file').files);
     var r = new FileReader();
     r.onprogress = function(e){
       vm.loadProgress = e.loaded/e.total*100;
@@ -116,6 +129,41 @@ function dashboardStationsUploadCtrl(
     r.readAsText(f);
   }
 
+  vm.uploadData = () => {
+    console.log("UPLOAD DATA");
+    vm.isUploading = true;
+    vm.clearMessages();
+    vm.fileDataDisplay = [];
+    vm.isDataLoaded = false;
+
+    console.log(vm.fileData.length);
+    Upload.upload({
+      url: '/api/v1/uploadsensordata/' + vm.stationId,
+      data: {
+        file: 'nofile',
+        data: vm.fileData
+      }
+    }).then(function (resp) {
+      //console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+      console.log('Upload successful');
+      console.log(resp.data.message);
+      vm.fileDataDisplay = [];
+      vm.fileData = [];
+      vm.isDataLoaded = false;
+      vm.isUploading = false;
+      vm.uploadInfo = resp.data.message;
+      vm.loadStationSummary();
+    }, function (resp) {
+      console.log('Error status: ' + resp.status);
+      vm.isUploading = false;
+      vm.uploadError = resp.data.message;
+    }, function (evt) {
+      var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+      vm.uploadProgress = progressPercentage;
+      console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+    });
+  }
+
   // ==================================================
   // ========== Código para Inicializar Datos =========
 
@@ -136,6 +184,48 @@ function dashboardStationsUploadCtrl(
   })
 
   // ==================================================
-  // ====== Código para la Funcionalidad del Mapa =====
+  // ========= Código para seleccionar fechas =========
+  vm.startCalendar = {
+    format: 'dd MMMM yyyy',
+    isOpen: false
+  }
+  vm.endCalendar = {
+    format: 'dd MMMM yyyy',
+    isOpen: false
+  }
+  vm.dateOptions = {
+    formatYear: 'yy',
+    datepickerMode: 'day',
+    minMode:'day',
+    maxMode:'day',
+    initDate: null,
+    maxDate: null,
+    minDate: null,
+    startingDay: 1
+  };
+  vm.openCal1 = function(){
+    vm.startCalendar.isOpen = true;
+  }
+  vm.openCal2 = function(){
+    vm.endCalendar.isOpen = true;
+  }
 
+  // ==================================================
+  // =========== Código para eliminar datos ===========
+  vm.removeSensorData = () => {
+    var initialDate = moment(vm.startDate).format('YYYY-MM-DD');
+    var endingDate = moment(vm.endDate).format('YYYY-MM-DD');
+    var conf = confirm("Se eliminarán datos entre las fechas: "+initialDate+" y "+endingDate+". ¿Está seguro?");
+    if(conf){
+      sensorDataSvc.deleteDataByDate(vm.stationId, initialDate, endingDate)
+      .success(function(data){
+        alert("Datos eliminados con éxito.");
+        vm.loadStationSummary();
+      })
+      .error(function(e){
+        alert("Ha ocurrido un error en la eliminación de los datos de la estación.");
+        console.log(e);
+      })
+    }
+  }
 }

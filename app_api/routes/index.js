@@ -130,7 +130,7 @@ router.get('/querytest',
 router.get('/testreport',
   ctrlReports.generatePDF);
 
-
+router.post('/uploadsensordata/:stationId', ctrlSensorData.dataUpload);
 
 // =================================================
 module.exports = router;

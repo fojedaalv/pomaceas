@@ -5,7 +5,8 @@ angular.module('PomaceasWebApp', [
   'angularMoment',
   'ngSanitize',
   'ngCsv',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'ngFileUpload'
 ]);
 
 function config($routeProvider, $logProvider){
