@@ -1,5 +1,5 @@
-const cultivarTranslate = (APPLE_CULTIVARS) => {
-  var variables = APPLE_CULTIVARS;
+const roleTranslate = (SYSTEM_ROLES) => {
+  var variables = SYSTEM_ROLES;
   return (value) => {
     var element = variables.find((element) => {
       return element.value == value
@@ -10,4 +10,4 @@ const cultivarTranslate = (APPLE_CULTIVARS) => {
 
 angular
 .module('PomaceasWebApp')
-.filter('cultivarTranslate', cultivarTranslate);
+.filter('roleTranslate', roleTranslate);

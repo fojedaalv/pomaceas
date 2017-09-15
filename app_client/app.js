@@ -62,7 +62,7 @@ function config($routeProvider, $logProvider){
       controller: 'dashboardStationsEditCtrl',
       controllerAs: 'vm'
     })
-    .when('/dashboard/stations-upload/', {
+    .when('/dashboard/stations-upload', {
       templateUrl: 'dashboard/stations-upload/stations-upload.view.html',
       controller: 'dashboardStationsUploadCtrl',
       controllerAs: 'vm'
@@ -227,3 +227,10 @@ angular.module('PomaceasWebApp')
   {value:"XI", text:"XI Región de Aysén"},
   {value:"XII", text:"XII Región de Magallanes y Antártica"},
 ]);
+
+angular.module('PomaceasWebApp')
+.constant('SYSTEM_ROLES',
+[
+  {value:"administrator", text:"Administrador"},
+  {value:"user", text:"Usuario Suscrito"}
+])
