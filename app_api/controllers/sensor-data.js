@@ -62,30 +62,33 @@ module.exports.dataUpload = function (req, res) {
       return;
     }
     console.log(req.body.data.length);
-
-    var fs = require('fs');
-    var file = fs.createWriteStream('uploadedData.csv');
-    file.on('error', function(err) {
-      console.log(err);
-    });
-    req.body.data.forEach(
-      function(v) {
-        var a = [
-          v['0'],
-          v['1'],
-          v['2'],
-          v['3'],
-          v['4'],
-          v['5'],
-          v['6'],
-          v['7'],
-          v['8'],
-          v['9']
-        ]
-        file.write(a.join(', ') + '\n');
-      }
-    );
-    file.end();
+    if(false){
+      // Code to save uploaded data as CSV
+      var fs = require('fs');
+      var file = fs.createWriteStream('uploadedData.csv');
+      file.on('error', function(err) {
+        console.log(err);
+      });
+      req.body.data.forEach(
+        function(v) {
+          var a = [
+            v['0'],
+            v['1'],
+            v['2'],
+            v['3'],
+            v['4'],
+            v['5'],
+            v['6'],
+            v['7'],
+            v['8'],
+            v['9']
+          ]
+          file.write(a.join(', ') + '\n');
+        }
+      );
+      file.end();
+    }
+    /*
     var objects = [];
     req.body.data.forEach(function(row){
       /* Getting variables */
