@@ -14,5 +14,4 @@ var summarySchema = new mongoose.Schema({
   timestamps: true
 });
 
-summarySchema.index({ location: '2dsphere' });
 mongoose.model('Summary', summarySchema);

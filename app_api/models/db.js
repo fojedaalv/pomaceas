@@ -48,3 +48,4 @@ require('./stations');
 require('./sensor-data');
 require('./password-requests');
 require('./summaries');
+require('./comments');

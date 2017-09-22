@@ -9,7 +9,8 @@ function dashboardUserStationsVariableSummaryCtrl(  usersSvc,
   summariesSvc,
   $scope,
   sensorDataSvc,
-  stationsSvc
+  stationsSvc,
+  commentsSvc
 ){
   var vm = this;
   vm.errMessage = "";
@@ -190,5 +191,23 @@ function dashboardUserStationsVariableSummaryCtrl(  usersSvc,
       header: tableHeader,
       rows: tableRows
     }
+  }
+
+  $scope.$watch('vm.summary', () => {
+    if(vm.summary){
+      vm.getComment();
+    }
+  })
+
+  vm.comment = "";
+  vm.getComment = () => {
+    commentsSvc.getComment(vm.stationId, vm.summary.id)
+    .success((data) => {
+      //alert(JSON.stringify(data));
+      vm.comment = data.comment.comment;
+    })
+    .error((e)=>{
+      console.log(e);
+    })
   }
 }

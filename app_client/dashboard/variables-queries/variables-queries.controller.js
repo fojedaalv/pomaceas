@@ -10,7 +10,8 @@ function variablesQueriesCtrl(
     summariesSvc,
     $scope,
     sensorDataSvc,
-    stationsSvc
+    stationsSvc,
+    commentsSvc
   ){
   var vm = this;
   vm.errMessage = "";
@@ -52,7 +53,6 @@ function variablesQueriesCtrl(
   vm.getSummariesList();
 
   $scope.$watch('vm.stationId', () => {
-    console.log(vm.stationId);
     if(vm.stationId != null){
       vm.getStationSummary();
     }
@@ -207,5 +207,82 @@ function variablesQueriesCtrl(
       header: tableHeader,
       rows: tableRows
     }
+  }
+
+
+  vm.comment = "";
+  vm.commentId = null;
+  vm.hasComment = false;
+  $scope.$watchGroup(['vm.selectedSummary', 'vm.stationId'], () => {
+    if(vm.selectedSummary && vm.stationId){
+      vm.getCommentData();
+    }
+  })
+
+  vm.getCommentData = () => {
+    commentsSvc.getComment(vm.stationId, vm.selectedSummary)
+    .success((data) => {
+      if(data.comment){
+        console.log(data);
+        vm.comment = data.comment.comment;
+        vm.commentId = data.comment._id;
+        vm.hasComment = true;
+      }else{
+        vm.comment = "";
+        vm.commentId = null;
+        vm.hasComment = false;
+      }
+    })
+    .error((e) => {
+      console.log(e);
+    })
+  }
+
+  vm.saveComment = () => {
+    if(vm.comment==""){
+      alert("No se puede guardar un comentario vacío.");
+    }else{
+      //DO SAVE
+      var commentData = {
+        comment: vm.comment,
+        stationId: vm.stationId,
+        summaryId: vm.selectedSummary
+      }
+      commentsSvc.createComment(commentData)
+      .success((data) => {
+        vm.getCommentData();
+      })
+      .error((e) => {
+        alert("Comentario creado.");
+        console.log(e);
+      })
+    }
+  }
+
+  vm.deleteComment = () => {
+    var conf = confirm("¿Deseas eliminar el comentario técnico?");
+    if(conf){
+      commentsSvc.deleteComment(vm.commentId)
+      .success((data) => {
+        alert("Comentario eliminado exitosamente.");
+        vm.getCommentData();
+      })
+      .error((e) => {
+        alert("Ocurrió un error al eliminar el comentario.");
+        console.log(e);
+      })
+    }
+  }
+
+  vm.updateComment = () => {
+    commentsSvc.updateComment(vm.commentId, vm.comment)
+    .success((data) => {
+      alert("Comentario actualizado exitosamente.");
+      vm.getCommentData();
+    })
+    .error((e) => {
+      alert("Ocurrió un error al actualizar el comentario.");
+      console.log(e);
+    })
   }
 }

@@ -6,12 +6,13 @@ var auth = jwt({
   userProperty: 'payload'
 });
 
-var ctrlAuth = require('../controllers/authentication');
-var ctrlUsers = require('../controllers/users');
-var ctrlStations = require('../controllers/stations');
+var ctrlAuth       = require('../controllers/authentication');
+var ctrlUsers      = require('../controllers/users');
+var ctrlStations   = require('../controllers/stations');
 var ctrlSensorData = require('../controllers/sensor-data');
-var ctrlReports = require('../controllers/reports');
-var ctrlSummaries = require('../controllers/summaries');
+var ctrlReports    = require('../controllers/reports');
+var ctrlSummaries  = require('../controllers/summaries');
+var ctrlComments   = require('../controllers/comments');
 
 // ========== Authentication Endpoints =============
 
@@ -122,6 +123,23 @@ router.delete('/summaries/:summaryId',
   auth,
   ctrlAuth.roleAuthorization(['administrator']),
   ctrlSummaries.deleteSummary);
+
+// ================= Comments Endpoints ================
+router.get('/comments',
+  auth,
+  ctrlComments.getComment);
+router.post('/comments',
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlComments.createComment);
+router.patch('/comments/:id',
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlComments.updateComment);
+router.delete('/comments/:id',
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlComments.deleteComment);
 
 
 // ================= Test Endpoints ================

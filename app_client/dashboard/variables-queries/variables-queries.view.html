@@ -49,10 +49,31 @@
                 <td class="col-md-2">{{ row[0] }}</td>
                 <td class="col-md-2">{{ row[1] | variableTranslate }}</td>
                 <td class="col-md-2">{{ row[2] }}</td>
-                <td ng-repeat="item in row.slice(3)">{{ (item | number:0) }}</td>
+                <td ng-repeat="item in row.slice(3) track by $index">{{ (item | number:0) }}</td>
               </tr>
             </tbody>
           </table>
+
+
+          <h3>Comentario Técnico</h3>
+          <form>
+            <div class="form-group">
+              <label for="comment">Comentario:</label>
+              <textarea class="form-control" rows="5" id="comment" ng-model="vm.comment"></textarea>
+            </div>
+          </form>
+          <button class="btn btn-primary" type="button" ng-click="vm.saveComment()" ng-if="!vm.hasComment">
+            <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+            Guardar Comentario
+          </button>
+          <button class="btn btn-warning" type="button" ng-click="vm.updateComment()" ng-if="vm.hasComment">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            Actualizar Comentario
+          </button>
+          <button class="btn btn-danger" type="button" ng-click="vm.deleteComment()" ng-if="vm.hasComment">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            Eliminar Comentario
+          </button>
         </div>
       </div>
     </div>

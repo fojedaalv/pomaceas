@@ -44,10 +44,17 @@
                 <td class="col-md-2">{{ row[0] }}</td>
                 <td class="col-md-2">{{ row[1] | variableTranslate }}</td>
                 <td class="col-md-2">{{ row[2] }}</td>
-                <td ng-repeat="item in row.slice(3)">{{ (item | number:0) }}</td>
+                <td ng-repeat="item in row.slice(3) track by $index">{{ (item | number:0) }}</td>
               </tr>
             </tbody>
           </table>
+
+          <span ng-if="vm.comment">
+            <div class="panel panel-default">
+              <div class="panel-heading"><h3>Comentario Técnico</h3></div>
+              <div class="panel-body">{{vm.comment}}</div>
+            </div>
+          </span>
         </div>
       </div>
     </div>
