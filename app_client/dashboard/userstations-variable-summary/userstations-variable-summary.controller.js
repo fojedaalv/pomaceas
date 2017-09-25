@@ -79,7 +79,12 @@ function dashboardUserStationsVariableSummaryCtrl(  usersSvc,
 
   $scope.$watch('vm.selectedSummary', () => {
     if(vm.selectedSummary != null && vm.stationSummary != null){
-      vm.summary = vm.summaries.find((summ) => { return summ._id === vm.selectedSummary });
+      var tempSummary = vm.summaries.find((summ) => { return summ._id === vm.selectedSummary });
+      vm.summary = {
+        id: tempSummary._id,
+        name: tempSummary.name,
+        variables: tempSummary.variables
+      }
       vm.processSummary();
     }
   })
