@@ -206,9 +206,11 @@ function dashboardUserStationsVariableSummaryCtrl(  usersSvc,
 
   vm.comment = "";
   vm.getComment = () => {
+    vm.comment = "";
     commentsSvc.getComment(vm.stationId, vm.summary.id)
     .success((data) => {
       //alert(JSON.stringify(data));
+
       vm.comment = data.comment.comment;
     })
     .error((e)=>{
