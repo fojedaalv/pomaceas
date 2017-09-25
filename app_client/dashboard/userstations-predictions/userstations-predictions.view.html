@@ -7,17 +7,17 @@
       <div class="panel-heading">
         <h3 class="panel-title">
           <button class="btn btn-default btn-xs" back-button><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Volver</button>
-          Predicciones para la estación <strong>{{ vm.station.name }}</strong>
+          Estimaciones para la estación <strong>{{ vm.station.name }}</strong>
         </h3>
       </div>
       <div class="panel-body">
-        <h1>Sistema de predicciones</h1>
+        <h1>Sistema de Estimaciones</h1>
         <div ng-if="vm.isSectorEmpty()">
           <p>Aún no se ha registrado un cuartel para la estación.</p>
           <p>Se debe registrar al menos un cuartel por estación con su variedad de cultivar correspondiente para efectuar las predicciones.</p>
         </div>
         <div ng-if="!vm.stationSummary.lastReading">
-          La estación no tiene datos para hacer predicciones. Se deben subir datos a la estación para poder efectuar cálculos.
+          La estación no tiene datos para hacer estimaciones. Se deben subir datos a la estación para poder efectuar cálculos.
         </div>
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
         <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
@@ -47,7 +47,7 @@
           <div ng-show="vm.selectedSector.cultivar=='gala'">
             <form class="form-inline well clearfix">
               <div class="form-group col-md-6">
-                <label for="sector" class="control-label">Seleccione una predicción:</label>
+                <label for="sector" class="control-label">Seleccione una estimación:</label>
                 <select class="form-control" id="prediction" ng-model="vm.predictionDisplayed">
                   <option ng-repeat="prediction in vm.predictionsList" value="{{prediction.value}}">
                     {{ prediction.name }}
@@ -138,7 +138,7 @@
             <div class="panel panel-success" ng-if="vm.predictionDisplayed=='color'">
               <div class="panel-heading"><h3>Color</h3></div>
               <div class="panel-body">
-                <p>La estimación del potencial de color de los frutos se calcula con relación a la cantidad de horas a temperaturas menores a 10°C que experimenten los frutos durante enero.</p>
+                <p>La estimación del potencial de color de los frutos se calcula durante el mes previo a la cosecha.</p>
                 <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.colorPotential.potential!='no-data'">
                   <thead>
                     <td class="col-md-4 success">Potencial</td>

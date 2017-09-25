@@ -12,7 +12,7 @@ function dashboardUserStationsByDatesCtrl(stationsSvc, $routeParams, $scope, sen
     {name:"Temperatura", value:"temperature"},
     {name:"Humedad Relativa", value:"humidity"},
     {name:"Estrés", value:"stress"},
-    {name:"Grados Día", value:"gd"},
+    {name:"Acumulación Térmica", value:"gd"},
     {name:"Días de Frío", value:"cold"},
     {name:"Heladas / Bajo 0°", value:"freeze"},
     {name:"Horas a diferentes T° umbral", value:"tempThres"},
