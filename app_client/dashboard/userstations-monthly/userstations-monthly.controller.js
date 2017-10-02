@@ -3,6 +3,9 @@ angular.module('PomaceasWebApp')
 
 function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sensorDataSvc, moment){
   var vm = this;
+
+  var chileanFormatters = d3.locale({ "decimal": ",", "thousands": ".", "grouping": [3], "currency": ["$", ""], "dateTime": "%a %b %e %X %Y", "date": "%d.%m.%Y", "time": "%H:%M:%S", "periods": ["AM", "PM"], "days": ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"], "shortDays": ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], "months": ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"], "shortMonths": ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"] });
+
   vm.station = {};
   vm.stationId = $routeParams.stationId;
   vm.errMessage = "";
@@ -493,7 +496,19 @@ function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sen
 
   vm.options = {
     series: [],
-    axes: {x: {key: "date", type: "date"}}
+    axes: {
+      x: {
+        key: "date",
+        type: "date",
+        tickFormat: chileanFormatters.timeFormat('%B')
+      },
+      y: {
+        type: "linear",
+        tickFormat: function(value, index) {
+          return parseFloat(value).toFixed(2);
+        }
+      }
+    },
   };
 
 

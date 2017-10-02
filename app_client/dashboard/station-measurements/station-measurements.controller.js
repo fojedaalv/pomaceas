@@ -359,6 +359,12 @@ function dashboardStationMeasurementsCtrl(stationsSvc, $routeParams, $scope, sen
         key: "date",
         type: "date",
         tickFormat: es_CL_Locales.timeFormat('%b-%d')
+      },
+      y: {
+        type: "linear",
+        tickFormat: function(value, index) {
+          return parseFloat(value).toFixed(2);
+        }
       }
     }
   };
@@ -370,6 +376,12 @@ function dashboardStationMeasurementsCtrl(stationsSvc, $routeParams, $scope, sen
         key: "date",
         type: "date",
         tickFormat: es_CL_Locales.timeFormat('%H:%M')
+      },
+      y: {
+        type: "linear",
+        tickFormat: function(value, index) {
+          return parseFloat(value).toFixed(2);
+        }
       }
     }
   };
