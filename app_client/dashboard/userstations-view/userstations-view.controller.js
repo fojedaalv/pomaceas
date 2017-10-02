@@ -100,6 +100,12 @@ function dashboardUserStationsViewCtrl(
       vm.loadProgress = e.loaded/e.total*100;
     }
 
+    toIsoDate = (date, time) => {
+      var spl = date.split("-");
+      if(time.split(":")[0].length==1) time = "0"+time;
+      return spl[2] + "-" + spl[1] + "-" + spl[0] + " " + time;
+    }
+
     r.onloadend = function(e){
       /*
       var data = e.target.result.split("\n").slice(2);
@@ -112,6 +118,7 @@ function dashboardUserStationsViewCtrl(
         var datum = [];
         var lineData = lines[line].split("\t");
         // Default file has 33 columns
+        if(lineData.length==1) continue;
         if(lineData.length==33){
           datum = [];
           // Fix date length
@@ -135,7 +142,7 @@ function dashboardUserStationsViewCtrl(
           datum = lineData;
         }
         if(datum.indexOf('---') > -1){
-          //alert("Este dato está pifiao: " + datum);
+          // Este dato tiene errores. Se copia el registro anterior.
           var lastDatum = vm.fileData[vm.fileData.length-1];
           for(var i=2; i < datum.length; i++){
             datum[i]=lastDatum[i];
@@ -145,11 +152,72 @@ function dashboardUserStationsViewCtrl(
           vm.fileData.push(datum);
         }
       }
-      vm.fileDataDisplay = vm.fileData.slice(0,100);
+
+      // FIX MISSING DATA
+      console.log("Revisando datos faltantes");
+      var purifiedData = [];
+
+      var dateString = toIsoDate(vm.fileData[0][0], vm.fileData[0][1]);
+      var expectedDate = moment.utc(dateString);
+      var i = 0;
+      var failures = 0;
+      var maxFailures = 0;
+      var missingDates = [];
+      for(var i = 0; i<vm.fileData.length; i++){
+        var tempDate = moment.utc(toIsoDate(vm.fileData[i][0], vm.fileData[i][1]));
+        while(!tempDate.isSame(expectedDate)){
+          purifiedData.push([
+            expectedDate.format('DD-MM-YY'),
+            expectedDate.format('HH-mm'),
+            vm.fileData[i-1][2],
+            vm.fileData[i-1][3],
+            vm.fileData[i-1][4],
+            vm.fileData[i-1][5],
+            vm.fileData[i-1][6],
+            vm.fileData[i-1][7],
+            vm.fileData[i-1][8],
+            vm.fileData[i-1][9]
+          ])
+          missingDates.push(expectedDate.toDate());
+          failures += 1;
+          expectedDate.add(15, 'minutes');
+        }
+
+        purifiedData.push([
+          expectedDate.format('DD-MM-YY'),
+          expectedDate.format('HH-mm'),
+          vm.fileData[i][2],
+          vm.fileData[i][3],
+          vm.fileData[i][4],
+          vm.fileData[i][5],
+          vm.fileData[i][6],
+          vm.fileData[i][7],
+          vm.fileData[i][8],
+          vm.fileData[i][9]
+        ])
+        //if(failures>0) console.log("Failures: " + failures);
+        if(failures>maxFailures) maxFailures = failures;
+        failures = 0;
+        expectedDate.add(15, 'minutes');
+      }
+      var dataFixingReport = {
+        accept: (maxFailures < 8),
+        maxFailures: maxFailures,
+        missingDates: missingDates,
+        originalNData: vm.fileData.length,
+        fixedNData: purifiedData.length
+      }
+      console.log(dataFixingReport);
+      vm.dataFixingReport = dataFixingReport;
+      vm.fileData = purifiedData;
+      console.log("Fin de revisión de datos faltantes");
+      // END FIX MISSING DATA
+
+      vm.fileDataDisplay = vm.fileData.slice(0,10);
       vm.isDataLoaded = true;
       vm.loadProgress = 100;
       $scope.$apply();
-      console.log(vm.fileData);
+      //console.log(vm.fileData);
     }
     r.readAsText(f);
   }
