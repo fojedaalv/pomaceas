@@ -45,6 +45,7 @@
           <hr/>
 
           <div ng-show="vm.selectedSector.cultivar=='gala'">
+            <!--
             <form class="form-inline well clearfix">
               <div class="form-group col-md-6">
                 <label for="sector" class="control-label">Seleccione una estimación:</label>
@@ -55,8 +56,9 @@
                 </select>
               </div>
             </form>
+            -->
 
-            <div class="panel panel-success" ng-if="vm.predictionDisplayed=='size'">
+            <div class="panel panel-success">
               <div class="panel-heading"><h3>Calibre</h3></div>
               <div class="panel-body">
                 <p>Se realizan estimaciones para el porcentaje de frutos con calibres grandes y el peso medio para los frutos.</p>
@@ -89,7 +91,7 @@
             </div>
 
 
-            <div class="panel panel-success" ng-if="vm.predictionDisplayed=='harvestDate'">
+            <div class="panel panel-success">
               <div class="panel-heading"><h3>Maduración</h3></div>
               <div class="panel-body">
                 <p>Para calcular la maduración se requiere la fecha de floración. Por favor, ingrésela haciendo click en el ícono del calendario y luego presione calcular.</p>
@@ -135,7 +137,7 @@
             </div>
 
 
-            <div class="panel panel-success" ng-if="vm.predictionDisplayed=='color'">
+            <div class="panel panel-success">
               <div class="panel-heading"><h3>Color</h3></div>
               <div class="panel-body">
                 <p>La estimación del potencial de color de los frutos se calcula durante el mes previo a la cosecha.</p>
@@ -166,7 +168,7 @@
               </div>
             </div>
 
-            <div class="panel panel-success" ng-if="vm.predictionDisplayed=='skinAlterations'">
+            <div class="panel panel-success">
               <div class="panel-heading"><h3>Alteraciones de la Piel</h3></div>
               <div class="panel-body">
                 <p>Este modelo está en revisión, por lo tanto aún no se pueden hacer estimaciones.</p>
