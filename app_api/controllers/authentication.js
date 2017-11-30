@@ -79,6 +79,12 @@ exports.roleAuthorization = function(roles){
         res.status(422).json({message: 'Usuario no encontrado.'});
         return next(err);
       }
+      if(foundUser==null){
+        sendJSONresponse(res, 401, {
+          message: 'No tienes autorización para ver este contenido.'
+        });
+        return next('Unauthorized');
+      }
 
       if(roles.indexOf(foundUser.role) > -1){
         return next();

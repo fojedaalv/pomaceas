@@ -1,0 +1,121 @@
+<div class="app-container container-fluid">
+<div class="row">
+  <dashboard-navigation></dashboard-navigation>
+
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <button class="btn btn-default btn-xs" back-button>< Volver</button>
+          Reparación de Datos Dañados</strong>
+        </h3>
+      </div>
+      <div class="panel-body">
+        Este es el componente para reparar archivos con datos dañados:<br/>
+          <input id="file" class="btn btn-default" type="file">
+          <button class="btn btn-success" ng-click="vm.loadFile()">Cargar archivo</button>
+          <div ng-if="vm.isLoading">
+            Cargando...
+          </div>
+          <div ng-if="vm.fileData && !vm.isLoading">
+            <h2>Errores del Archivo</h2>
+            <p>Este archivo presenta {{ vm.fieldsWithErrors.length }} errores.</p>
+            <span ng-if="vm.fieldsWithErrors.length>0">Los errores están en las filas:<br/>
+              <a
+                class="badge"
+                ng-repeat="e in vm.fieldsWithErrors"
+                ng-click="vm.setPage((e/vm.pageSize | floor) + 1)">
+                {{e}}
+              </a><br/>
+              (Hacer click en el número de fila lo llevará a la página del error correspondiente)<br/>
+            </span>
+            <a href ng-click="vm.updateErrors()">Actualizar</a>
+            <h2>Datos del Archivo</h2>
+            <ul
+              uib-pagination
+              boundary-links="true"
+              total-items="vm.totalItems"
+              ng-model="vm.currentPage"
+              boundary-link-numbers="true"
+              max-size="8"
+              items-per-page="vm.pageSize"
+              previous-text="Anterior"
+              next-text="Siguiente"
+              first-text="Inicio"
+              last-text="Último"
+              ng-change="vm.pageChanged()">
+            </ul>
+
+            <div ng-if="vm.displayData">
+              <table class="table table-condensed table-striped">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Temp Out</th>
+                    <th>Hi Temp</th>
+                    <th>Low Temp</th>
+                    <th>Out Hum</th>
+                    <th>Wind Speed</th>
+                    <th>Rain</th>
+                    <th>Solar Rad.</th>
+                    <th>ET</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    ng-repeat = "d in vm.displayData track by $index"
+                    ng-class  = "{danger:vm.fieldsWithErrors.indexOf($index + (vm.currentPage-1)*vm.pageSize)>=0}">
+                    <td>
+                      {{($index + 1) + (vm.currentPage-1)*vm.pageSize}}
+                    </td>
+                    <td
+                      ng-repeat ="field in d track by $index"
+                      ng-class  ="{danger:field=='---'}">
+                      <span
+                        ng-if="vm.fieldsWithErrors.indexOf($parent.$index + (vm.currentPage-1)*vm.pageSize)<0 || $index < 2">
+                        {{field}}
+                      </span>
+                      <input
+                        type="text"
+                        class="form-control input-xs"
+                        ng-model="vm.fileData[(vm.currentPage-1)*vm.pageSize + $parent.$parent.$index][$index]"
+                        ng-if="vm.fieldsWithErrors.indexOf($parent.$index + (vm.currentPage-1)*vm.pageSize)>=0 && $index >= 2">
+                        <!--vm.fileData[((vm.currentPage-1)*vm.pageSize + $parent.$index)][$index]-->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <ul
+              uib-pagination
+              boundary-links="true"
+              total-items="vm.totalItems"
+              ng-model="vm.currentPage"
+              boundary-link-numbers="true"
+              max-size="8"
+              items-per-page="vm.pageSize"
+              previous-text="Anterior"
+              next-text="Siguiente"
+              first-text="Inicio"
+              last-text="Último"
+              ng-change="vm.pageChanged()">
+            </ul>
+
+            <button class="btn btn-block btn-success"
+              type="button"
+              ng-csv="vm.getDataInArray()"
+              add-bom="true"
+              csv-header="vm.getFileHeaders()"
+              filename="{{vm.getFileName()}}"
+              field-separator="{{vm.getFileSeparator()}}">
+              Exportar datos a CSV
+            </button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

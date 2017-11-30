@@ -122,6 +122,11 @@ function config($routeProvider, $logProvider){
       controller: 'dashboardUserEditCtrl',
       controllerAs: 'vm'
     })
+    .when('/dashboard/data-repair', {
+      templateUrl: 'dashboard/data-repair/data-repair.view.html',
+      controller: 'dataRepairCtrl',
+      controllerAs: 'vm'
+    })
     .when('/stations-public', {
       templateUrl: 'stations-public/stations-public.view.html',
       controller: 'stationsPublicCtrl',
@@ -234,3 +239,9 @@ angular.module('PomaceasWebApp')
   {value:"administrator", text:"Administrador"},
   {value:"user", text:"Usuario Suscrito"}
 ])
+
+angular.module('PomaceasWebApp').filter('floor', function(){
+  return function(n){
+    return Math.floor(n);
+  };
+});
