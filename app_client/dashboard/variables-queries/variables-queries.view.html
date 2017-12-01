@@ -11,70 +11,77 @@
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
         <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
 
-        <form class="form-inline well clearfix">
-          <div class="form-group col-md-4">
-            <label for="station" class="control-label">Estación</label><br/>
-            <select class="form-control" id="station" ng-model="vm.stationId">
-              <option ng-repeat="stat in vm.stations" value="{{ stat._id }}">
-                {{ stat.name }}, {{ stat.city}}, {{ stat.region }} Región
-              </option>
-            </select>
-          </div>
-          <div class="form-group col-md-4">
-            <label for="summary" class="control-label">Resumen de Variables</label><br/>
-            <select class="form-control" id="summary" ng-model="vm.selectedSummary">
-              <option ng-repeat="summ in vm.summaries" value="{{ summ._id }}">
-                {{ summ.name }}
-              </option>
-            </select>
-          </div>
-        </form>
-        <hr/>
-
-        <div ng-if="vm.hasData == false">
-          <p>No existen datos para la estación seleccionada</p>
-        </div>
-
-
-        <div ng-if="vm.table && vm.hasData">
-          <p>Existen datos diponibles desde: {{ vm.minDate | amDateFormat:'DD [de] MMMM [de] YYYY' }} hasta: {{ vm.maxDate | amDateFormat:'DD [de] MMMM [de] YYYY' }}</p>
-          <table class="table table-stripped table-hover table-bordered">
-            <thead>
-              <tr>
-                <th ng-repeat="head in vm.table.header">{{ head }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="row in vm.table.rows">
-                <td class="col-md-2">{{ row[0] }}</td>
-                <td class="col-md-2">{{ row[1] | variableTranslate }}</td>
-                <td class="col-md-2">{{ row[2] }}</td>
-                <td ng-repeat="item in row.slice(3) track by $index">{{ (item | number:0) }}</td>
-              </tr>
-            </tbody>
-          </table>
-
-
-          <h3>Comentario Técnico</h3>
-          <form>
-            <div class="form-group">
-              <label for="comment">Comentario:</label>
-              <textarea class="form-control" rows="5" id="comment" ng-model="vm.comment"></textarea>
+        <span ng-if="vm.summaries">
+          <form class="form-inline well clearfix">
+            <div class="form-group col-md-4">
+              <label for="station" class="control-label">Estación</label><br/>
+              <select class="form-control" id="station" ng-model="vm.stationId">
+                <option ng-repeat="stat in vm.stations" value="{{ stat._id }}">
+                  {{ stat.name }}, {{ stat.city}}, {{ stat.region }} Región
+                </option>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="summary" class="control-label">Resumen de Variables</label><br/>
+              <select class="form-control" id="summary" ng-model="vm.selectedSummary">
+                <option ng-repeat="summ in vm.summaries" value="{{ summ._id }}">
+                  {{ summ.name }}
+                </option>
+              </select>
             </div>
           </form>
-          <button class="btn btn-primary" type="button" ng-click="vm.saveComment()" ng-if="!vm.hasComment">
-            <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-            Guardar Comentario
-          </button>
-          <button class="btn btn-warning" type="button" ng-click="vm.updateComment()" ng-if="vm.hasComment">
-            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-            Actualizar Comentario
-          </button>
-          <button class="btn btn-danger" type="button" ng-click="vm.deleteComment()" ng-if="vm.hasComment">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            Eliminar Comentario
-          </button>
-        </div>
+          <hr/>
+
+          <div ng-if="vm.hasData == false">
+            <p>No existen datos para la estación seleccionada</p>
+          </div>
+
+
+          <div ng-if="vm.table && vm.hasData">
+            <p>Existen datos diponibles desde: {{ vm.minDate | amDateFormat:'DD [de] MMMM [de] YYYY' }} hasta: {{ vm.maxDate | amDateFormat:'DD [de] MMMM [de] YYYY' }}</p>
+            <table class="table table-stripped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th ng-repeat="head in vm.table.header">{{ head }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="row in vm.table.rows">
+                  <td class="col-md-2">{{ row[0] }}</td>
+                  <td class="col-md-2">{{ row[1] | variableTranslate }}</td>
+                  <td class="col-md-2">{{ row[2] }}</td>
+                  <td ng-repeat="item in row.slice(3) track by $index">{{ (item | number:0) }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+
+            <h3>Comentario Técnico</h3>
+            <form>
+              <div class="form-group">
+                <label for="comment">Comentario:</label>
+                <textarea class="form-control" rows="5" id="comment" ng-model="vm.comment"></textarea>
+              </div>
+            </form>
+            <button class="btn btn-primary" type="button" ng-click="vm.saveComment()" ng-if="!vm.hasComment">
+              <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+              Guardar Comentario
+            </button>
+            <button class="btn btn-warning" type="button" ng-click="vm.updateComment()" ng-if="vm.hasComment">
+              <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+              Actualizar Comentario
+            </button>
+            <button class="btn btn-danger" type="button" ng-click="vm.deleteComment()" ng-if="vm.hasComment">
+              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+              Eliminar Comentario
+            </button>
+          </div>
+        </span>
+
+        <span ng-if="vm.summaries.length==0">
+          No hay resúmenes cargados. Cargue un resumen <a href="/#/dashboard/variables-summary/">aquí</a>.
+        </span>
+
       </div>
     </div>
   </div>
