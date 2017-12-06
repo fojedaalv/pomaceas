@@ -11,7 +11,7 @@
         </h3>
       </div>
       <div class="panel-body">
-        Este es el componente para reparar archivos con datos dañados:<br/>
+        Ingrese el archivo a reparar:<br/>
           <input id="file" class="btn btn-default" type="file">
           <button class="btn btn-success" ng-click="vm.loadFile()">Cargar archivo</button>
           <div ng-if="vm.isLoading">
@@ -20,16 +20,34 @@
           <div ng-if="vm.fileData && !vm.isLoading">
             <h2>Errores del Archivo</h2>
             <p>Este archivo presenta {{ vm.fieldsWithErrors.length }} errores.</p>
-            <span ng-if="vm.fieldsWithErrors.length>0">Los errores están en las filas:<br/>
-              <a
-                class="badge"
-                ng-repeat="e in vm.fieldsWithErrors"
-                ng-click="vm.setPage((e/vm.pageSize | floor) + 1)">
-                {{e}}
-              </a><br/>
-              (Hacer click en el número de fila lo llevará a la página del error correspondiente)<br/>
+            <div class="panel panel-danger" ng-if="vm.fieldsWithErrors.length>0">
+              <div class="panel-body">
+                <span ng-if="vm.fieldsWithErrors.length>0">Filas con errores:<br/>
+                  <a
+                    class="badge"
+                    style="background-color:red;"
+                    ng-repeat="e in vm.fieldsWithErrors"
+                    ng-click="vm.setPage((e/vm.pageSize | floor) + 1)">
+                    {{e}}
+                  </a><br/>
+                  (Hacer click en el número de fila lo llevará a la página del error correspondiente)<br/>
+                </span>
+                <a href ng-click="vm.updateErrors()">Actualizar</a>
+              </div>
+            </div>
+
+
+            <span ng-if="vm.fieldsWithErrors.length>0">
+              <h2>Subir un archivo de reparación</h2>
+              <input id="repairfile" class="btn btn-default" type="file">
+              <button class="btn btn-success" ng-click="vm.loadRepairFile()">Cargar archivo</button>
             </span>
-            <a href ng-click="vm.updateErrors()">Actualizar</a>
+            <span ng-if="vm.repairCandidates.length>0">
+              <p>Hay {{ vm.repairCandidates.length }} filas que pueden ser añadidas al archivo original para corregirlo.</p>
+              <a href ng-click="vm.applyCorrectionsFromFile()">Corregir</a>
+            </span>
+
+
             <h2>Datos del Archivo</h2>
             <ul
               uib-pagination
