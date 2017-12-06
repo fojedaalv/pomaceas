@@ -178,11 +178,6 @@ function dataRepairCtrl(
       var i = 0;
       for(var i = 0; i<vm.fileData.length; i++){
         let tempDate = moment.utc(toIsoDate(vm.fileData[i][0], vm.fileData[i][1]));
-        /*
-        console.log("Testing.");
-        console.log(tempDate);
-        console.log(expectedDate);
-        console.log(tempDate.isSame(expectedDate));*/
         while(!tempDate.isSame(expectedDate)){
           // La fecha siguiente no es la esperada (faltan fechas)
           completeData.push([
@@ -244,7 +239,8 @@ function dataRepairCtrl(
   vm.loadRepairFile = () => {
     console.log("Loading repair file.");
     vm.repairLoadProgress = 0;
-    vm.repairFileData = [];
+    vm.repairFileData   = [];
+    vm.repairCandidates = [];
     var f = document.getElementById('repairfile').files[0];
 
     var r = new FileReader();
@@ -253,68 +249,24 @@ function dataRepairCtrl(
     }
 
     r.onloadend = function(e){
-      var lines = e.target.result.split("\n").slice(1);
-      let fileData = [];
-      for(var line = 0; line < lines.length; line++){
-        var datum = [];
-        var lineData = lines[line].split("\t");
-        if(lineData.length==1){
-          // Si los datos provienen de un archivo procesado,
-          // tendrán comas en vez de tabulaciones
-          lineData = lines[line].split(",");
+      let fileData = parseData(e.target.result);
+
+      // la función parseData entrega las fechas en formato DD-MM-YYYY para usarlas
+      // en moment.js. En vm.fileData se guardan en formato DD-MM-YY, así que deben
+      // ajustarse eliminando los dos primeros caracteres del año.
+      for(var i = 0; i < fileData.length; i++){
+        var tempDate = fileData[i][0].split("-");
+        if(tempDate[2].length==4){
+          fileData[i][0] = tempDate[0]+"-"+tempDate[1]+"-"+tempDate[2].substr(2,3);
         }
-        if(lineData.length==1) continue;
-        if(lineData.length == 33 || lineData.length == 10){
-          datum = [];
-          // Fix date length
-          var tempDate = lineData[0].split("-");
-          if(tempDate[2].length==4){
-            lineData[0] = tempDate[0]+"-"+tempDate[1]+"-20"+tempDate[2];
-          }
-
-          // Se construye el dato desde los campos correspondientes
-          // Si el archivo es un original viene de la estación, se obtienen
-          // los campos de acuerdo a las 33 columnas de los datos.
-          // Si el archivo ya fue procesado, se asume que cuenta con las 10
-          // columnas necesarias y ordenadas.
-          datum.push(lineData[0]);
-          datum.push(lineData[1]);
-          datum.push(lineData[2]);
-          datum.push(lineData[3]);
-          datum.push(lineData[4]);
-          datum.push(lineData[5]);
-          if(lineData.length == 33){
-            datum.push(lineData[7]);
-            datum.push(lineData[17]);
-            datum.push(lineData[19]);
-            datum.push(lineData[28]);
-          }else if(lineData.length == 10){
-            datum.push(lineData[6]);
-            datum.push(lineData[7]);
-            datum.push(lineData[8]);
-            datum.push(lineData[9]);
-          }
-
-
-          // Cuando la estación recibe datos inválidos para un dato, en el archivo
-          // aparece '---'. Se verifica si el dato leído tiene un campo inválido.
-          if(datum.indexOf('---') > -1){
-
-          }else{
-
-          }
-          fileData.push(datum);
-        }else{
-          continue;
-        }
-        //if(fileData.length % 1000 == 0) console.log(fileData.length);
       }
+
 
       for(var index=0;index<vm.fieldsWithErrors.length;index++){
         let rowIndex = vm.fieldsWithErrors[index];
         //console.log(vm.fileData[rowIndex]);
         // Buscar la fecha en los datos disponibles para reparación
-        //console.log("Searching for row to repair: " + vm.fileData[rowIndex][0] + ", " + vm.fileData[rowIndex][1])
+        console.log("Searching for row to repair: " + vm.fileData[rowIndex][0] + ", " + vm.fileData[rowIndex][1])
         for(var i=0; i<fileData.length; i++){
           if(fileData[i][0]==vm.fileData[rowIndex][0] && fileData[i][1]==vm.fileData[rowIndex][1]){
             //console.log("Row Found");
@@ -326,6 +278,8 @@ function dataRepairCtrl(
           }
         }
       }
+      console.log("Candidatos para reparación:");
+      console.log(vm.repairCandidates);
       $scope.$apply();
     }
 
@@ -340,6 +294,9 @@ function dataRepairCtrl(
     }
     vm.repairCandidates = [];
     vm.updateErrors();
+    // Requerido en caso de que se esté mostrando una página con errores
+    // para que se recarguen en la vista.
+    vm.pageChanged();
   }
 
   // ===============================================
