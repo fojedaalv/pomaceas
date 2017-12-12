@@ -72,7 +72,7 @@ function dataRepairCtrl(
 
         // Se construye el dato desde los campos correspondientes
         datum.push(lineData[0]);
-        datum.push(lineData[1]);
+        datum.push(lineData[1].replace(":", "-"));
         datum.push(lineData[2]);
         datum.push(lineData[3]);
         datum.push(lineData[4]);
@@ -260,6 +260,7 @@ function dataRepairCtrl(
           fileData[i][0] = tempDate[0]+"-"+tempDate[1]+"-"+tempDate[2].substr(2,3);
         }
       }
+      console.log(fileData[1980]);
 
 
       for(var index=0;index<vm.fieldsWithErrors.length;index++){
@@ -309,8 +310,8 @@ function dataRepairCtrl(
     return ',';
   }
   vm.getFileHeaders = function(){
-    return ['Fecha', 'Temp Media Diaria', 'Temp Media Máxima', 'Temp Media Mínima',
-      'Temp Máxima', 'Temp Mínima', 'HR Media', 'HR Máxima', 'HR Mínima', 'h > 95%'];
+    return ['Fecha', 'Hora', 'Temp Out', 'Hi Temp', 'Low Temp', 'Out Hum',
+      'Wind Speed', 'Rain', 'Solar Rad', 'ET'];
   }
   vm.getDataInArray = function(){
     //return [{a:1, b:2},{a:3, b:4}];
