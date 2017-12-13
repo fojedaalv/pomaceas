@@ -141,7 +141,7 @@ function dashboardStationsUploadCtrl(
       var missingDates = [];
       for(var i = 0; i<vm.fileData.length; i++){
         var tempDate = moment.utc(toIsoDate(vm.fileData[i][0], vm.fileData[i][1]));
-        while(!tempDate.isSame(expectedDate)){
+        while(!tempDate.isSameOrBefore(expectedDate)){
           purifiedData.push([
             expectedDate.format('DD-MM-YY'),
             expectedDate.format('HH-mm'),
@@ -157,6 +157,10 @@ function dashboardStationsUploadCtrl(
           missingDates.push(expectedDate.toDate());
           failures += 1;
           expectedDate.add(15, 'minutes');
+        }        
+        // Se salta fechas que no sean múltiplo de 15
+        if(tempDate.get('minute') % 15 != 0){
+          continue;
         }
 
         purifiedData.push([

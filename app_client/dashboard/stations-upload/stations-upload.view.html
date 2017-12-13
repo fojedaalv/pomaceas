@@ -130,7 +130,7 @@
                   Faltan los registros correspondientes a las fechas:
                   <ol>
                     <li ng-repeat="date in vm.dataFixingReport.missingDates">
-                      {{ date | amDateFormat:'DD-MM-YYYY HH:mm'}}
+                      {{ date | amUtc | amDateFormat:'DD-MM-YYYY HH:mm'}}
                     </li>
                   </ol>
                 </p>

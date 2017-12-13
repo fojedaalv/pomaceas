@@ -28,7 +28,7 @@
                     style="background-color:red;"
                     ng-repeat="e in vm.fieldsWithErrors"
                     ng-click="vm.setPage((e/vm.pageSize | floor) + 1)">
-                    {{e}}
+                    {{e + 1}}
                   </a><br/>
                   (Hacer click en el número de fila lo llevará a la página del error correspondiente)<br/>
                 </span>

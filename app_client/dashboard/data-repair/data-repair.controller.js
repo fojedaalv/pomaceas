@@ -127,6 +127,7 @@ function dataRepairCtrl(
   vm.setPage = (pageN) => {
     console.log(pageN);
     vm.currentPage = pageN;
+    vm.pageChanged();
   }
   // FIN del código para la paginación
 
@@ -178,8 +179,11 @@ function dataRepairCtrl(
       var i = 0;
       for(var i = 0; i<vm.fileData.length; i++){
         let tempDate = moment.utc(toIsoDate(vm.fileData[i][0], vm.fileData[i][1]));
-        while(!tempDate.isSame(expectedDate)){
+        while(!tempDate.isSameOrBefore(expectedDate)){
           // La fecha siguiente no es la esperada (faltan fechas)
+          //console.log("Temporal / Esperada");
+          //console.log(tempDate);
+          //console.log(expectedDate);
           completeData.push([
             expectedDate.format('DD-MM-YY'),
             expectedDate.format('HH-mm'),
@@ -193,6 +197,10 @@ function dataRepairCtrl(
             '---'
           ])
           expectedDate.add(15, 'minutes');
+        }
+        // Se salta fechas que no sean múltiplo de 15
+        if(tempDate.get('minute') % 15 != 0){
+          continue;
         }
 
         // La fecha siguiente es la esperada
