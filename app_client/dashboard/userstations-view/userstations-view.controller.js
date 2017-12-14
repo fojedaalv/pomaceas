@@ -80,6 +80,7 @@ function dashboardUserStationsViewCtrl(
   vm.isDataLoaded = false;
   vm.loadProgress = 0;
   vm.uploadProgress = 0;
+  vm.isLoadingFile   = false;
   vm.isUploading = false;
   vm.clearMessages = () => {
     vm.uploadInfo  = "";
@@ -88,12 +89,17 @@ function dashboardUserStationsViewCtrl(
   vm.loadFile = function(){
     // Adapted from http://stackoverflow.com/questions/18571001/file-upload-using-angularjs
     // http://jsfiddle.net/f8Hee/1/
+    var f = document.getElementById('file').files[0];
+    if(f==undefined){
+      alert("No se ha seleccionado un archivo de datos.");
+      return;
+    }
+    vm.isLoadingFile = true;
     console.log("Loading file.");
     vm.uploadProgress = 0;
     vm.fileData = [];
     vm.clearMessages();
 
-    var f = document.getElementById('file').files[0];
     console.log(document.getElementById('file').files);
     var r = new FileReader();
     r.onprogress = function(e){
@@ -220,6 +226,7 @@ function dashboardUserStationsViewCtrl(
       vm.fileDataDisplay = vm.fileData.slice(0,10);
       vm.isDataLoaded = true;
       vm.loadProgress = 100;
+      vm.isLoadingFile = false;
       $scope.$apply();
       //console.log(vm.fileData);
     }

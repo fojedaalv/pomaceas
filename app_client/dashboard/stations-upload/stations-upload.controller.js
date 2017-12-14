@@ -16,6 +16,7 @@ function dashboardStationsUploadCtrl(
 
   // ==================================================
   // ========== Código para la Carga de Datos =========
+  vm.isLoadingFile = false;
 
   vm.loadStations = function(){
     stationsSvc.getStationsList()
@@ -64,12 +65,17 @@ function dashboardStationsUploadCtrl(
   vm.loadFile = function(){
     // Adapted from http://stackoverflow.com/questions/18571001/file-upload-using-angularjs
     // http://jsfiddle.net/f8Hee/1/
+    var f = document.getElementById('file').files[0];
+    if(f==undefined){
+      alert("No se ha seleccionado un archivo de datos.");
+      return;
+    }
+    vm.isLoadingFile = true;
     console.log("Loading file.");
     vm.uploadProgress = 0;
     vm.fileData = [];
     vm.clearMessages();
 
-    var f = document.getElementById('file').files[0];
     console.log(document.getElementById('file').files);
     var r = new FileReader();
     r.onprogress = function(e){
@@ -157,7 +163,7 @@ function dashboardStationsUploadCtrl(
           missingDates.push(expectedDate.toDate());
           failures += 1;
           expectedDate.add(15, 'minutes');
-        }        
+        }
         // Se salta fechas que no sean múltiplo de 15
         if(tempDate.get('minute') % 15 != 0){
           continue;
@@ -196,6 +202,7 @@ function dashboardStationsUploadCtrl(
       vm.fileDataDisplay = vm.fileData.slice(0,10);
       vm.isDataLoaded = true;
       vm.loadProgress = 100;
+      vm.isLoadingFile = false;
       $scope.$apply();
       //console.log(vm.fileData);
     }

@@ -75,7 +75,18 @@
             <div class="alert alert-danger" role="alert" ng-show="vm.uploadError">{{ vm.uploadError }}</div>
             <div class="alert alert-info" role="alert" ng-show="vm.uploadInfo">{{vm.uploadInfo}}</div>
             <input id="file" class="btn btn-default" type="file">
-            <button class="btn btn-success" ng-click="vm.loadFile()">Cargar archivo</button>
+            <button
+              class="btn btn-success"
+              ng-click="vm.loadFile()"
+              ng-disabled="vm.isLoadingFile">
+              <span ng-if="!vm.isLoadingFile">
+                Cargar archivo
+              </span>
+              <span ng-if="vm.isLoadingFile">
+                <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+                Cargando...
+              </span>
+            </button>
             <button class="btn btn-danger" ng-if="vm.isDataLoaded" ng-click="vm.uploadData()">Subir Archivo</button>
             <br/>
             <br/>

@@ -13,10 +13,18 @@
       <div class="panel-body">
         Ingrese el archivo a reparar:<br/>
           <input id="file" class="btn btn-default" type="file">
-          <button class="btn btn-success" ng-click="vm.loadFile()">Cargar archivo</button>
-          <div ng-if="vm.isLoading">
-            Cargando...
-          </div>
+          <button
+            class="btn btn-success"
+            ng-click="vm.loadFile()"
+            ng-disabled="vm.isLoading">
+            <span ng-if="!vm.isLoading">
+              Cargar archivo
+            </span>
+            <span ng-if="vm.isLoading">
+              <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+              Cargando...
+            </span>
+          </button>
           <div ng-if="vm.fileData && !vm.isLoading">
             <h2>Errores del Archivo</h2>
             <p>Este archivo presenta {{ vm.fieldsWithErrors.length }} errores.</p>
@@ -40,7 +48,18 @@
             <span ng-if="vm.fieldsWithErrors.length>0">
               <h2>Subir un archivo de reparación</h2>
               <input id="repairfile" class="btn btn-default" type="file">
-              <button class="btn btn-success" ng-click="vm.loadRepairFile()">Cargar archivo</button>
+              <button
+                class="btn btn-success"
+                ng-click="vm.loadRepairFile()"
+                ng-disabled="vm.isLoadingRepairFile">
+                <span ng-if="!vm.isLoadingRepairFile">
+                  Cargar archivo
+                </span>
+                <span ng-if="vm.isLoadingRepairFile">
+                  <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+                  Cargando...
+                </span>
+              </button>
             </span>
             <span ng-if="vm.repairCandidates.length>0">
               <p>Hay {{ vm.repairCandidates.length }} filas que pueden ser añadidas al archivo original para corregirlo.</p>

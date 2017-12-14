@@ -7,6 +7,7 @@ function dataRepairCtrl(
 ){
   var vm = this;
   vm.isLoading = false;
+  vm.isLoadingRepairFile = false;
 
   // ==================================================
   // Función para la extracción de los datos desde
@@ -153,12 +154,16 @@ function dataRepairCtrl(
   }
 
   vm.loadFile = () => {
+    var f = document.getElementById('file').files[0];
+    if(f==undefined){
+      alert("No se ha seleccionado un archivo de datos.");
+      return;
+    }
+
     vm.isLoading = true;
     console.log("Loading file.");
     vm.loadProgress = 0;
     vm.fileData = [];
-
-    var f = document.getElementById('file').files[0];
 
     var r = new FileReader();
     r.onprogress = function(e){
@@ -245,11 +250,16 @@ function dataRepairCtrl(
   // ==== Código para archivo de reparación ========
   // ===============================================
   vm.loadRepairFile = () => {
+    var f = document.getElementById('repairfile').files[0];
+    if(f==undefined){
+      alert("No se ha seleccionado un archivo de reparación.");
+      return;
+    }
     console.log("Loading repair file.");
     vm.repairLoadProgress = 0;
     vm.repairFileData   = [];
     vm.repairCandidates = [];
-    var f = document.getElementById('repairfile').files[0];
+    vm.isLoadingRepairFile = true;
 
     var r = new FileReader();
     r.onprogress = function(e){
@@ -268,8 +278,6 @@ function dataRepairCtrl(
           fileData[i][0] = tempDate[0]+"-"+tempDate[1]+"-"+tempDate[2].substr(2,3);
         }
       }
-      console.log(fileData[1980]);
-
 
       for(var index=0;index<vm.fieldsWithErrors.length;index++){
         let rowIndex = vm.fieldsWithErrors[index];
@@ -289,6 +297,7 @@ function dataRepairCtrl(
       }
       console.log("Candidatos para reparación:");
       console.log(vm.repairCandidates);
+      vm.isLoadingRepairFile = false;
       $scope.$apply();
     }
 
