@@ -2,8 +2,14 @@ angular.module('PomaceasWebApp')
 .service('stationsSvc', stationsSvc);
 
 function stationsSvc($http, $window, authSvc){
-  var getStationsList = function(){
+  var getStationsList = function(pageNumber = 0, pageSize = 0){
+    //page[number]
+    //page[size]
     return $http.get('/api/v1/stations',{
+      params : {
+        'page[number]' : pageNumber,
+        'page[size]'   : pageSize
+      },
       headers: {
         Authorization: 'Bearer '+ authSvc.getToken()
       }

@@ -27,8 +27,8 @@ function variablesQueriesCtrl(
     .error(function(err){
       vm.errMessage = err.message;
     })
-    .then(function(data){
-      vm.stations = data.data;
+    .then(function(response){
+      vm.stations = response.data.data;
       vm.stationId = vm.stations[0]._id;
     });
   }

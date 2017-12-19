@@ -6,13 +6,28 @@ function dashboardStationsCtrl(stationsSvc, $scope){
   vm.stations = [];
   vm.errMessage = "";
 
+  // Variables para Paginación
+  vm.totalItems  = 10;
+  vm.currentPage = 1;
+  vm.maxPages    = 5;
+  vm.pageSize    = 10;
+  vm.setPage     = (pageNo) => {
+    vm.currentPage = pageNo;
+  };
+  vm.pageChanged = (pageNo) => {
+    vm.loadStations();
+  }
+  // FIN Variables para paginación
+
   vm.loadStations = function(){
-    stationsSvc.getStationsList()
+    stationsSvc.getStationsList(vm.currentPage-1, vm.pageSize)
     .error(function(err){
       vm.errMessage = err.message;
     })
-    .then(function(data){
-      vm.stations = data.data;
+    .then(function(response){
+      vm.stations = response.data.data;
+      vm.totalItems = response.data.meta['total-items'];
+      vm.maxPages   = response.data.meta['total-pages'];
       vm.markers = vm.buildMarkers(vm.stations);
     });
   }

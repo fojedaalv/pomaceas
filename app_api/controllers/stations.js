@@ -1,6 +1,8 @@
 var passport = require('passport');
 var mongoose = require('mongoose');
 var Station = mongoose.model('Station');
+const JsonApiQueryParserClass = require('jsonapi-query-parser');
+const JsonApiQueryParser = new JsonApiQueryParserClass();
 
 var sendJSONresponse = function(res, status, content) {
   res.status(status);
@@ -8,16 +10,36 @@ var sendJSONresponse = function(res, status, content) {
 };
 
 module.exports.list = function(req, res){
+  let hostname    = req.headers.host;
+  let requestData = JsonApiQueryParser.parseRequest(req.url);
+  let pageNumber  = requestData.queryData.page.number  || 0;
+  let pageSize    = requestData.queryData.page.size    || 10;
+  let query = { };
   Station.find(
-    {},
+    query,
     '_id name city region location owner',
-    {},
+    {
+      sort:{ },
+      skip:pageNumber*pageSize,
+      limit:pageSize*1
+    },
     function(err, stations){
       if(err){
         console.log(err);
         sendJSONresponse(res, 400, err);
       }else{
-        sendJSONresponse(res, 201, stations);
+        Station.count(query, (err, count) => {
+          sendJSONresponse(res, 200, {
+            meta: {
+              "total-pages": Math.ceil(count/pageSize),
+              "total-items": count
+            },
+            links: {
+              self: hostname+'/api/v1/stations'
+            },
+            data: stations
+          });
+        });
       }
     });
 };
