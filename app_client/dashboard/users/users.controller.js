@@ -6,13 +6,32 @@ function dashboardUsersCtrl($scope, usersSvc){
   vm.users = [];
   vm.errMessage = "";
 
-  usersSvc.getUsersList()
-  .error(function(err){
-    vm.errMessage = err.message;
-  })
-  .then(function(data){
-    vm.users = data.data;
-  });
+  // Variables para Paginación
+  vm.totalItems  = 10;
+  vm.currentPage = 1;
+  vm.maxPages    = 5;
+  vm.pageSize    = 10;
+  vm.setPage     = (pageNo) => {
+    vm.currentPage = pageNo;
+  };
+  vm.pageChanged = (pageNo) => {
+    vm.loadUsers();
+  }
+  // FIN Variables para paginación
+
+  vm.loadUsers = () => {
+    usersSvc.getUsersList(vm.currentPage-1, vm.pageSize)
+    .error(function(err){
+      vm.errMessage = err.message;
+    })
+    .then(function(response){
+      vm.users      = response.data.data;
+      vm.totalItems = response.data.meta['total-items'];
+      vm.maxPages   = response.data.meta['total-pages'];
+    });
+  }
+
+  vm.loadUsers();
 
   vm.deleteUser = function(user){
     var userId = user._id;

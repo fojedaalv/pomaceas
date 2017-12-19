@@ -2,8 +2,12 @@ angular.module('PomaceasWebApp')
 .service('usersSvc', usersSvc);
 
 function usersSvc($http, $window, authSvc){
-  var getUsersList = function(){
+  var getUsersList = function(pageNumber = 0, pageSize = 0){
     return $http.get('/api/v1/users',{
+      params : {
+        'page[number]' : pageNumber,
+        'page[size]'   : pageSize
+      },
       headers: {
         Authorization: 'Bearer '+ authSvc.getToken()
       }
