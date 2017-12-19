@@ -14,7 +14,7 @@ function stationsSvc($http, $window, authSvc){
     });
   }
 
-  var getPublicStationsList = function(){
+  var getPublicStationsList = function(pageNumber = 0, pageSize = 0){
     return $http.get('/api/v1/stations-public');
   }
 

@@ -16,8 +16,8 @@ function stationsPublicCtrl(stationsSvc, $scope){
     .error(function(err){
       vm.errMessage = err.message;
     })
-    .then(function(data){
-      vm.stations = data.data;
+    .then(function(response){
+      vm.stations = response.data.data;
       vm.markers = vm.buildMarkers(vm.stations);
     });
   }
