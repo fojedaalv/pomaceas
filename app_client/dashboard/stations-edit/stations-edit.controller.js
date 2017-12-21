@@ -61,8 +61,8 @@ function dashboardStationsEditCtrl(stationsSvc, usersSvc, $routeParams, $scope){
   // ==================================================
   // ========= Código para Ejecutar al Inicio==========
   usersSvc.getUsersList()
-  .success(function(users){
-    vm.users = users;
+  .success(function(response){
+    vm.users = response.data;
   })
   .error(function(e){
     vm.errMessage = "No se pudo obtener la lista de usuarios. Detalles del error: "+e.message;

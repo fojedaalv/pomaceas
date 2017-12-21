@@ -67,7 +67,6 @@ function dashboardStationsNewCtrl(stationsSvc, usersSvc, $scope, $location){
   usersSvc.getUsersList()
   .success(function(response){
     vm.users = response.data;
-    console.log(vm.users)
   })
   .error(function(e){
     vm.errMessage = "No se pudo obtener la lista de usuarios. Detalles del error: "+e.message;
