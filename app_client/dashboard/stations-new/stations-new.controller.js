@@ -65,8 +65,9 @@ function dashboardStationsNewCtrl(stationsSvc, usersSvc, $scope, $location){
   // ==================================================
   // ========= Código para Ejecutar al Inicio==========
   usersSvc.getUsersList()
-  .success(function(users){
-    vm.users = users;
+  .success(function(response){
+    vm.users = response.data;
+    console.log(vm.users)
   })
   .error(function(e){
     vm.errMessage = "No se pudo obtener la lista de usuarios. Detalles del error: "+e.message;
