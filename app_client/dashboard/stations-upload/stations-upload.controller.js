@@ -299,6 +299,8 @@ function dashboardStationsUploadCtrl(
       console.log('Error status: ' + resp.status);
       vm.isUploading = false;
       vm.uploadError = resp.data.message;
+      alert("Ocurrió un error mientras se subía el archivo. Esto puede deberse a una mala conexión a internet. Prueba a cargar y subir el archivo desde una ubicación con mejor señal.");
+      vm.uploadProgress = 0;
     }, function (evt) {
       var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
       vm.uploadProgress = progressPercentage;
