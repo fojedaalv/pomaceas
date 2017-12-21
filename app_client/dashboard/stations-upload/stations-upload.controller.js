@@ -267,7 +267,6 @@ function dashboardStationsUploadCtrl(
       vm.loadProgress = 100;
       vm.isLoadingFile = false;
       $scope.$apply();
-      //console.log(vm.fileData);
     }
     r.readAsText(f);
   }

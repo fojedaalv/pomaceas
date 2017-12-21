@@ -72,6 +72,113 @@ function dashboardUserStationsViewCtrl(
     vm.getData();
   }
 
+  toIsoDate = (date, time) => {
+    var spl = date.split("-");
+    time = time.replace("-", ":");   // En caso de que la fecha venga de un archivo procesado.
+    if(time.split(":")[0].length==1){
+      time = "0"+time;
+    }
+    return spl[2] + "-" + spl[1] + "-" + spl[0] + " " + time;
+  }
+
+  // ==================================================
+  // Función para la extracción de los datos desde
+  // un archivo leído
+  // ==================================================
+  parseData = (data) => {
+    // Esta función procesa un archivo leído y genera un arreglo
+    // con los datos que utiliza el sistema
+    let fileData = [];
+    let fileType = null;
+    var lines = data.split("\n");
+
+    // Se descubre el tipo de archivo:
+    // original:
+    //   Es el archivo tal como viene desde la estación. Un archivo
+    //   separado por tabulaciones y de 33 columnas.
+    // procesado:
+    //   Es el archivo que ya ha pasado por este sistema y ha sido
+    //   reducido a 10 columnas y separado por comas.
+    if(lines.length==0){
+      return [];
+    }else{
+      if(lines[0].split("\t").length == 33){
+        fileType = 'original';
+      }else if(lines[0].split(",").length == 10){
+        fileType = 'procesado';
+      }else{
+        alert("No se ha podido analizar el archivo.");
+        return [];
+      }
+    }
+
+    // Se remueven los encabezados.
+    // El archivo original tiene dos líneas y el procesado tiene una.
+    if(fileType == 'original'){
+      lines = lines.slice(2);
+    }else if(fileType == 'procesado'){
+      lines = lines.slice(1);
+    }
+
+    // Se lee cada línea y se extraen los campos relevantes
+    for(var line = 0; line < lines.length; line++){
+      var datum = [];
+      let lineData = "";
+      if(fileType == 'original'){
+        lineData = lines[line].split("\t");
+      }else if(fileType == 'procesado'){
+        lineData = lines[line].split(",");
+      }
+
+      // En ocasiones, los archivos incluyen una última línea vacía.
+      // Se elimina esta línea.
+      if(lineData == ""){
+        continue;
+      }
+
+      if(fileType == 'original' || fileType == 'procesado'){
+        datum = [];
+        let tempDate = lineData[0].split("-");
+        if(tempDate[2].length==2){
+          lineData[0] = tempDate[0]+"-"+tempDate[1]+"-20"+tempDate[2];
+        }
+
+        // Se construye el dato desde los campos correspondientes
+        datum.push(lineData[0]);
+        datum.push(lineData[1].replace(":", "-"));
+        datum.push(lineData[2]);
+        datum.push(lineData[3]);
+        datum.push(lineData[4]);
+        datum.push(lineData[5]);
+        if(fileType == 'original'){
+          datum.push(lineData[7]);
+          datum.push(lineData[17]);
+          datum.push(lineData[19]);
+          datum.push(lineData[28]);
+        }else if(fileType == 'procesado'){
+          datum.push(lineData[6]);
+          datum.push(lineData[7]);
+          datum.push(lineData[8]);
+          datum.push(lineData[9]);
+        }
+
+        // Cuando la estación recibe datos inválidos para un dato, en el archivo
+        // aparece '---'. Se verifica si el dato leído tiene un campo inválido.
+        if(datum.indexOf('---') > -1){
+
+        }else{
+
+        }
+
+        fileData.push(datum);
+      }else{
+        continue;
+      }
+    }
+
+    return fileData;
+  }
+
   // ==================================================
   // ========= Código para Leer Archivo CSV ===========
 
@@ -106,58 +213,8 @@ function dashboardUserStationsViewCtrl(
       vm.loadProgress = e.loaded/e.total*100;
     }
 
-    toIsoDate = (date, time) => {
-      var spl = date.split("-");
-      if(time.split(":")[0].length==1) time = "0"+time;
-      return spl[2] + "-" + spl[1] + "-" + spl[0] + " " + time;
-    }
-
     r.onloadend = function(e){
-      /*
-      var data = e.target.result.split("\n").slice(2);
-      var something = data.join("\n").split("\t");
-      vm.fileData = something;
-      */
-      var lines = e.target.result.split("\n").slice(2);
-      var data = [];
-      for(var line = 0; line < lines.length; line++){
-        var datum = [];
-        var lineData = lines[line].split("\t");
-        // Default file has 33 columns
-        if(lineData.length==1) continue;
-        if(lineData.length==33){
-          datum = [];
-          // Fix date length
-          var tempDate = lineData[0].split("-");
-          if(tempDate[2].length==2){
-            lineData[0] = tempDate[0]+"-"+tempDate[1]+"-20"+tempDate[2];
-          }
-
-          // Build datum from corresponding fields
-          datum.push(lineData[0]);
-          datum.push(lineData[1]);
-          datum.push(lineData[2]);
-          datum.push(lineData[3]);
-          datum.push(lineData[4]);
-          datum.push(lineData[5]);
-          datum.push(lineData[7]);
-          datum.push(lineData[17]);
-          datum.push(lineData[19]);
-          datum.push(lineData[28]);
-        }else{
-          datum = lineData;
-        }
-        if(datum.indexOf('---') > -1){
-          // Este dato tiene errores. Se copia el registro anterior.
-          var lastDatum = vm.fileData[vm.fileData.length-1];
-          for(var i=2; i < datum.length; i++){
-            datum[i]=lastDatum[i];
-          }
-          vm.fileData.push(datum);
-        }else{
-          vm.fileData.push(datum);
-        }
-      }
+      vm.fileData = parseData(e.target.result);
 
       // FIX MISSING DATA
       console.log("Revisando datos faltantes");

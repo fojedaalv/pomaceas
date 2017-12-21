@@ -61,8 +61,7 @@ module.exports.dataUpload = function (req, res) {
       })
       return;
     }
-    console.log(req.body.data.length);
-    
+
     if(false){
       // Code to save uploaded data as CSV
       var fs = require('fs');
@@ -103,15 +102,17 @@ module.exports.dataUpload = function (req, res) {
       var et = Number(row[9]);
       /* Formatting date as ISODate */
       var isodate = row[0].slice(6,10)+"-"+row[0].slice(3, 5)+"-"+row[0].slice(0,2)+"T"+row[1]+":00Z";
-      var year = row[0].slice(6,10);
-      var month = row[0].slice(3, 5);
-      var day = row[0].slice(0,2);
-      var time = row[1].split(":");
-      var hour = time[0];
-      var minute = time[1];
-      var date = new Date(Date.UTC(year, month-1, day, hour, minute));
+      // Los datos vienen en formato DD-MM-YY
+      // La hora viene en formato HH-mm
+      let tempDate = row[0].split("-");
+      let tempTime = row[1].split("-");
+      let year   = "20"+tempDate[2];
+      let month  = tempDate[1];
+      let day    = tempDate[0];
+      let hour   = tempTime[0];
+      let minute = tempTime[1];
+      var date   = new Date(Date.UTC(year, month-1, day, hour, minute));
       //console.log("Date:"+year+month+day);
-      //console.log(date);
       /* Cálculo de Indicadores extra */
       var hr95 = (outHum >= 95) ? 0.25 : 0.0;
       var uEstres = (tempOut >= 10 && outHum <= 75) ?
@@ -307,9 +308,9 @@ module.exports.dataUpload = function (req, res) {
         hrsDPVmay2p5: hrsDPVmay2p5
       });
     });
-    SensorData.collection.insert(objects, {ordered: false}, function(err, docs){
+    SensorData.collection.insertMany(objects, {ordered: true}, function(err, docs){
       if (err) {
-        //console.log(JSON.stringify(err, null, "\t"));
+        console.log(JSON.stringify(err, null, "\t"));
         sendJSONresponse(res, 400, {
           message: "Se ha producido un error en la inserción de los datos. Probablemente se hayan subido datos que ya estaban en el sistema."
         });
