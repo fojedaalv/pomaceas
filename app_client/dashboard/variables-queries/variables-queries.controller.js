@@ -29,7 +29,11 @@ function variablesQueriesCtrl(
     })
     .then(function(response){
       vm.stations = response.data.data;
-      vm.stationId = vm.stations[0]._id;
+      if(vm.stations.length>0){
+        // En caso de que no hayan estaciones,
+        // no es necesario seleccionar una estación inicial
+        vm.stationId = vm.stations[0]._id;
+      }
     });
   }
 
@@ -39,11 +43,15 @@ function variablesQueriesCtrl(
     summariesSvc.getSummariesList()
     .success((data) => {
       vm.summaries = data;
-      vm.selectedSummary = data[0]._id;
-      vm.summary = {
-        id: data[0]._id,
-        name: data[0].name,
-        variables: data[0].variables
+      if(vm.summaries.length>0){
+        // En caso de que no hayan resúmenes,
+        // no es necesario seleccionar un resumen inicial
+        vm.selectedSummary = data[0]._id;
+        vm.summary = {
+          id: data[0]._id,
+          name: data[0].name,
+          variables: data[0].variables
+        }
       }
     })
     .error((e) => {

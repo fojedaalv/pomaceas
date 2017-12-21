@@ -11,7 +11,7 @@
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
         <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
 
-        <span ng-if="vm.summaries">
+        <span ng-if="vm.summaries.length>0 && vm.stations.length>0">
           <form class="form-inline well clearfix">
             <div class="form-group col-md-4">
               <label for="station" class="control-label">Estación</label><br/>
@@ -78,6 +78,9 @@
           </div>
         </span>
 
+        <span ng-if="vm.stations.length==0">
+          No hay estaciones creadas. Cree una estación <a href="/#/dashboard/stations-new/">aquí</a>.
+        </span><br/>
         <span ng-if="vm.summaries.length==0">
           No hay resúmenes cargados. Cargue un resumen <a href="/#/dashboard/variables-summary/">aquí</a>.
         </span>

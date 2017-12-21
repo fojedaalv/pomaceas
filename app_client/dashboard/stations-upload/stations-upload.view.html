@@ -8,7 +8,7 @@
       </div>
       <div class="panel-body">
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
-        <form class="form-inline well clearfix">
+        <form class="form-inline well clearfix" ng-if="vm.stations.length>0">
 
           <div class="form-group col-md-4">
             <label for="station" class="control-label">Estación</label><br/>
@@ -35,9 +35,9 @@
             </span>
           </div>
         </form>
-        <hr/>
 
         <div class="panel panel-default" ng-if="vm.stationId">
+          <hr/>
           <div class="panel-heading">
             Subir datos a la estación
           </div>
@@ -175,7 +175,7 @@
           </div>
         </div>
 
-        <div class="panel panel-default">
+        <div class="panel panel-default" ng-if="vm.stations.length>0">
           <div class="panel-heading">
             Eliminar datos de la estación
           </div>
@@ -236,7 +236,9 @@
             </div>
           </div>
         </div>
-
+        <span ng-if="vm.stations.length==0">
+          No hay estaciones creadas. Cree una estación <a href="/#/dashboard/stations-new/">aquí</a>.
+        </span>
       </div>
     </div>
   </div>

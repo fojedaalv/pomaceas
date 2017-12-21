@@ -25,7 +25,9 @@ function dashboardStationsUploadCtrl(
     })
     .then(function(response){
       vm.stations = response.data.data;
-      vm.stationId = vm.stations[0]._id;
+      if(vm.stations.length>0){
+        vm.stationId = vm.stations[0]._id;
+      }
     });
   }
 
