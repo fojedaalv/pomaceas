@@ -1,6 +1,17 @@
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Schema.ObjectId;
 
+var sectorSchema = new mongoose.Schema({
+  cultivar: {
+    type: String,
+    default: 'gala'
+  },
+  name: {
+    type: String,
+    default: 'Cuartel Nuevo'
+  }
+},{ _id : true });
+
 var stationSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -23,7 +34,7 @@ var stationSchema = new mongoose.Schema({
     coordinates: []
   },
   sectors: [
-
+    sectorSchema
   ]
 }, {
   timestamps: true

@@ -17,7 +17,7 @@ module.exports.list = function(req, res){
   let query = { };
   Station.find(
     query,
-    '_id name city region location owner',
+    '_id name city region location owner sectors',
     {
       sort:{ },
       skip:pageNumber*pageSize,
