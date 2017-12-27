@@ -49,3 +49,4 @@ require('./sensor-data');
 require('./password-requests');
 require('./summaries');
 require('./comments');
+require('./nutritional-data');

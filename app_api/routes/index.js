@@ -6,13 +6,14 @@ var auth = jwt({
   userProperty: 'payload'
 });
 
-var ctrlAuth       = require('../controllers/authentication');
-var ctrlUsers      = require('../controllers/users');
-var ctrlStations   = require('../controllers/stations');
-var ctrlSensorData = require('../controllers/sensor-data');
-var ctrlReports    = require('../controllers/reports');
-var ctrlSummaries  = require('../controllers/summaries');
-var ctrlComments   = require('../controllers/comments');
+var ctrlAuth            = require('../controllers/authentication');
+var ctrlUsers           = require('../controllers/users');
+var ctrlStations        = require('../controllers/stations');
+var ctrlSensorData      = require('../controllers/sensor-data');
+var ctrlReports         = require('../controllers/reports');
+var ctrlSummaries       = require('../controllers/summaries');
+var ctrlComments        = require('../controllers/comments');
+var ctrlNutritionalData = require('../controllers/nutritional-data');
 
 // ========== Authentication Endpoints =============
 
@@ -140,6 +141,11 @@ router.delete('/comments/:id',
   auth,
   ctrlAuth.roleAuthorization(['administrator']),
   ctrlComments.deleteComment);
+
+// ========== Nutritional Data Endpoints ===========
+router.post('/nutritional-data', ctrlNutritionalData.create);
+router.get('/nutritional-data', ctrlNutritionalData.list);
+router.delete('/nutritional-data/:id', ctrlNutritionalData.remove);
 
 
 // ================= Test Endpoints ================

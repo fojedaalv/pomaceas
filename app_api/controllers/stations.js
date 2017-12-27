@@ -183,7 +183,7 @@ module.exports.getByUser = function(req, res){
     {
       owner: req.params.userId
     },
-    '_id name city region location owner',
+    '_id name city region location owner sectors',
     {},
     function(err, stations){
       if(err){

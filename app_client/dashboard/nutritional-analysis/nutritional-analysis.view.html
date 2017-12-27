@@ -8,7 +8,168 @@
         <h3 class="panel-title">Análisis Nutricionales</h3>
       </div>
       <div class="panel-body">
-        Aquí irán los análisis nutricionales.
+        <table class="table table-sm" ng-if="vm.sectors.length>0">
+          <thead>
+            <th>Cuartel</th>
+            <th>Fecha</th>
+            <th>Momento de Medición</th>
+          </thead>
+          <tbody>
+            <form class="form-inline well clearfix">
+            <tr>
+              <td class="form-group">
+                <select class="form-control" id="sector" ng-model="vm.fdata.sector">
+                  <option ng-repeat="(index, sector) in vm.sectors" value="{{ index }}">
+                    {{ sector.station }}, {{ sector.name }}, {{ sector.cultivar | cultivarTranslate }}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" readonly
+                    class="form-control"
+                    uib-datepicker-popup="{{vm.calendar.format}}"
+                    ng-model="vm.fdata.date"
+                    is-open="vm.calendar.isOpen"
+                    datepicker-options="vm.dateOptions"
+                    ng-required="true"
+                    close-text="Cerrar"/>
+                    <span class="input-group-btn">
+                      <button type="button"
+                      class="btn btn-default"
+                      ng-click="vm.openCal()">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </button>
+                    </span>
+                </div>
+              </td>
+              <td>
+                <label>
+                  <input type="radio" ng-model="vm.fdata.stage" value="small">
+                  Fruto Pequeño
+                </label><br/>
+                <label>
+                  <input type="radio" ng-model="vm.fdata.stage" value="mature">
+                  Fruto Maduro
+                </label><br/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-sm" ng-if="vm.sectors.length>0">
+          <thead>
+            <th>N</th>
+            <th>P</th>
+            <th>K</th>
+            <th>Ca</th>
+            <th>Mg</th>
+            <th>Ms %</th>
+            <th>N° Frutos</th>
+            <th>Peso Total</th>
+            <th>Guardar</th>
+          </thead>
+          <tbody>
+            <form class="form-inline well clearfix">
+            <tr>
+              <td>
+                <input class="form-control" id="N" placeholder="N" type="number" ng-model="vm.fdata.N">
+              </td>
+              <td>
+                <input class="form-control" id="P" placeholder="P" type="number" ng-model="vm.fdata.P">
+              </td>
+              <td>
+                <input class="form-control" id="K" placeholder="K" type="number" ng-model="vm.fdata.K">
+              </td>
+              <td>
+                <input class="form-control" id="Ca" placeholder="Ca" type="number" ng-model="vm.fdata.Ca">
+              </td>
+              <td>
+                <input class="form-control" id="Mg" placeholder="Mg" type="number" ng-model="vm.fdata.Mg">
+              </td>
+              <td>
+                <input class="form-control" id="Ms" placeholder="Ms" type="number" ng-model="vm.fdata.Ms">
+              </td>
+              <td>
+                <input class="form-control" id="N_Frutos" placeholder="N_Frutos" type="number" ng-model="vm.fdata.N_Frutos">
+              </td>
+              <td>
+                <input class="form-control" id="Peso_Total" placeholder="Peso_Total" type="number" ng-model="vm.fdata.Peso_Total">
+              </td>
+              <td>
+                <button type="button" class="btn btn-success btn-block" ng-click="vm.saveData()">
+                  <i class="fa fa-save"></i>
+                </button>
+              </td>
+            </tr>
+          </form>
+          </tbody>
+        </table>
+        <div ng-if="vm.sectors.length==0">
+          No hay cuarteles registrados para sus estaciones. Registre los cuarteles desde el panel de control de su estación.
+        </div>
+        <hr/>
+
+        <span ng-if="vm.nutritionalData.length>0">
+          <h3>Datos Nutricionales Ingresados</h3>
+          <table class="table table-sm table-bordered">
+            <thead>
+              <th>Estación</th>
+              <th>Variedad</th>
+              <th>Cuartel</th>
+              <th>Fecha</th>
+              <th>Momento<br/>Medición</th>
+              <th>N</th>
+              <th>P</th>
+              <th>K</th>
+              <th>Ca</th>
+              <th>Mg</th>
+              <th>Ms</th>
+              <th>N°</br/>Frutos</th>
+              <th>Peso<br/>Total</th>
+              <th>Opciones</th>
+            </thead>
+            <tbody>
+              <tr ng-repeat="nutData in vm.nutritionalData">
+                <td>{{nutData.station.name}}</td>
+                <td>{{nutData.sector.cultivar | cultivarTranslate}}</td>
+                <td>{{nutData.sector.name}}</td>
+                <td><span>{{nutData.date | amDateFormat:'DD-MM-YYYY'}}</span></td>
+                <td>
+                  <span ng-if="nutData.stage == 'small'">
+                    Fruto Pequeño
+                  </span>
+                  <span ng-if="nutData.stage == 'mature'">
+                    Fruto Maduro
+                  </span>
+                </td>
+                <td>{{nutData.N}}</td>
+                <td>{{nutData.P}}</td>
+                <td>{{nutData.K}}</td>
+                <td>{{nutData.Ca}}</td>
+                <td>{{nutData.Mg}}</td>
+                <td>{{nutData.Ms}}</td>
+                <td>{{nutData.N_Frutos}}</td>
+                <td>{{nutData.Peso_Total}}</td>
+                <td><button type="button" class="btn btn-danger btn-xs" ng-click="vm.removeData(nutData)"><i class="fa fa-trash"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+          <ul
+            uib-pagination
+            total-items="vm.totalItems"
+            ng-model="vm.currentPage"
+            max-size="vm.maxPages"
+            items-per-page="vm.pageSize"
+            ng-change="vm.pageChanged()"
+            boundary-links="true"
+            class="pagination-sm"
+            force-ellipses="false"
+            first-text="Inicio"
+            last-text="Final"
+            previous-text="Anterior"
+            next-text="Siguiente">
+          </ul>
+        </span>
       </div>
     </div>
   </div>
