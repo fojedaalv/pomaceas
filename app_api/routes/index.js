@@ -143,9 +143,21 @@ router.delete('/comments/:id',
   ctrlComments.deleteComment);
 
 // ========== Nutritional Data Endpoints ===========
-router.post('/nutritional-data', ctrlNutritionalData.create);
-router.get('/nutritional-data', ctrlNutritionalData.list);
-router.delete('/nutritional-data/:id', ctrlNutritionalData.remove);
+router.post(
+  '/nutritional-data',
+  ctrlNutritionalData.create
+);
+
+router.get(
+  '/nutritional-data',
+  auth,
+  ctrlNutritionalData.list
+);
+
+router.delete(
+  '/nutritional-data/:id',
+  ctrlNutritionalData.remove
+);
 
 
 // ================= Test Endpoints ================

@@ -54,36 +54,65 @@ module.exports.list = (req, res) => {
   let pageNumber  = requestData.queryData.page.number  || 0;
   let pageSize    = requestData.queryData.page.size    || 10;
   let query = { };
+  /*
+  Station.find({
+    owner : userID
+  })
 
-  NutritionalData.find(
-    query,
-    '',
-    {
-      sort  : { },
-      skip  : pageNumber*pageSize,
-      limit : pageSize*1
-    }
+  //CREO UNA LISTA CON LOS IDS DE ESTACIONES DE LOS USUARIOS
+
+  {
+    station: { $in: STATIONS_LIST }
+  }
+  */
+  Station.find({
+    owner: req.payload._id
+  },
+  '_id'
   )
-  .populate('station')
-  .exec((err, data) => {
-    if(err){
+  .exec((err, stations) => {
+    if(err) {
       console.log(err);
       sendJSONresponse(res, 400, err);
       return;
-    }else{
-      NutritionalData.count(query, (err, count) => {
-        sendJSONresponse(res, 200, {
-          meta: {
-            "total-pages": Math.ceil(count/pageSize),
-            "total-items": count
-          },
-          links: {
-            self: hostname+'/api/v1/nutritional-data'
-          },
-          data: data
-        });
-      });
     }
+    let station_ids = [];
+    stations.forEach((station) => {
+      station_ids.push(station._id);
+    })
+    query = {
+      station : { $in : station_ids}
+    }
+    NutritionalData.find(
+      query,
+      '',
+      {
+        sort  : { },
+        skip  : pageNumber*pageSize,
+        limit : pageSize*1
+      }
+    )
+    .populate('station')
+    .exec((err, data) => {
+      if(err){
+        console.log(err);
+        sendJSONresponse(res, 400, err);
+        return;
+      }else{
+        NutritionalData.count(query, (err, count) => {
+          sendJSONresponse(res, 200, {
+            meta: {
+              "total-pages": Math.ceil(count/pageSize),
+              "total-items": count
+            },
+            links: {
+              self: hostname+'/api/v1/nutritional-data'
+            },
+            data: data
+          });
+        });
+      }
+    })
   })
 }
 
