@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 //mongoose.set('debug', true);
+mongoose.Promise = global.Promise;
+
 var dbpath = 'mongodb://localhost/pomaceas';
 if (process.env.NODE_ENV === 'production') {
   dbpath = process.env.MONGODB_URI;
