@@ -6,7 +6,7 @@ var dbpath = 'mongodb://localhost/pomaceas';
 if (process.env.NODE_ENV === 'production') {
   dbpath = process.env.MONGODB_URI;
 }
-mongoose.connect(dbpath);
+mongoose.connect(dbpath, {useMongoClient: true});
 
 mongoose.connection.on('connected', function () {
   console.log('Mongoose connected to ' + dbpath);
