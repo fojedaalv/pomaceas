@@ -14,7 +14,13 @@
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
         <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
 
-        <form class="form-inline well clearfix">
+        <div ng-if="vm.summaries.length==0">
+          <p>
+            No hay resúmenes de variables disponibles aún. Cuando el administrador los genere, aquí se podrán visualizar.
+          </p>
+        </div>
+
+        <form class="form-inline well clearfix" ng-if="vm.summaries.length>0">
           <div class="form-group col-md-4">
             <label for="summary" class="control-label">Reporte de Variables</label><br/>
             <select class="form-control" id="summary" ng-model="vm.selectedSummary">

@@ -32,12 +32,14 @@ function dashboardUserStationsVariableSummaryCtrl(  usersSvc,
     summariesSvc.getSummariesList()
     .success((data) => {
       vm.summaries = data;
-      vm.selectedSummary = data[0]._id;
-      vm.summary = {
-        id: data[0]._id,
-        name: data[0].name,
-        variables: data[0].variables
-      }
+      if(data.length>0){
+        vm.selectedSummary = data[0]._id;
+        vm.summary = {
+          id: data[0]._id,
+          name: data[0].name,
+          variables: data[0].variables
+        }
+      }      
     })
     .error((e) => {
       console.log("Ocurrió un error al obtener la lista de resúmenes. Error:"+ e);
