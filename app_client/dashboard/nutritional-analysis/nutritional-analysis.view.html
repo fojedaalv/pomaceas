@@ -58,11 +58,11 @@
         </table>
         <table class="table table-sm" ng-if="vm.sectors.length>0">
           <thead>
-            <th>N</th>
-            <th>P</th>
-            <th>K</th>
-            <th>Ca</th>
-            <th>Mg</th>
+            <th>N (mg/100g PF)</th>
+            <th>P (mg/100g PF)</th>
+            <th>K (mg/100g PF)</th>
+            <th>Ca (mg/100g PF)</th>
+            <th>Mg (mg/100g PF)</th>
             <th>Ms %</th>
             <th>N° Frutos</th>
             <th>Peso Total</th>
@@ -111,7 +111,7 @@
 
         <span ng-if="vm.nutritionalData.length>0">
           <h3>Datos Nutricionales Ingresados</h3>
-          <table class="table table-sm table-bordered">
+          <table class="table table-condensed table-bordered table-responsive">
             <thead>
               <th>Estación</th>
               <th>Variedad</th>
@@ -126,6 +126,7 @@
               <th>Ms</th>
               <th>N°</br/>Frutos</th>
               <th>Peso<br/>Total</th>
+              <th>Índice<br/>Riesgo</th>
               <th>Opciones</th>
             </thead>
             <tbody>
@@ -150,6 +151,7 @@
                 <td>{{nutData.Ms}}</td>
                 <td>{{nutData.N_Frutos}}</td>
                 <td>{{nutData.Peso_Total}}</td>
+                <td>{{nutData.riskIndex}}</td>
                 <td><button type="button" class="btn btn-danger btn-xs" ng-click="vm.removeData(nutData)"><i class="fa fa-trash"></i></button></td>
               </tr>
             </tbody>

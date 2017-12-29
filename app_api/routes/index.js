@@ -159,6 +159,12 @@ router.delete(
   ctrlNutritionalData.remove
 );
 
+router.get(
+  '/nutritional-variables/:id',
+  //auth,
+  ctrlNutritionalData.calculations
+)
+
 
 // ================= Test Endpoints ================
 router.get('/querytest',

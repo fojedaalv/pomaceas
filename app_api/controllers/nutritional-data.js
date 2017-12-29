@@ -135,3 +135,50 @@ module.exports.remove = (req, res) => {
     })
   }
 }
+
+let calculateNutritionalIndicators = (data) => {
+  data.NdivCa   = data.N / data.Ca;
+  data.KdivCa   = data.K / data.Ca;
+  data.MgdivCa  = data.Mg / data.Ca;
+  data.NdivK    = data.N / data.K;
+  data.KdivP    = data.K / data.P;
+  data.PdivCa   = data.P / data.Ca;
+  data.KMgdivCa = (data.K + data.Mg) / data.Ca;
+  // FALTAN LOS INDICADORES DE RIESGO
+  if(data.stage=='small'){
+    data.risk1 = (data.Ca < 5.5) ? 1 : 0;
+    data.risk2 = (data.N  > 112) ? 1 : 0;
+    data.risk3 = (data.K  > 195) ? 1 : 0;
+    data.risk4 = (data.NdivCa > 7.5) ? 1 : 0;
+    data.risk5 = (data.KdivCa > 19.5) ? 1 : 0;
+  }
+  if(data.stage=='mature'){
+    data.risk1 = (data.Ca < 15)  ? 1 : 0;
+    data.risk2 = (data.N  > 45)  ? 1 : 0;
+    data.risk3 = (data.K  > 150) ? 1 : 0;
+    data.risk4 = (data.NdivCa > 10) ? 1 : 0;
+    data.risk5 = (data.KdivCa > 30) ? 1 : 0;
+  }
+  data.riskIndex = data.risk1 + data.risk2 + data.risk3 + data.risk4 + data.risk5;
+  data.avgWeight = data.Peso_Total / data.N_Frutos;
+  return data;
+}
+
+module.exports.calculations = (req, res) => {
+  let nutDataID = req.params.id;
+  NutritionalData.findOne({
+    _id: nutDataID
+  })
+  .lean()
+  .exec((err, data) => {
+    if(err || !data){
+      sendJSONresponse(res, 404, {
+        message: "No se encontró la información"
+      });
+      return;
+    }
+    data = calculateNutritionalIndicators(data);
+    console.log(data);
+    sendJSONresponse(res, 200, data);
+  })
+}

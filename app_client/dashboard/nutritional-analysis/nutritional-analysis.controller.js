@@ -116,6 +116,34 @@ function dashboardNutritionalAnalysisCtrl(stationsSvc, authSvc, nutritionalDataS
     vm.clearForm();
   }
 
+  let calculateNutritionalIndicators = (data) => {
+    data.NdivCa   = data.N / data.Ca;
+    data.KdivCa   = data.K / data.Ca;
+    data.MgdivCa  = data.Mg / data.Ca;
+    data.NdivK    = data.N / data.K;
+    data.KdivP    = data.K / data.P;
+    data.PdivCa   = data.P / data.Ca;
+    data.KMgdivCa = (data.K + data.Mg) / data.Ca;
+    // FALTAN LOS INDICADORES DE RIESGO
+    if(data.stage=='small'){
+      data.risk1 = (data.Ca < 5.5) ? 1 : 0;
+      data.risk2 = (data.N  > 112) ? 1 : 0;
+      data.risk3 = (data.K  > 195) ? 1 : 0;
+      data.risk4 = (data.NdivCa > 7.5) ? 1 : 0;
+      data.risk5 = (data.KdivCa > 19.5) ? 1 : 0;
+    }
+    if(data.stage=='mature'){
+      data.risk1 = (data.Ca < 15)  ? 1 : 0;
+      data.risk2 = (data.N  > 45)  ? 1 : 0;
+      data.risk3 = (data.K  > 150) ? 1 : 0;
+      data.risk4 = (data.NdivCa > 10) ? 1 : 0;
+      data.risk5 = (data.KdivCa > 30) ? 1 : 0;
+    }
+    data.riskIndex = data.risk1 + data.risk2 + data.risk3 + data.risk4 + data.risk5;
+    data.avgWeight = data.Peso_Total / data.N_Frutos;
+    return data;
+  }
+
   vm.loadData = () => {
     nutritionalDataSvc.getDataList(vm.currentPage-1, vm.pageSize)
     .error((err) => {
@@ -131,6 +159,7 @@ function dashboardNutritionalAnalysisCtrl(stationsSvc, authSvc, nutritionalDataS
         item.sector = item.station.sectors.filter((sector) => {
           return sector._id == sectorID
         })[0]
+        item = calculateNutritionalIndicators(item);
       })
 
       vm.totalItems = response.data.meta['total-items'];
