@@ -13,6 +13,7 @@
             <th>Cuartel</th>
             <th>Fecha</th>
             <th>Momento de Medición</th>
+            <th>Información Adicional</th>
           </thead>
           <tbody>
             <form class="form-inline well clearfix">
@@ -52,6 +53,11 @@
                   <input type="radio" ng-model="vm.fdata.stage" value="mature">
                   Fruto Maduro
                 </label><br/>
+              </td>
+              <td>
+                <div class="form-group">
+                  <input type="text" class="form-control" ng-model="vm.fdata.other">
+                </div>
               </td>
             </tr>
           </tbody>
@@ -127,6 +133,7 @@
               <th>N°</br/>Frutos</th>
               <th>Peso<br/>Total</th>
               <th>Índice<br/>Riesgo</th>
+              <th>Otros</th>
               <th>Opciones</th>
             </thead>
             <tbody>
@@ -152,6 +159,7 @@
                 <td>{{nutData.N_Frutos}}</td>
                 <td>{{nutData.Peso_Total}}</td>
                 <td>{{nutData.riskIndex}}</td>
+                <td>{{nutData.other}}</td>
                 <td><button type="button" class="btn btn-danger btn-xs" ng-click="vm.removeData(nutData)"><i class="fa fa-trash"></i></button></td>
               </tr>
             </tbody>
@@ -172,6 +180,74 @@
             next-text="Siguiente">
           </ul>
         </span>
+
+        <hr/>
+
+        <span ng-if="vm.nutritionalData.length>0">
+          <h3>Indicadores Nutricionales</h3>
+          <label>Seleccione un cuartel para revisar sus indicadores nutricionales: </label><br>
+          <select class="form-control" id="sector" ng-model="vm.selectedSector">
+            <option ng-repeat="(index, sector) in vm.sectors" value="{{ index }}">
+              {{ sector.station }}, {{ sector.name }}, {{ sector.cultivar | cultivarTranslate }}
+            </option>
+          </select>
+          <table class="table table-condensed table-bordered table-responsive" ng-if="vm.nutritionalIndicators.length>0">
+            <thead>
+              <th>Fecha</th>
+              <th>Momento<br/>Medición</th>
+              <th>N/Ca</th>
+              <th>K/Ca</th>
+              <th>Mg/Ca</th>
+              <th>N/K</th>
+              <th>K/P</th>
+              <th>P/Ca</th>
+              <th>(K/Mg)/Ca</th>
+              <th>Índice de Riesgo</th>
+              <th>Peso Promedio</th>
+            </thead>
+            <tbody>
+              <tr ng-repeat="nutData in vm.nutritionalIndicators">
+                <td><span>{{nutData.date | amDateFormat:'DD-MM-YYYY'}}</span></td>
+                <td>
+                  <span ng-if="nutData.stage == 'small'">
+                    Fruto Pequeño
+                  </span>
+                  <span ng-if="nutData.stage == 'mature'">
+                    Fruto Maduro
+                  </span>
+                </td>
+                <td>{{nutData.NdivCa}}</td>
+                <td>{{nutData.KdivCa}}</td>
+                <td>{{nutData.MgdivCa}}</td>
+                <td>{{nutData.NdivK}}</td>
+                <td>{{nutData.KdivP}}</td>
+                <td>{{nutData.PdivCa}}</td>
+                <td>{{nutData.KMgdivCa}}</td>
+                <td>{{nutData.riskIndex}}</td>
+                <td>{{nutData.avgWeight}}</td>
+              </tr>
+            </tbody>
+          </table>
+          {{nutData}}
+
+          <ul
+            uib-pagination
+            total-items="vm.totalItems2"
+            ng-model="vm.currentPage2"
+            max-size="vm.maxPages2"
+            items-per-page="vm.pageSize2"
+            ng-change="vm.pageChanged2()"
+            boundary-links="true"
+            class="pagination-sm"
+            force-ellipses="false"
+            first-text="Inicio"
+            last-text="Final"
+            previous-text="Anterior"
+            next-text="Siguiente">
+          </ul>
+        </span>
+
+
       </div>
     </div>
   </div>

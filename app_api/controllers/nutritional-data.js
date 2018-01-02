@@ -28,6 +28,7 @@ module.exports.create = (req, res) => {
   data.Ms         = req.body.Ms;
   data.N_Frutos   = req.body.N_Frutos;
   data.Peso_Total = req.body.Peso_Total;
+  data.other      = req.body.other;
 
   data.date.setHours(0, 0, 0, 0);
 
@@ -53,18 +54,8 @@ module.exports.list = (req, res) => {
   let requestData = JsonApiQueryParser.parseRequest(req.url);
   let pageNumber  = requestData.queryData.page.number  || 0;
   let pageSize    = requestData.queryData.page.size    || 10;
+  let filter      = requestData.queryData.filter;
   let query = { };
-  /*
-  Station.find({
-    owner : userID
-  })
-
-  //CREO UNA LISTA CON LOS IDS DE ESTACIONES DE LOS USUARIOS
-
-  {
-    station: { $in: STATIONS_LIST }
-  }
-  */
   Station.find({
     owner: req.payload._id
   },
@@ -82,6 +73,9 @@ module.exports.list = (req, res) => {
     })
     query = {
       station : { $in : station_ids}
+    }
+    if(filter.sector){
+      query.sectorId = filter.sector;
     }
     NutritionalData.find(
       query,

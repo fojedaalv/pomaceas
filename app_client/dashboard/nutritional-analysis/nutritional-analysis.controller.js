@@ -34,7 +34,8 @@ function dashboardNutritionalAnalysisCtrl(stationsSvc, authSvc, nutritionalDataS
       Mg         : 0,
       Ms         : 0,
       N_Frutos   : 0,
-      Peso_Total : 0
+      Peso_Total : 0,
+      other      : ""
     }
     if(vm.sectors.length>0){
       vm.fdata.sector = "0";
@@ -101,7 +102,8 @@ function dashboardNutritionalAnalysisCtrl(stationsSvc, authSvc, nutritionalDataS
       Mg        : vm.fdata.Mg,
       Ms        : vm.fdata.Ms,
       N_Frutos  : vm.fdata.N_Frutos,
-      Peso_Total: vm.fdata.Peso_Total
+      Peso_Total: vm.fdata.Peso_Total,
+      other     : vm.fdata.other
     }
     nutritionalDataSvc.uploadData(data)
     .error(function(err){
@@ -182,4 +184,52 @@ function dashboardNutritionalAnalysisCtrl(stationsSvc, authSvc, nutritionalDataS
       })
     }
   }
+
+  /*
+    * Código para seleccionar indicadores nutricionales que visualizar
+  */
+  vm.selectedSector = 0;
+  vm.displayedIndicators = [];
+  vm.nutritionalIndicators = [];
+  // Variables para Paginación
+  vm.totalItems2  = 10;
+  vm.currentPage2 = 1;
+  vm.maxPages2    = 5;
+  vm.pageSize2    = 10;
+  vm.setPage2     = (pageNo) => {
+    vm.currentPage2 = pageNo;
+  };
+  vm.pageChanged2 = (pageNo) => {
+    vm.loadData2();
+  }
+  // FIN Variables para paginación
+  vm.loadData2 = () => {
+    if(vm.selectedSector !== 0){
+      let sectorID = vm.sectors[vm.selectedSector]._id;
+      nutritionalDataSvc.getDataListBySector(vm.currentPage-1, vm.pageSize, sectorID)
+      .error((err) => {
+        vm.errMessage = err.message;
+        console.log(err);
+      })
+      .then((response) => {
+        vm.nutritionalIndicators = response.data.data;
+        // Añade el sector como una propiedad de cada objeto de datos
+        // (la propiedad station tiene la lista de todos los sectores)
+        vm.nutritionalIndicators.forEach((item) => {
+          let sectorID = item.sectorId;
+          item.sector = item.station.sectors.filter((sector) => {
+            return sector._id == sectorID
+          })[0]
+          item = calculateNutritionalIndicators(item);
+        })
+
+        vm.totalItems2 = response.data.meta['total-items'];
+        vm.maxPages2   = response.data.meta['total-pages'];
+      })
+    }
+  }
+  $scope.$watch('vm.selectedSector', () => {
+    vm.displayedIndicators = [];
+    vm.loadData2();
+  })
 }

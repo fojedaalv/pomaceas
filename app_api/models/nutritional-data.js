@@ -52,6 +52,11 @@ var nutritionalDataSchema = new mongoose.Schema({
   Peso_Total: {
     type: Number,
     required: true
+  },
+  other: {
+    type: String,
+    required: false,
+    defaul: ""
   }
 }, {
   timestamps: true

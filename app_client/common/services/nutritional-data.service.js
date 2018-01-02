@@ -18,6 +18,19 @@ function nutritionalDataSvc($http, $window, authSvc){
     });
   }
 
+  var getDataListBySector = function(pageNumber = 0, pageSize = 0, sectorID){
+    return $http.get('/api/v1/nutritional-data',{
+      params : {
+        'page[number]'   : pageNumber,
+        'page[size]'     : pageSize,
+        'filter[sector]' : sectorID
+      },
+      headers: {
+        Authorization: 'Bearer '+ authSvc.getToken()
+      }
+    });
+  }
+
   var removeData = (dataID) => {
     return $http.delete('/api/v1/nutritional-data/'+dataID, {
       headers: {
@@ -29,6 +42,7 @@ function nutritionalDataSvc($http, $window, authSvc){
   return {
     uploadData  : uploadData,
     getDataList : getDataList,
+    getDataListBySector : getDataListBySector,
     removeData  : removeData
   };
 }
