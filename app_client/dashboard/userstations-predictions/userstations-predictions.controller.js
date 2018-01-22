@@ -110,6 +110,78 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
           vm.errMessage = e.error;
           console.log(e);
         })
+      }else if(vm.selectedSector.cultivar == 'fuji'){
+        predictionsSvc.getPredictionSunDamageFuji(vm.stationId, vm.selectedYear)
+        .success(function(data){
+          if(data.error){
+            vm.predictions.sunFuji = 'no-data';
+          }else{
+            vm.predictions.sunFuji = {
+              incidence  : data.incidence,
+              riskDays   : data.riskDays
+            }
+          }
+        })
+        .error(function(e){
+          vm.errMessage = e.error;
+          console.log(e);
+        })
+
+        predictionsSvc.getPredictionRussetFuji(vm.stationId, vm.selectedYear)
+        .success(function(data){
+          if(data.error){
+            vm.predictions.russetFuji = 'no-data';
+          }else{
+            vm.predictions.russetFuji = {
+              incidence  : data.incidence,
+              hours      : data.hours
+            }
+          }
+        })
+        .error(function(e){
+          vm.errMessage = e.error;
+          console.log(e);
+        })
+
+        predictionsSvc.getPredictionColorFujiPink(vm.stationId, vm.selectedYear)
+        .success(function(data){
+          vm.predictions.colorPotential = {
+            potential : data.potential,
+            days      : data.days
+          }
+        })
+        .error(function(e){
+          vm.errMessage = e.error;
+          console.log(e);
+        })
+      }else if(vm.selectedSector.cultivar == 'cripps_pink'){
+        predictionsSvc.getPredictionSunDamagePink(vm.stationId, vm.selectedYear)
+        .success(function(data){
+          if(data.error){
+            vm.predictions.sunPink = 'no-data';
+          }else{
+            vm.predictions.sunPink = {
+              incidence  : data.incidence,
+              riskDays   : data.riskDays
+            }
+          }
+        })
+        .error(function(e){
+          vm.errMessage = e.error;
+          console.log(e);
+        })
+
+        predictionsSvc.getPredictionColorFujiPink(vm.stationId, vm.selectedYear)
+        .success(function(data){
+          vm.predictions.colorPotential = {
+            potential : data.potential,
+            days      : data.days
+          }
+        })
+        .error(function(e){
+          vm.errMessage = e.error;
+          console.log(e);
+        })
       }
     }
   })

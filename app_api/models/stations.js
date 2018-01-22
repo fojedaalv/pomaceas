@@ -4,7 +4,8 @@ var ObjectId = mongoose.Schema.ObjectId;
 var sectorSchema = new mongoose.Schema({
   cultivar: {
     type: String,
-    default: 'gala'
+    default: 'gala',
+    enum: ['gala', 'fuji', 'cripps_pink']
   },
   name: {
     type: String,

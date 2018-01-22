@@ -112,6 +112,18 @@ router.get('/pred-size-gala/:stationId',
   ctrlSensorData.getSizePrediction);
 router.get('/pred-harvest-gala/:stationId',
   ctrlSensorData.getHarvestPrediction);
+router.get(
+  '/pred-sun-fuji/:stationId',
+  ctrlSensorData.getFujiSunDamage);
+router.get(
+  '/pred-sun-pink/:stationId',
+  ctrlSensorData.getPinkSunDamage);
+router.get(
+  '/pred-fuji-russet/:stationId',
+  ctrlSensorData.getFujiRusset);
+router.get(
+  '/pred-color-fujipink/:stationId',
+  ctrlSensorData.getColorPredictionFujiPink);
 
 // ======== Variables Summaries Endpoints ==========
 router.get('/summaries',

@@ -2092,3 +2092,227 @@ module.exports.deleteDataByDate = function(req, res){
     return;
   }
 }
+
+module.exports.getFujiSunDamage = (req, res) => {
+  var stationId = req.params.stationId;
+  var year = req.query.year;
+  if( isObjectIdValid(stationId) && year != 'undefined' ){
+    SensorData.aggregate([{
+      $match: {
+        station: stationId,
+        date: {
+          $gte: new Date(Date.UTC(year, 0, 0, 0, 0, 0)),
+          $lt: new Date(Date.UTC(year, 1, 0, 0, 0, 0))
+        }
+      }
+    }, {
+      $group: {
+        _id : {
+          $dayOfMonth : "$date"
+        },
+        hrmay29c: {$sum: "$hrmay29c"}
+      }
+    }], function(err, result){
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      } else {
+        if(result.length==0){
+          sendJSONresponse(res, 200, {
+            error: 'no-data'
+          });
+          return;
+        }else{
+          let riskDays = 0;
+          result.forEach((item) => {
+            if(item.hrmay29c >= 5){
+              riskDays += 1;
+            }
+          })
+          let incidence = Math.exp(0.144*riskDays);
+          sendJSONresponse(res, 200, {
+            incidence  : incidence,
+            riskDays   : riskDays
+          });
+          return;
+        }
+      }
+    });
+  }else{
+    sendJSONresponse(res, 400, {
+      error: "La expresión fue mal formada. Revise si los parámetros están completos."
+    });
+    return;
+  }
+}
+
+module.exports.getFujiRusset = (req, res) => {
+  var stationId = req.params.stationId;
+  var year = req.query.year;
+  if( isObjectIdValid(stationId) && year != 'undefined' ){
+    SensorData.aggregate([{
+      $match: {
+        station: stationId,
+        date: {
+          $gte: new Date(Date.UTC(year, 9, 0, 0, 0, 0)),
+          $lt: new Date(Date.UTC(year, 10, 0, 0, 0, 0))
+        }
+      }
+    }, {
+      $group: {
+        _id : null,
+        hr7: {$sum: "$hr7"}
+      }
+    }], function(err, result){
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      } else {
+        if(result.length==0){
+          sendJSONresponse(res, 200, {
+            error: 'no-data'
+          });
+          return;
+        }else{
+          let hours  = result[0].hr7;
+          let incidence = Math.exp(0.0344*hours);
+          sendJSONresponse(res, 200, {
+            incidence  : incidence,
+            hours      : hours
+          });
+          return;
+        }
+      }
+    });
+  }else{
+    sendJSONresponse(res, 400, {
+      error: "La expresión fue mal formada. Revise si los parámetros están completos."
+    });
+    return;
+  }
+}
+
+module.exports.getColorPredictionFujiPink = (req, res) => {
+  var stationId = req.params.stationId;
+  var year = req.query.year;
+  if( isObjectIdValid(stationId) && year ){
+    SensorData.aggregate([{
+      $match: {
+        station: stationId,
+        date: {
+          $gte: new Date(Date.UTC(year, 2, 0, 0, 0, 0)),
+          $lt: new Date(Date.UTC(year, 3, 0, 0, 0, 0))
+        }
+      }
+    }, {
+      $project: {
+        _id: 1,
+        date: 1,
+        hr10: 1
+      }
+    }, {
+      $group: {
+        _id : {
+          day: { $dayOfMonth: "$date" }
+        },
+        hr10: {$sum: "$hr10"}
+      }
+    }], function(err, result){
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      } else {
+        if(result.length==0){
+          sendJSONresponse(res, 201, {
+            stationId: stationId,
+            year: year,
+            potential: 'no-data'
+          });
+          return;
+        }else{
+          var potential = null;
+          let count = 0;
+          result.forEach((item) => {
+            if (item.hr10 >= 5) count++;
+          });
+          if(count < 5){
+            potential = 'low-potential';
+          }else if(count > 5){
+            potential = 'high-potential';
+          }else{
+            potential = 'mid-potential';
+          }
+          sendJSONresponse(res, 201, {
+            stationId: stationId,
+            year: year,
+            days: count,
+            potential: potential
+          });
+          return;
+        }
+      }
+    });
+  }else{
+    sendJSONresponse(res, 400, {
+      error: "La expresión fue mal formada. Revise si los parámetros están completos."
+    });
+    return;
+  }
+}
+
+module.exports.getPinkSunDamage = (req, res) => {
+  var stationId = req.params.stationId;
+  var year = req.query.year;
+  if( isObjectIdValid(stationId) && year != 'undefined' ){
+    SensorData.aggregate([{
+      $match: {
+        station: stationId,
+        date: {
+          $gte: new Date(Date.UTC(year, 0, 0, 0, 0, 0)),
+          $lt: new Date(Date.UTC(year, 1, 0, 0, 0, 0))
+        }
+      }
+    }, {
+      $group: {
+        _id : {
+          $dayOfMonth : "$date"
+        },
+        hrmay29c: {$sum: "$hrmay29c"}
+      }
+    }], function(err, result){
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      } else {
+        if(result.length==0){
+          sendJSONresponse(res, 200, {
+            error: 'no-data'
+          });
+          return;
+        }else{
+          let riskDays = 0;
+          result.forEach((item) => {
+            if(item.hrmay29c >= 5){
+              riskDays += 1;
+            }
+          })
+          let incidence = Math.exp(0.126*riskDays);
+          sendJSONresponse(res, 200, {
+            incidence  : incidence,
+            riskDays   : riskDays
+          });
+          return;
+        }
+      }
+    });
+  }else{
+    sendJSONresponse(res, 400, {
+      error: "La expresión fue mal formada. Revise si los parámetros están completos."
+    });
+    return;
+  }
+}

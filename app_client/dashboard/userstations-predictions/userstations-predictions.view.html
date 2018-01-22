@@ -175,8 +175,152 @@
               </div>
             </div>
           </div>
-          <div ng-show="vm.selectedSector.cultivar!='gala'">
-            <h2>No hay predicciones disponibles aún para este cultivar</h2>
+
+          <div ng-show="vm.selectedSector.cultivar=='fuji'">
+            <div class="panel panel-success">
+              <div class="panel-heading"><h3>Incidencias de Daño por Sol</h3></div>
+              <div class="panel-body">
+                <p>Se realizan estimaciones para el porcentaje de incidencias de daño por sol.</p>
+                <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.sunFuji!='no-data'">
+                  <thead>
+                    <td class="col-md-4 success">
+                      <strong>Días de Riesgo</strong>
+                    </td>
+                    <td class="col-md-8 success">
+                      <strong>Porcentaje de Incidencia de Daño por Sol</strong>
+                    </td>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{ vm.predictions.sunFuji.riskDays }} días</td>
+                      <td>{{ vm.predictions.sunFuji.incidence | number:2 }}%</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="alert alert-warning" ng-if="vm.predictions.sunFuji=='no-data'">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <strong>Se necesitan datos.</strong> No existen datos durante Enero durante el año seleccionado. Se deben subir datos de Enero al sistema para poder llevar acabo las predicciones.
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-success">
+              <div class="panel-heading"><h3>Incidencias de Russet</h3></div>
+              <div class="panel-body">
+                <p>Se realizan estimaciones para el porcentaje de incidencias de Russet.</p>
+                <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.russetFuji!='no-data'">
+                  <thead>
+                    <td class="col-md-4 success">
+                      <strong>Horas bajo 7°C en Octubre</strong>
+                    </td>
+                    <td class="col-md-8 success">
+                      <strong>Porcentaje de Incidencia de Russet</strong>
+                    </td>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{ vm.predictions.russetFuji.hours }} horas</td>
+                      <td>{{ vm.predictions.russetFuji.incidence | number:2 }}%</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="alert alert-warning" ng-if="vm.predictions.russetFuji=='no-data'">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <strong>Se necesitan datos.</strong> No existen datos durante Octubre durante el año seleccionado. Se deben subir datos de Octubre al sistema para poder llevar acabo las predicciones.
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-success">
+              <div class="panel-heading"><h3>Color</h3></div>
+              <div class="panel-body">
+                <p>La estimación del potencial de color de los frutos se calcula durante el mes previo a la cosecha.</p>
+                <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.colorPotential.potential!='no-data'">
+                  <thead>
+                    <td class="col-md-4 success">Potencial</td>
+                    <td class="col-md-8 success">Días con 5 Hrs. de T < 5°C</td>
+                  </thead>
+                  <tbody>
+                    <tr ng-if="vm.predictions.colorPotential.potential=='low-potential'">
+                      <td>Bajo Potencial (< 5 días)</td>
+                      <td>{{ vm.predictions.colorPotential.days | number:0 }} días</td>
+                    </tr>
+                    <tr ng-if="vm.predictions.colorPotential.potential=='mid-potential'">
+                      <td>Medio Potencial (5 días)</td>
+                      <td>{{ vm.predictions.colorPotential.days | number:0 }} días</td>
+                    </tr>
+                    <tr ng-if="vm.predictions.colorPotential.potential=='high-potential'">
+                      <td>Alto Potencial (> 5 días)</td>
+                      <td>{{ vm.predictions.colorPotential.days | number:0 }} días</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="alert alert-warning" ng-if="vm.predictions.colorPotential.potential=='no-data'">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <strong>Se necesitan datos.</strong> No existen datos durante Marzo durante el año seleccionado. Se deben subir datos de Marzo al sistema para poder llevar acabo las predicciones.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div ng-show="vm.selectedSector.cultivar=='cripps_pink'">
+            <div class="panel panel-success">
+              <div class="panel-heading"><h3>Incidencias de Daño por Sol</h3></div>
+              <div class="panel-body">
+                <p>Se realizan estimaciones para el porcentaje de incidencias de daño por sol.</p>
+                <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.sunPink!='no-data'">
+                  <thead>
+                    <td class="col-md-4 success">
+                      <strong>Días de Riesgo</strong>
+                    </td>
+                    <td class="col-md-8 success">
+                      <strong>Porcentaje de Incidencia de Daño por Sol</strong>
+                    </td>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{ vm.predictions.sunPink.riskDays }} días</td>
+                      <td>{{ vm.predictions.sunPink.incidence | number:2 }}%</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="alert alert-warning" ng-if="vm.predictions.sunPink=='no-data'">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <strong>Se necesitan datos.</strong> No existen datos durante Enero durante el año seleccionado. Se deben subir datos de Enero al sistema para poder llevar acabo las predicciones.
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-success">
+              <div class="panel-heading"><h3>Color</h3></div>
+              <div class="panel-body">
+                <p>La estimación del potencial de color de los frutos se calcula durante el mes previo a la cosecha.</p>
+                <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.colorPotential.potential!='no-data'">
+                  <thead>
+                    <td class="col-md-4 success">Potencial</td>
+                    <td class="col-md-8 success">Días con 5 Hrs. de T < 5°C</td>
+                  </thead>
+                  <tbody>
+                    <tr ng-if="vm.predictions.colorPotential.potential=='low-potential'">
+                      <td>Bajo Potencial (< 5 días)</td>
+                      <td>{{ vm.predictions.colorPotential.days | number:0 }} días</td>
+                    </tr>
+                    <tr ng-if="vm.predictions.colorPotential.potential=='mid-potential'">
+                      <td>Medio Potencial (5 días)</td>
+                      <td>{{ vm.predictions.colorPotential.days | number:0 }} días</td>
+                    </tr>
+                    <tr ng-if="vm.predictions.colorPotential.potential=='high-potential'">
+                      <td>Alto Potencial (> 5 días)</td>
+                      <td>{{ vm.predictions.colorPotential.days | number:0 }} días</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="alert alert-warning" ng-if="vm.predictions.colorPotential.potential=='no-data'">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <strong>Se necesitan datos.</strong> No existen datos durante Marzo durante el año seleccionado. Se deben subir datos de Marzo al sistema para poder llevar acabo las predicciones.
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

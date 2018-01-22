@@ -228,8 +228,9 @@
               </tr>
             </tbody>
           </table>
-          {{nutData}}
-
+          <p ng-if="vm.nutritionalIndicators.length==0 && vm.selectedSector" style="margin-top:5px;">
+            No hay información nutricional registrada para la estación.
+          </p>
           <ul
             uib-pagination
             total-items="vm.totalItems2"
