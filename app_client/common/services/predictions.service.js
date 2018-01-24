@@ -35,7 +35,7 @@ function predictionsSvc($http, $window, authSvc){
   }
 
   var getPredictionLenticelosisGala = function(stationId, sectorId, year){
-    return $http.get('/api/v1/pred-gala-lenticelosis/'+stationId+"?year="+year+"&sectorId="+sectorId);
+    return $http.get('/api/v1/pred-lenticelosis-gala/'+stationId+"?year="+year+"&sectorId="+sectorId);
   }
 
   return {
