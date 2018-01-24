@@ -30,13 +30,18 @@ function predictionsSvc($http, $window, authSvc){
     return $http.get('/api/v1/pred-sun-pink/'+stationId+"?year="+year);
   }
 
+  var getPredictionBitterPitFuji = function(stationId, sectorId, year){
+    return $http.get('/api/v1/pred-bitterpit-fuji/'+stationId+"?year="+year+"&sectorId="+sectorId);
+  }
+
   return {
-    getPredictionColorGala: getPredictionColorGala,
-    getPredictionSizeGala: getPredictionSizeGala,
-    getPredictionHarvestGala: getPredictionHarvestGala,
-    getPredictionSunDamageFuji: getPredictionSunDamageFuji,
-    getPredictionRussetFuji : getPredictionRussetFuji,
+    getPredictionColorGala     : getPredictionColorGala,
+    getPredictionSizeGala      : getPredictionSizeGala,
+    getPredictionHarvestGala   : getPredictionHarvestGala,
+    getPredictionSunDamageFuji : getPredictionSunDamageFuji,
+    getPredictionRussetFuji    : getPredictionRussetFuji,
     getPredictionColorFujiPink : getPredictionColorFujiPink,
-    getPredictionSunDamagePink : getPredictionSunDamagePink
+    getPredictionSunDamagePink : getPredictionSunDamagePink,
+    getPredictionBitterPitFuji : getPredictionBitterPitFuji
   };
 }

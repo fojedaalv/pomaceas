@@ -124,6 +124,10 @@ router.get(
 router.get(
   '/pred-color-fujipink/:stationId',
   ctrlSensorData.getColorPredictionFujiPink);
+router.get(
+  '/pred-bitterpit-fuji/:stationId',
+  ctrlSensorData.getFujiBitterPit
+)
 
 // ======== Variables Summaries Endpoints ==========
 router.get('/summaries',

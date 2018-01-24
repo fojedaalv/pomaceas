@@ -154,6 +154,24 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
           vm.errMessage = e.error;
           console.log(e);
         })
+
+        predictionsSvc.getPredictionBitterPitFuji(vm.stationId, vm.selectedSector._id, vm.selectedYear)
+        .success(function(data){
+          if(data.error){
+            vm.predictions.bitterFuji = 'no-data';
+          }else{
+            vm.predictions.bitterFuji = {
+              risk  : data.risk,
+              riskIndex : data.riskIndex,
+              stress    : data.stress,
+              tempOver29: data.tempOver29
+            }
+          }
+        })
+        .error(function(e){
+          vm.errMessage = e.error;
+          console.log(e);
+        })
       }else if(vm.selectedSector.cultivar == 'cripps_pink'){
         predictionsSvc.getPredictionSunDamagePink(vm.stationId, vm.selectedYear)
         .success(function(data){

@@ -261,6 +261,58 @@
                 </div>
               </div>
             </div>
+
+            <div class="panel panel-success">
+              <div class="panel-heading"><h3>Potencial de ocurrencia de Bitter Pit</h3></div>
+              <div class="panel-body">
+                <p>Se realizan estimaciones sobre el potencial de ocurrencia de Bitter Pit.</p>
+                <p>Se consideran mediciones desde Diciembre del año anterior y Marzo del año de cosecha,
+                  además de la información nutricional del momento de cosecha.</p>
+                <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.bitterFuji!='no-data'">
+                  <thead>
+                    <td class="col-md-3 success">
+                      <strong>Potencial de ocurrencia</strong>
+                    </td>
+                    <td class="col-md-3 success">
+                      <strong>Índice de Riesgo</strong>
+                    </td>
+                    <td class="col-md-3 success">
+                      <strong>Unidades de Estrés</strong>
+                    </td>
+                    <td class="col-md-3 success">
+                      <strong>Días con T° > 29°C</strong>
+                    </td>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <span ng-if="vm.predictions.bitterFuji.risk=='low'">
+                          Bajo
+                        </span>
+                        <span ng-if="vm.predictions.bitterFuji.risk=='mid'">
+                          Medio
+                        </span>
+                        <span ng-if="vm.predictions.bitterFuji.risk=='high'">
+                          Alto
+                        </span>
+                      </td>
+                      <td>{{ vm.predictions.bitterFuji.riskIndex }}</td>
+                      <td>{{ vm.predictions.bitterFuji.stress | number:2 }}</td>
+                      <td>{{ vm.predictions.bitterFuji.tempOver29 }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="alert alert-warning" ng-if="vm.predictions.bitterFuji=='no-data'">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <strong>Se necesitan datos.</strong> No existen datos suficientes para estimar la ocurrencia de Bitter Pit durante el año {{vm.selectedYear}}.<br/>
+                  Puede ser alguna de estas razones:
+                  <ul>
+                    <li>No hay datos en el sistema entre Diciembre de {{(vm.selectedYear-1)}} y Marzo de {{vm.selectedYear}}.</li>
+                    <li>No hay un registro de información nutricional para fruto maduro en el año {{vm.selectedYear}}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div ng-show="vm.selectedSector.cultivar=='cripps_pink'">

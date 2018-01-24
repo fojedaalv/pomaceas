@@ -138,7 +138,6 @@ let calculateNutritionalIndicators = (data) => {
   data.KdivP    = data.K / data.P;
   data.PdivCa   = data.P / data.Ca;
   data.KMgdivCa = (data.K + data.Mg) / data.Ca;
-  // FALTAN LOS INDICADORES DE RIESGO
   if(data.stage=='small'){
     data.risk1 = (data.Ca < 5.5) ? 1 : 0;
     data.risk2 = (data.N  > 112) ? 1 : 0;

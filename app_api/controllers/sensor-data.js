@@ -1,6 +1,7 @@
 var passport = require('passport');
 var mongoose = require('mongoose');
 var SensorData = mongoose.model('SensorData');
+var NutritionalData = mongoose.model('NutritionalData');
 var Station = mongoose.model('Station');
 var moment = require('moment');
 
@@ -2101,8 +2102,8 @@ module.exports.getFujiSunDamage = (req, res) => {
       $match: {
         station: stationId,
         date: {
-          $gte: new Date(Date.UTC(year, 0, 0, 0, 0, 0)),
-          $lt: new Date(Date.UTC(year, 1, 0, 0, 0, 0))
+          $gte: new Date(Date.UTC(year, 0, 1, 0, 0, 0)),
+          $lt: new Date(Date.UTC(year, 1, 1, 0, 0, 0))
         }
       }
     }, {
@@ -2155,8 +2156,8 @@ module.exports.getFujiRusset = (req, res) => {
       $match: {
         station: stationId,
         date: {
-          $gte: new Date(Date.UTC(year, 9, 0, 0, 0, 0)),
-          $lt: new Date(Date.UTC(year, 10, 0, 0, 0, 0))
+          $gte: new Date(Date.UTC(year, 9, 1, 0, 0, 0)),
+          $lt: new Date(Date.UTC(year, 10, 1, 0, 0, 0))
         }
       }
     }, {
@@ -2202,8 +2203,8 @@ module.exports.getColorPredictionFujiPink = (req, res) => {
       $match: {
         station: stationId,
         date: {
-          $gte: new Date(Date.UTC(year, 2, 0, 0, 0, 0)),
-          $lt: new Date(Date.UTC(year, 3, 0, 0, 0, 0))
+          $gte: new Date(Date.UTC(year, 2, 0, 1, 0, 0)),
+          $lt: new Date(Date.UTC(year, 3, 1, 0, 0, 0))
         }
       }
     }, {
@@ -2271,8 +2272,8 @@ module.exports.getPinkSunDamage = (req, res) => {
       $match: {
         station: stationId,
         date: {
-          $gte: new Date(Date.UTC(year, 0, 0, 0, 0, 0)),
-          $lt: new Date(Date.UTC(year, 1, 0, 0, 0, 0))
+          $gte: new Date(Date.UTC(year, 0, 1, 0, 0, 0)),
+          $lt: new Date(Date.UTC(year, 1, 1, 0, 0, 0))
         }
       }
     }, {
@@ -2314,5 +2315,139 @@ module.exports.getPinkSunDamage = (req, res) => {
       error: "La expresión fue mal formada. Revise si los parámetros están completos."
     });
     return;
+  }
+}
+/*
+ * Función para calcular indicadores nutricionales y de riesgo
+ */
+
+let calculateNutritionalIndicators = (data) => {
+  data.NdivCa   = data.N / data.Ca;
+  data.KdivCa   = data.K / data.Ca;
+  data.MgdivCa  = data.Mg / data.Ca;
+  data.NdivK    = data.N / data.K;
+  data.KdivP    = data.K / data.P;
+  data.PdivCa   = data.P / data.Ca;
+  data.KMgdivCa = (data.K + data.Mg) / data.Ca;
+  if(data.stage=='small'){
+    data.risk1 = (data.Ca < 5.5) ? 1 : 0;
+    data.risk2 = (data.N  > 112) ? 1 : 0;
+    data.risk3 = (data.K  > 195) ? 1 : 0;
+    data.risk4 = (data.NdivCa > 7.5) ? 1 : 0;
+    data.risk5 = (data.KdivCa > 19.5) ? 1 : 0;
+  }
+  if(data.stage=='mature'){
+    data.risk1 = (data.Ca < 15)  ? 1 : 0;
+    data.risk2 = (data.N  > 45)  ? 1 : 0;
+    data.risk3 = (data.K  > 150) ? 1 : 0;
+    data.risk4 = (data.NdivCa > 10) ? 1 : 0;
+    data.risk5 = (data.KdivCa > 30) ? 1 : 0;
+  }
+  data.riskIndex = data.risk1 + data.risk2 + data.risk3 + data.risk4 + data.risk5;
+  data.avgWeight = data.Peso_Total / data.N_Frutos;
+  return data;
+}
+
+module.exports.getFujiBitterPit = (req, res) => {
+  let stationId = req.params.stationId;
+  let year      = +req.query.year;
+  let sectorId  = req.query.sectorId;
+  if( isObjectIdValid(stationId) && year != 'undefined' ){
+    SensorData.aggregate([{
+      $match: {
+        station: stationId,
+        date: {
+          $gte: new Date(Date.UTC(year-1, 11, 1, 0, 0, 0)),
+          $lt: new Date(Date.UTC(year, 3, 1, 0, 0, 0))
+        }
+      }
+    }, {
+      $group: {
+        _id : {
+          day : {
+            $dayOfMonth : "$date"
+          },
+          month: {
+            $month : "$date"
+          },
+          year: {
+            $year : "$date"
+          }
+        },
+        hrmay29c : {$sum: "$hrmay29c"},
+        estres   : {$sum: "$uEstres"}
+      }
+    }], function(err, result){
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      } else {
+        if(result.length==0){
+          sendJSONresponse(res, 200, {
+            error: 'no-data'
+          });
+          return;
+        }
+        NutritionalData.findOne(
+          {
+            sectorId : sectorId,
+            stage    : 'mature',
+            date     : {
+              $gte: new Date(Date.UTC(year, 0, 1, 0, 0, 0)),
+              $lt: new Date(Date.UTC(year+1, 0, 1, 0, 0, 0))
+            }
+          },
+          (err, nutData) => {
+            if(err || !nutData){
+              console.log("Error al consultar Datos Nutricionales:"+JSON.stringify(err));
+              sendJSONresponse(res, 200, {
+                error: 'no-data'
+              });
+              return;
+            }
+            let stress     = 0;
+            let tempOver29 = 0;
+            result.forEach((item) => {
+              stress += item.estres;
+              tempOver29 += (item.hrmay29c >= 5) ? 1 : 0;
+            })
+            nutData = JSON.parse(JSON.stringify(nutData));
+            nutData = calculateNutritionalIndicators(nutData);
+            let ponderation = 0;
+            if(stress > 150000){
+              ponderation += 0.5;
+            }
+            if(tempOver29 > 40){
+              ponderation += 0.5;
+            }
+            if(nutData.riskIndex >= 3){
+              ponderation += 2;
+            }else if(nutData.riskIndex == 2){
+              ponderation += 1;
+            }
+            let risk = '';
+            if(ponderation <= 1){
+              risk = 'low';
+            }else if(ponderation <= 3){
+              risk = 'mid';
+            }else{
+              risk = 'high';
+            }
+            //console.log(nutData.riskIndex);
+            //console.log(stress);
+            //console.log(tempOver29);
+            sendJSONresponse(res, 200, {
+              risk       : risk,
+              riskIndex  : nutData.riskIndex,
+              stress     : stress,
+              tempOver29 : tempOver29,
+              ponderation: ponderation
+            });
+            return;
+          }
+        )
+      }
+    })
   }
 }
