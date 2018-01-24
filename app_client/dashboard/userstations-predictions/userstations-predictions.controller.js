@@ -110,6 +110,24 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
           vm.errMessage = e.error;
           console.log(e);
         })
+
+        predictionsSvc.getPredictionLenticelosisGala(vm.stationId, vm.selectedSector._id, vm.selectedYear)
+        .success(function(data){
+          if(data.error){
+            vm.predictions.lenticelosisGala = 'no-data';
+          }else{
+            vm.predictions.lenticelosisGala = {
+              risk  : data.risk,
+              riskIndex : data.riskIndex,
+              stress    : data.stress,
+              tempOver29: data.tempOver29
+            }
+          }
+        })
+        .error(function(e){
+          vm.errMessage = e.error;
+          console.log(e);
+        })
       }else if(vm.selectedSector.cultivar == 'fuji'){
         predictionsSvc.getPredictionSunDamageFuji(vm.stationId, vm.selectedYear)
         .success(function(data){

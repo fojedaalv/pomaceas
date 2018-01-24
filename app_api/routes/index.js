@@ -128,6 +128,10 @@ router.get(
   '/pred-bitterpit-fuji/:stationId',
   ctrlSensorData.getFujiBitterPit
 )
+router.get(
+  '/pred-lenticelosis-gala/:stationId',
+  ctrlSensorData.getGalaLenticelosis
+)
 
 // ======== Variables Summaries Endpoints ==========
 router.get('/summaries',

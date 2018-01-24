@@ -34,14 +34,19 @@ function predictionsSvc($http, $window, authSvc){
     return $http.get('/api/v1/pred-bitterpit-fuji/'+stationId+"?year="+year+"&sectorId="+sectorId);
   }
 
+  var getPredictionLenticelosisGala = function(stationId, sectorId, year){
+    return $http.get('/api/v1/pred-gala-lenticelosis/'+stationId+"?year="+year+"&sectorId="+sectorId);
+  }
+
   return {
-    getPredictionColorGala     : getPredictionColorGala,
-    getPredictionSizeGala      : getPredictionSizeGala,
-    getPredictionHarvestGala   : getPredictionHarvestGala,
-    getPredictionSunDamageFuji : getPredictionSunDamageFuji,
-    getPredictionRussetFuji    : getPredictionRussetFuji,
-    getPredictionColorFujiPink : getPredictionColorFujiPink,
-    getPredictionSunDamagePink : getPredictionSunDamagePink,
-    getPredictionBitterPitFuji : getPredictionBitterPitFuji
+    getPredictionColorGala        : getPredictionColorGala,
+    getPredictionSizeGala         : getPredictionSizeGala,
+    getPredictionHarvestGala      : getPredictionHarvestGala,
+    getPredictionSunDamageFuji    : getPredictionSunDamageFuji,
+    getPredictionRussetFuji       : getPredictionRussetFuji,
+    getPredictionColorFujiPink    : getPredictionColorFujiPink,
+    getPredictionSunDamagePink    : getPredictionSunDamagePink,
+    getPredictionBitterPitFuji    : getPredictionBitterPitFuji,
+    getPredictionLenticelosisGala : getPredictionLenticelosisGala
   };
 }

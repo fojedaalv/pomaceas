@@ -2434,9 +2434,105 @@ module.exports.getFujiBitterPit = (req, res) => {
             }else{
               risk = 'high';
             }
-            //console.log(nutData.riskIndex);
-            //console.log(stress);
-            //console.log(tempOver29);
+            sendJSONresponse(res, 200, {
+              risk       : risk,
+              riskIndex  : nutData.riskIndex,
+              stress     : stress,
+              tempOver29 : tempOver29,
+              ponderation: ponderation
+            });
+            return;
+          }
+        )
+      }
+    })
+  }
+}
+
+module.exports.getGalaLenticelosis = (req, res) => {
+  let stationId = req.params.stationId;
+  let year      = +req.query.year;
+  let sectorId  = req.query.sectorId;
+  if( isObjectIdValid(stationId) && year != 'undefined' ){
+    SensorData.aggregate([{
+      $match: {
+        station: stationId,
+        date: {
+          $gte: new Date(Date.UTC(year-1, 11, 1, 0, 0, 0)),
+          $lt: new Date(Date.UTC(year, 2, 1, 0, 0, 0))
+        }
+      }
+    }, {
+      $group: {
+        _id : {
+          day : {
+            $dayOfMonth : "$date"
+          },
+          month: {
+            $month : "$date"
+          },
+          year: {
+            $year : "$date"
+          }
+        },
+        hrmay29c : {$sum: "$hrmay29c"},
+        estres   : {$sum: "$uEstres"}
+      }
+    }], function(err, result){
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      } else {
+        if(result.length==0){
+          sendJSONresponse(res, 200, {
+            error: 'no-data'
+          });
+          return;
+        }
+        NutritionalData.findOne(
+          {
+            sectorId : sectorId,
+            stage    : 'mature',
+            date     : {
+              $gte: new Date(Date.UTC(year, 0, 1, 0, 0, 0)),
+              $lt: new Date(Date.UTC(year+1, 0, 1, 0, 0, 0))
+            }
+          },
+          (err, nutData) => {
+            if(err || !nutData){
+              console.log("Error al consultar Datos Nutricionales:"+JSON.stringify(err));
+              sendJSONresponse(res, 200, {
+                error: 'no-data'
+              });
+              return;
+            }
+            let stress     = 0;
+            let tempOver29 = 0;
+            result.forEach((item) => {
+              stress += item.estres;
+              tempOver29 += (item.hrmay29c >= 5) ? 1 : 0;
+            })
+            nutData = JSON.parse(JSON.stringify(nutData));
+            nutData = calculateNutritionalIndicators(nutData);
+            let ponderation = 0;
+            if(stress > 90000){
+              ponderation += 0.5;
+            }
+            if(tempOver29 > 25){
+              ponderation += 0.5;
+            }
+            if(nutData.riskIndex >= 3){
+              ponderation += 2;
+            }
+            let risk = '';
+            if(ponderation <= 1){
+              risk = 'low';
+            }else if(ponderation <= 3){
+              risk = 'mid';
+            }else{
+              risk = 'high';
+            }
             sendJSONresponse(res, 200, {
               risk       : risk,
               riskIndex  : nutData.riskIndex,
