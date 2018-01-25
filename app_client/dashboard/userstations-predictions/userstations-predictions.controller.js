@@ -128,6 +128,23 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
           vm.errMessage = e.error;
           console.log(e);
         })
+
+        predictionsSvc.getPredicitonEarlyStorageGala(vm.stationId, vm.selectedSector._id, vm.selectedYear)
+        .success(function(data){
+          if(data.error){
+            vm.predictions.earlyStorageGala = 'no-data';
+          }else{
+            vm.predictions.earlyStorageGala = {
+              potential : data.potential,
+              riskIndex : data.riskIndex,
+              monthAvgTemp : data.monthAvgTemp
+            }
+          }
+        })
+        .error(function(e){
+          vm.errMessage = e.error;
+          console.log(e);
+        })
       }else if(vm.selectedSector.cultivar == 'fuji'){
         predictionsSvc.getPredictionSunDamageFuji(vm.stationId, vm.selectedYear)
         .success(function(data){
@@ -190,6 +207,23 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
           vm.errMessage = e.error;
           console.log(e);
         })
+
+        predictionsSvc.getPredicitonEarlyStorageFuji(vm.stationId, vm.selectedSector._id, vm.selectedYear)
+        .success(function(data){
+          if(data.error){
+            vm.predictions.earlyStorageFuji = 'no-data';
+          }else{
+            vm.predictions.earlyStorageFuji = {
+              potential : data.potential,
+              riskIndex : data.riskIndex,
+              monthAvgTemp : data.monthAvgTemp
+            }
+          }
+        })
+        .error(function(e){
+          vm.errMessage = e.error;
+          console.log(e);
+        })
       }else if(vm.selectedSector.cultivar == 'cripps_pink'){
         predictionsSvc.getPredictionSunDamagePink(vm.stationId, vm.selectedYear)
         .success(function(data){
@@ -212,6 +246,23 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
           vm.predictions.colorPotential = {
             potential : data.potential,
             days      : data.days
+          }
+        })
+        .error(function(e){
+          vm.errMessage = e.error;
+          console.log(e);
+        })
+
+        predictionsSvc.getPredicitonEarlyStoragePink(vm.stationId, vm.selectedSector._id, vm.selectedYear)
+        .success(function(data){
+          if(data.error){
+            vm.predictions.earlyStoragePink = 'no-data';
+          }else{
+            vm.predictions.earlyStoragePink = {
+              potential : data.potential,
+              riskIndex : data.riskIndex,
+              monthAvgTemp : data.monthAvgTemp
+            }
           }
         })
         .error(function(e){

@@ -38,6 +38,18 @@ function predictionsSvc($http, $window, authSvc){
     return $http.get('/api/v1/pred-lenticelosis-gala/'+stationId+"?year="+year+"&sectorId="+sectorId);
   }
 
+  var getPredicitonEarlyStorageGala = function(stationId, sectorId, year){
+    return $http.get('/api/v1/pred-earlystorage-gala/'+stationId+"?year="+year+"&sectorId="+sectorId)
+  }
+
+  var getPredicitonEarlyStorageFuji = function(stationId, sectorId, year){
+    return $http.get('/api/v1/pred-earlystorage-fuji/'+stationId+"?year="+year+"&sectorId="+sectorId)
+  }
+
+  var getPredicitonEarlyStoragePink = function(stationId, sectorId, year){
+    return $http.get('/api/v1/pred-earlystorage-pink/'+stationId+"?year="+year+"&sectorId="+sectorId)
+  }
+
   return {
     getPredictionColorGala        : getPredictionColorGala,
     getPredictionSizeGala         : getPredictionSizeGala,
@@ -47,6 +59,9 @@ function predictionsSvc($http, $window, authSvc){
     getPredictionColorFujiPink    : getPredictionColorFujiPink,
     getPredictionSunDamagePink    : getPredictionSunDamagePink,
     getPredictionBitterPitFuji    : getPredictionBitterPitFuji,
-    getPredictionLenticelosisGala : getPredictionLenticelosisGala
+    getPredictionLenticelosisGala : getPredictionLenticelosisGala,
+    getPredicitonEarlyStorageGala : getPredicitonEarlyStorageGala,
+    getPredicitonEarlyStorageFuji : getPredicitonEarlyStorageFuji,
+    getPredicitonEarlyStoragePink : getPredicitonEarlyStoragePink
   };
 }

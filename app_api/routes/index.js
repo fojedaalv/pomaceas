@@ -132,6 +132,24 @@ router.get(
   '/pred-lenticelosis-gala/:stationId',
   ctrlSensorData.getGalaLenticelosis
 )
+router.get(
+  '/pred-earlystorage-gala/:stationId',
+  ctrlSensorData.getEarlyStoragePotentialGala
+)
+router.get(
+  '/pred-earlystorage-fuji/:stationId',
+  ctrlSensorData.getEarlyStoragePotentialFuji
+)
+router.get(
+  '/pred-earlystorage-pink/:stationId',
+  ctrlSensorData.getEarlyStoragePotentialCrippsPink
+)
+
+
+router.get(
+  '/predtest/:stationId',
+  ctrlSensorData.getEarlyStoragePotentialGala
+)
 
 // ======== Variables Summaries Endpoints ==========
 router.get('/summaries',
