@@ -2847,3 +2847,432 @@ module.exports.getEarlyStoragePotentialCrippsPink = (req, res) => {
     return;
   }
 }
+
+module.exports.getHarvestStoragePotentialGala = (req, res) => {
+  let stationId = req.params.stationId;
+  let year      = +req.query.year;
+  let sectorId  = req.query.sectorId;
+  if( isObjectIdValid(stationId) && year != 'undefined' ){
+    SensorData.aggregate([{
+      $match: {
+        station: stationId,
+        date: {
+          $gte: new Date(Date.UTC(year-1, 9, 1, 0, 0, 0)),
+          $lt: new Date(Date.UTC(year-1, 10, 1, 0, 0, 0))
+        }
+      }
+    }, {
+      $group: {
+        _id : {
+          day : {
+            $dayOfMonth : "$date"
+          },
+          month: {
+            $month : "$date"
+          },
+          year: {
+            $year : "$date"
+          }
+        },
+        dailyAvgTemp : {$avg: "$tempOut"}
+      }
+    }], function(err, result){
+      if(err){
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      }
+      if(result.length==0){
+        sendJSONresponse(res, 200, {
+          error: 'no-data'
+        });
+        return;
+      }
+      let tempSum = 0;
+      result.forEach((item) => {
+        tempSum += item.dailyAvgTemp;
+      })
+      let monthAvgTemp = tempSum / result.length;
+      SensorData.aggregate([{
+        $match: {
+          station: stationId,
+          date: {
+            $gte: new Date(Date.UTC(year-1, 11, 1, 0, 0, 0)),
+            $lt: new Date(Date.UTC(year, 1, 1, 0, 0, 0))
+          }
+        }
+      }, {
+        $group: {
+          _id : {
+            day : {
+              $dayOfMonth : "$date"
+            },
+            month: {
+              $month : "$date"
+            },
+            year: {
+              $year : "$date"
+            }
+          },
+          stress : {$avg: "$uEstres"}
+        }
+      }], function(err, result2){
+        if(err){
+          console.log(err);
+          sendJSONresponse(res, 404, err);
+          return;
+        }
+        if(result2.length==0){
+          sendJSONresponse(res, 200, {
+            error: 'no-data'
+          });
+          return;
+        }
+        let totalStress = 0;
+        result2.forEach((item) => {
+          totalStress += item.stress;
+        })
+        NutritionalData.findOne(
+          {
+            sectorId : sectorId,
+            stage    : 'mature',
+            date     : {
+              $gte: new Date(Date.UTC(year, 0, 1, 0, 0, 0)),
+              $lt: new Date(Date.UTC(year+1, 0, 1, 0, 0, 0))
+            }
+          },
+          (err, nutData) => {
+            if(err || !nutData){
+              console.log("Error al consultar Datos Nutricionales:"+JSON.stringify(err));
+              sendJSONresponse(res, 200, {
+                error: 'no-data'
+              });
+              return;
+            }
+            nutData = JSON.parse(JSON.stringify(nutData));
+            nutData = calculateNutritionalIndicators(nutData);
+            // TODO: Calcular ponderación con variables:
+            //   totalStress
+            //   nutData.riskIndex
+            //   monthAvgTemp
+
+            let ponderation = 0;
+            if(monthAvgTemp<=14.5){
+              ponderation += 0.5;
+            }
+            if(totalStress<=65000){
+              ponderation += 0.5;
+            }
+            if(nutData.riskIndex<=2){
+              ponderation += 2;
+            }
+            let potential = '';
+            if(ponderation <= 1){
+              potential = 'low';
+            }else if(ponderation <= 3){
+              potential = 'mid';
+            }else{
+              potential = 'high';
+            }
+            sendJSONresponse(res, 200, {
+              monthAvgTemp : monthAvgTemp,
+              riskIndex    : nutData.riskIndex,
+              potential    : potential,
+              totalStress  : totalStress
+            });
+            return;
+          }
+        )
+      })
+    })
+  }else{
+    sendJSONresponse(res, 400, {
+      error: "La expresión fue mal formada. Revise si los parámetros están completos."
+    });
+    return;
+  }
+}
+
+module.exports.getHarvestStoragePotentialFuji = (req, res) => {
+  let stationId = req.params.stationId;
+  let year      = +req.query.year;
+  let sectorId  = req.query.sectorId;
+  if( isObjectIdValid(stationId) && year != 'undefined' ){
+    SensorData.aggregate([{
+      $match: {
+        station: stationId,
+        date: {
+          $gte: new Date(Date.UTC(year-1, 9, 1, 0, 0, 0)),
+          $lt: new Date(Date.UTC(year-1, 10, 1, 0, 0, 0))
+        }
+      }
+    }, {
+      $group: {
+        _id : {
+          day : {
+            $dayOfMonth : "$date"
+          },
+          month: {
+            $month : "$date"
+          },
+          year: {
+            $year : "$date"
+          }
+        },
+        dailyAvgTemp : {$avg: "$tempOut"}
+      }
+    }], function(err, result){
+      if(err){
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      }
+      if(result.length==0){
+        sendJSONresponse(res, 200, {
+          error: 'no-data'
+        });
+        return;
+      }
+      let tempSum = 0;
+      result.forEach((item) => {
+        tempSum += item.dailyAvgTemp;
+      })
+      let monthAvgTemp = tempSum / result.length;
+      SensorData.aggregate([{
+        $match: {
+          station: stationId,
+          date: {
+            $gte: new Date(Date.UTC(year-1, 11, 1, 0, 0, 0)),
+            $lt: new Date(Date.UTC(year, 1, 3, 0, 0, 0))
+          }
+        }
+      }, {
+        $group: {
+          _id : {
+            day : {
+              $dayOfMonth : "$date"
+            },
+            month: {
+              $month : "$date"
+            },
+            year: {
+              $year : "$date"
+            }
+          },
+          stress : {$avg: "$uEstres"}
+        }
+      }], function(err, result2){
+        if(err){
+          console.log(err);
+          sendJSONresponse(res, 404, err);
+          return;
+        }
+        if(result2.length==0){
+          sendJSONresponse(res, 200, {
+            error: 'no-data'
+          });
+          return;
+        }
+        let totalStress = 0;
+        result2.forEach((item) => {
+          totalStress += item.stress;
+        })
+        NutritionalData.findOne(
+          {
+            sectorId : sectorId,
+            stage    : 'mature',
+            date     : {
+              $gte: new Date(Date.UTC(year, 0, 1, 0, 0, 0)),
+              $lt: new Date(Date.UTC(year+1, 0, 1, 0, 0, 0))
+            }
+          },
+          (err, nutData) => {
+            if(err || !nutData){
+              console.log("Error al consultar Datos Nutricionales:"+JSON.stringify(err));
+              sendJSONresponse(res, 200, {
+                error: 'no-data'
+              });
+              return;
+            }
+            nutData = JSON.parse(JSON.stringify(nutData));
+            nutData = calculateNutritionalIndicators(nutData);
+
+            let ponderation = 0;
+            if(monthAvgTemp<=14.5){
+              ponderation += 0.5;
+            }
+            if(totalStress<=120000){
+              ponderation += 0.5;
+            }
+            if(nutData.riskIndex<=1){
+              ponderation += 2;
+            }else if(nutData.riskIndex==2){
+              ponderation += 1;
+            }
+            let potential = '';
+            if(ponderation <= 1){
+              potential = 'low';
+            }else if(ponderation <= 3){
+              potential = 'mid';
+            }else{
+              potential = 'high';
+            }
+            sendJSONresponse(res, 200, {
+              monthAvgTemp : monthAvgTemp,
+              riskIndex    : nutData.riskIndex,
+              potential    : potential,
+              totalStress  : totalStress
+            });
+            return;
+          }
+        )
+      })
+    })
+  }else{
+    sendJSONresponse(res, 400, {
+      error: "La expresión fue mal formada. Revise si los parámetros están completos."
+    });
+    return;
+  }
+}
+
+module.exports.getHarvestStoragePotentialPink = (req, res) => {
+  let stationId = req.params.stationId;
+  let year      = +req.query.year;
+  let sectorId  = req.query.sectorId;
+  if( isObjectIdValid(stationId) && year != 'undefined' ){
+    SensorData.aggregate([{
+      $match: {
+        station: stationId,
+        date: {
+          $gte: new Date(Date.UTC(year-1, 9, 1, 0, 0, 0)),
+          $lt: new Date(Date.UTC(year-1, 10, 1, 0, 0, 0))
+        }
+      }
+    }, {
+      $group: {
+        _id : {
+          day : {
+            $dayOfMonth : "$date"
+          },
+          month: {
+            $month : "$date"
+          },
+          year: {
+            $year : "$date"
+          }
+        },
+        dailyAvgTemp : {$avg: "$tempOut"}
+      }
+    }], function(err, result){
+      if(err){
+        console.log(err);
+        sendJSONresponse(res, 404, err);
+        return;
+      }
+      if(result.length==0){
+        sendJSONresponse(res, 200, {
+          error: 'no-data'
+        });
+        return;
+      }
+      let tempSum = 0;
+      result.forEach((item) => {
+        tempSum += item.dailyAvgTemp;
+      })
+      let monthAvgTemp = tempSum / result.length;
+      SensorData.aggregate([{
+        $match: {
+          station: stationId,
+          date: {
+            $gte: new Date(Date.UTC(year-1, 11, 1, 0, 0, 0)),
+            $lt: new Date(Date.UTC(year, 1, 3, 0, 0, 0))
+          }
+        }
+      }, {
+        $group: {
+          _id : {
+            day : {
+              $dayOfMonth : "$date"
+            },
+            month: {
+              $month : "$date"
+            },
+            year: {
+              $year : "$date"
+            }
+          },
+          stress : {$avg: "$uEstres"}
+        }
+      }], function(err, result2){
+        if(err){
+          console.log(err);
+          sendJSONresponse(res, 404, err);
+          return;
+        }
+        if(result2.length==0){
+          sendJSONresponse(res, 200, {
+            error: 'no-data'
+          });
+          return;
+        }
+        let totalStress = 0;
+        result2.forEach((item) => {
+          totalStress += item.stress;
+        })
+        NutritionalData.findOne(
+          {
+            sectorId : sectorId,
+            stage    : 'mature',
+            date     : {
+              $gte: new Date(Date.UTC(year, 0, 1, 0, 0, 0)),
+              $lt: new Date(Date.UTC(year+1, 0, 1, 0, 0, 0))
+            }
+          },
+          (err, nutData) => {
+            if(err || !nutData){
+              console.log("Error al consultar Datos Nutricionales:"+JSON.stringify(err));
+              sendJSONresponse(res, 200, {
+                error: 'no-data'
+              });
+              return;
+            }
+            nutData = JSON.parse(JSON.stringify(nutData));
+            nutData = calculateNutritionalIndicators(nutData);
+
+            let ponderation = 0;
+            if(monthAvgTemp<=14.5){
+              ponderation += 0.5;
+            }
+            if(totalStress<=120000){
+              ponderation += 0.5;
+            }
+            if(nutData.riskIndex<=2){
+              ponderation += 2;
+            }
+            let potential = '';
+            if(ponderation <= 1){
+              potential = 'low';
+            }else if(ponderation <= 3){
+              potential = 'mid';
+            }else{
+              potential = 'high';
+            }
+            sendJSONresponse(res, 200, {
+              monthAvgTemp : monthAvgTemp,
+              riskIndex    : nutData.riskIndex,
+              potential    : potential,
+              totalStress  : totalStress
+            });
+            return;
+          }
+        )
+      })
+    })
+  }else{
+    sendJSONresponse(res, 400, {
+      error: "La expresión fue mal formada. Revise si los parámetros están completos."
+    });
+    return;
+  }
+}

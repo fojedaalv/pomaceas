@@ -145,6 +145,24 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
           vm.errMessage = e.error;
           console.log(e);
         })
+
+        predictionsSvc.getPredictionHarvestStorageGala(vm.stationId, vm.selectedSector._id, vm.selectedYear)
+        .success(function(data){
+          if(data.error){
+            vm.predictions.harvestStorageGala = 'no-data';
+          }else{
+            vm.predictions.harvestStorageGala = {
+              potential : data.potential,
+              riskIndex : data.riskIndex,
+              stress    : data.totalStress,
+              monthAvgTemp : data.monthAvgTemp
+            }
+          }
+        })
+        .error(function(e){
+          vm.errMessage = e.error;
+          console.log(e);
+        })
       }else if(vm.selectedSector.cultivar == 'fuji'){
         predictionsSvc.getPredictionSunDamageFuji(vm.stationId, vm.selectedYear)
         .success(function(data){
@@ -224,6 +242,24 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
           vm.errMessage = e.error;
           console.log(e);
         })
+
+        predictionsSvc.getPredictionHarvestStorageFuji(vm.stationId, vm.selectedSector._id, vm.selectedYear)
+        .success(function(data){
+          if(data.error){
+            vm.predictions.harvestStorageFuji = 'no-data';
+          }else{
+            vm.predictions.harvestStorageFuji = {
+              potential : data.potential,
+              riskIndex : data.riskIndex,
+              stress    : data.totalStress,
+              monthAvgTemp : data.monthAvgTemp
+            }
+          }
+        })
+        .error(function(e){
+          vm.errMessage = e.error;
+          console.log(e);
+        })
       }else if(vm.selectedSector.cultivar == 'cripps_pink'){
         predictionsSvc.getPredictionSunDamagePink(vm.stationId, vm.selectedYear)
         .success(function(data){
@@ -261,6 +297,24 @@ function dashboardUserStationsPredictionsCtrl(stationsSvc, $routeParams, $scope,
             vm.predictions.earlyStoragePink = {
               potential : data.potential,
               riskIndex : data.riskIndex,
+              monthAvgTemp : data.monthAvgTemp
+            }
+          }
+        })
+        .error(function(e){
+          vm.errMessage = e.error;
+          console.log(e);
+        })
+
+        predictionsSvc.getPredictionHarvestStoragePink(vm.stationId, vm.selectedSector._id, vm.selectedYear)
+        .success(function(data){
+          if(data.error){
+            vm.predictions.harvestStoragePink = 'no-data';
+          }else{
+            vm.predictions.harvestStoragePink = {
+              potential : data.potential,
+              riskIndex : data.riskIndex,
+              stress    : data.totalStress,
               monthAvgTemp : data.monthAvgTemp
             }
           }

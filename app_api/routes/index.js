@@ -144,11 +144,17 @@ router.get(
   '/pred-earlystorage-pink/:stationId',
   ctrlSensorData.getEarlyStoragePotentialCrippsPink
 )
-
-
 router.get(
-  '/predtest/:stationId',
-  ctrlSensorData.getEarlyStoragePotentialGala
+  '/pred-harveststorage-gala/:stationId',
+  ctrlSensorData.getHarvestStoragePotentialGala
+)
+router.get(
+  '/pred-harveststorage-fuji/:stationId',
+  ctrlSensorData.getHarvestStoragePotentialFuji
+)
+router.get(
+  '/pred-harveststorage-pink/:stationId',
+  ctrlSensorData.getHarvestStoragePotentialPink
 )
 
 // ======== Variables Summaries Endpoints ==========

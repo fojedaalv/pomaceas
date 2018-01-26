@@ -221,11 +221,10 @@
             </div>
 
             <div class="panel panel-success">
-              <div class="panel-heading"><h3>Potencial de almacenaje temprano</h3></div>
+              <div class="panel-heading"><h3>Potencial de almacenaje temprano para cosecha del próximo año</h3></div>
               <div class="panel-body">
                 <p>Se realizan estimaciones sobre el potencial de almacenaje previo a la cosecha del año {{(+vm.selectedYear+1)}}.</p>
-                <p>Se consideran mediciones de la temperatura durante octubre y el informe nutricional de Fruto Pequeño del año {{vm.selectedYear}}
-                  además de la información nutricional del momento de cosecha.</p>
+                <p>Se consideran mediciones de la temperatura durante octubre y el informe nutricional de Fruto Pequeño del año {{vm.selectedYear}}.</p>
                 <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.earlyStorageGala!='no-data'">
                   <thead>
                     <td class="col-md-3 success">
@@ -258,11 +257,64 @@
                 </table>
                 <div class="alert alert-warning" ng-if="vm.predictions.earlyStorageGala=='no-data'">
                   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                  <strong>Se necesitan datos.</strong> No existen datos suficientes para estimar el potencial de almacenaje temprano el año {{vm.selectedYear}}.<br/>
+                  <strong>Se necesitan datos.</strong> No existen datos suficientes para estimar el potencial de almacenaje temprano para la cosecha del año {{(+vm.selectedYear+1)}}.<br/>
                   Puede ser alguna de estas razones:
                   <ul>
                     <li>No hay datos en el sistema en octubre de {{vm.selectedYear}}.</li>
                     <li>No hay un registro de información nutricional para fruto pequeño en el año {{vm.selectedYear}}.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-success">
+              <div class="panel-heading"><h3>Potencial de almacenaje para cosecha de este año</h3></div>
+              <div class="panel-body">
+                <p>Se realizan estimaciones sobre el potencial de almacenaje de la cosecha del año {{(+vm.selectedYear)}}.</p>
+                <p>Se consideran mediciones de la temperatura durante octubre, el estrés entre diciembre y enero,
+                  y el informe nutricional de Fruto Maduro del año {{vm.selectedYear}}
+                  además de la información nutricional del momento de cosecha.</p>
+                <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.harvestStorageGala!='no-data'">
+                  <thead>
+                    <td class="col-md-3 success">
+                      <strong>Potencial de almacenaje</strong>
+                    </td>
+                    <td class="col-md-3 success">
+                      <strong>Índice de Riesgo</strong>
+                    </td>
+                    <td class="col-md-3 success">
+                      <strong>Unidades de Estrés</strong>
+                    </td>
+                    <td class="col-md-3 success">
+                      <strong>Temperatura Promedio</strong>
+                    </td>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <span ng-if="vm.predictions.harvestStorageGala.potential=='low'">
+                          Bajo
+                        </span>
+                        <span ng-if="vm.predictions.harvestStorageGala.potential=='mid'">
+                          Medio
+                        </span>
+                        <span ng-if="vm.predictions.harvestStorageGala.potential=='high'">
+                          Alto
+                        </span>
+                      </td>
+                      <td>{{ vm.predictions.harvestStorageGala.riskIndex }}</td>
+                      <td>{{ vm.predictions.harvestStorageGala.stress | number:2 }}</td>
+                      <td>{{ vm.predictions.harvestStorageGala.monthAvgTemp | number:2 }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="alert alert-warning" ng-if="vm.predictions.harvestStorageGala=='no-data'">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <strong>Se necesitan datos.</strong> No existen datos suficientes para estimar el potencial de almacenaje para el año {{vm.selectedYear}}.<br/>
+                  Puede ser alguna de estas razones:
+                  <ul>
+                    <li>No hay datos en el sistema en octubre de {{vm.selectedYear}}.</li>
+                    <li>No hay un registro de información nutricional para fruto maduro en el año {{vm.selectedYear}}.</li>
                   </ul>
                 </div>
               </div>
@@ -408,11 +460,10 @@
             </div>
 
             <div class="panel panel-success">
-              <div class="panel-heading"><h3>Potencial de almacenaje temprano</h3></div>
+              <div class="panel-heading"><h3>Potencial de almacenaje temprano para cosecha del próximo año</h3></div>
               <div class="panel-body">
                 <p>Se realizan estimaciones sobre el potencial de almacenaje previo a la cosecha del año {{(+vm.selectedYear+1)}}.</p>
-                <p>Se consideran mediciones de la temperatura durante octubre y el informe nutricional de Fruto Pequeño del año {{vm.selectedYear}}
-                  además de la información nutricional del momento de cosecha.</p>
+                <p>Se consideran mediciones de la temperatura durante octubre y el informe nutricional de Fruto Pequeño del año {{vm.selectedYear}}.</p>
                 <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.earlyStorageFuji!='no-data'">
                   <thead>
                     <td class="col-md-3 success">
@@ -445,11 +496,64 @@
                 </table>
                 <div class="alert alert-warning" ng-if="vm.predictions.earlyStorageFuji=='no-data'">
                   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                  <strong>Se necesitan datos.</strong> No existen datos suficientes para estimar el potencial de almacenaje temprano el año {{vm.selectedYear}}.<br/>
+                  <strong>Se necesitan datos.</strong> No existen datos suficientes para estimar el potencial de almacenaje temprano para la cosecha del año {{(+vm.selectedYear+1)}}.<br/>
                   Puede ser alguna de estas razones:
                   <ul>
                     <li>No hay datos en el sistema en octubre de {{vm.selectedYear}}.</li>
                     <li>No hay un registro de información nutricional para fruto pequeño en el año {{vm.selectedYear}}.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-success">
+              <div class="panel-heading"><h3>Potencial de almacenaje para cosecha de este año</h3></div>
+              <div class="panel-body">
+                <p>Se realizan estimaciones sobre el potencial de almacenaje de la cosecha del año {{(+vm.selectedYear)}}.</p>
+                <p>Se consideran mediciones de la temperatura durante octubre, el estrés entre diciembre y marzo,
+                  y el informe nutricional de Fruto Maduro del año {{vm.selectedYear}}
+                  además de la información nutricional del momento de cosecha.</p>
+                <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.harvestStorageFuji!='no-data'">
+                  <thead>
+                    <td class="col-md-3 success">
+                      <strong>Potencial de almacenaje</strong>
+                    </td>
+                    <td class="col-md-3 success">
+                      <strong>Índice de Riesgo</strong>
+                    </td>
+                    <td class="col-md-3 success">
+                      <strong>Unidades de Estrés</strong>
+                    </td>
+                    <td class="col-md-3 success">
+                      <strong>Temperatura Promedio</strong>
+                    </td>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <span ng-if="vm.predictions.harvestStorageFuji.potential=='low'">
+                          Bajo
+                        </span>
+                        <span ng-if="vm.predictions.harvestStorageFuji.potential=='mid'">
+                          Medio
+                        </span>
+                        <span ng-if="vm.predictions.harvestStorageFuji.potential=='high'">
+                          Alto
+                        </span>
+                      </td>
+                      <td>{{ vm.predictions.harvestStorageFuji.riskIndex }}</td>
+                      <td>{{ vm.predictions.harvestStorageFuji.stress | number:2 }}</td>
+                      <td>{{ vm.predictions.harvestStorageFuji.monthAvgTemp | number:2 }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="alert alert-warning" ng-if="vm.predictions.harvestStorageFuji=='no-data'">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <strong>Se necesitan datos.</strong> No existen datos suficientes para estimar el potencial de almacenaje para el año {{vm.selectedYear}}.<br/>
+                  Puede ser alguna de estas razones:
+                  <ul>
+                    <li>No hay datos en el sistema en octubre de {{vm.selectedYear}}.</li>
+                    <li>No hay un registro de información nutricional para fruto maduro en el año {{vm.selectedYear}}.</li>
                   </ul>
                 </div>
               </div>
@@ -516,11 +620,10 @@
             </div>
 
             <div class="panel panel-success">
-              <div class="panel-heading"><h3>Potencial de almacenaje temprano</h3></div>
+              <div class="panel-heading"><h3>Potencial de almacenaje temprano para cosecha del próximo año</h3></div>
               <div class="panel-body">
                 <p>Se realizan estimaciones sobre el potencial de almacenaje previo a la cosecha del año {{(+vm.selectedYear+1)}}.</p>
-                <p>Se consideran mediciones de la temperatura durante octubre y el informe nutricional de Fruto Pequeño del año {{vm.selectedYear}}
-                  además de la información nutricional del momento de cosecha.</p>
+                <p>Se consideran mediciones de la temperatura durante octubre y el informe nutricional de Fruto Pequeño del año {{vm.selectedYear}}.</p>
                 <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.earlyStoragePink!='no-data'">
                   <thead>
                     <td class="col-md-3 success">
@@ -553,11 +656,64 @@
                 </table>
                 <div class="alert alert-warning" ng-if="vm.predictions.earlyStoragePink=='no-data'">
                   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                  <strong>Se necesitan datos.</strong> No existen datos suficientes para estimar el potencial de almacenaje temprano el año {{vm.selectedYear}}.<br/>
+                  <strong>Se necesitan datos.</strong> No existen datos suficientes para estimar el potencial de almacenaje temprano para la cosecha del año {{(+vm.selectedYear+1)}}.<br/>
                   Puede ser alguna de estas razones:
                   <ul>
                     <li>No hay datos en el sistema en octubre de {{vm.selectedYear}}.</li>
                     <li>No hay un registro de información nutricional para fruto pequeño en el año {{vm.selectedYear}}.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-success">
+              <div class="panel-heading"><h3>Potencial de almacenaje para cosecha de este año</h3></div>
+              <div class="panel-body">
+                <p>Se realizan estimaciones sobre el potencial de almacenaje de la cosecha del año {{(+vm.selectedYear)}}.</p>
+                <p>Se consideran mediciones de la temperatura durante octubre, el estrés entre diciembre y marzo,
+                  y el informe nutricional de Fruto Maduro del año {{vm.selectedYear}}
+                  además de la información nutricional del momento de cosecha.</p>
+                <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.harvestStoragePink!='no-data'">
+                  <thead>
+                    <td class="col-md-3 success">
+                      <strong>Potencial de almacenaje</strong>
+                    </td>
+                    <td class="col-md-3 success">
+                      <strong>Índice de Riesgo</strong>
+                    </td>
+                    <td class="col-md-3 success">
+                      <strong>Unidades de Estrés</strong>
+                    </td>
+                    <td class="col-md-3 success">
+                      <strong>Temperatura Promedio</strong>
+                    </td>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <span ng-if="vm.predictions.harvestStoragePink.potential=='low'">
+                          Bajo
+                        </span>
+                        <span ng-if="vm.predictions.harvestStoragePink.potential=='mid'">
+                          Medio
+                        </span>
+                        <span ng-if="vm.predictions.harvestStoragePink.potential=='high'">
+                          Alto
+                        </span>
+                      </td>
+                      <td>{{ vm.predictions.harvestStoragePink.riskIndex }}</td>
+                      <td>{{ vm.predictions.harvestStoragePink.stress | number:2 }}</td>
+                      <td>{{ vm.predictions.harvestStoragePink.monthAvgTemp | number:2 }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="alert alert-warning" ng-if="vm.predictions.harvestStoragePink=='no-data'">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <strong>Se necesitan datos.</strong> No existen datos suficientes para estimar el potencial de almacenaje para el año {{vm.selectedYear}}.<br/>
+                  Puede ser alguna de estas razones:
+                  <ul>
+                    <li>No hay datos en el sistema en octubre de {{(vm.selectedYear-1)}}.</li>
+                    <li>No hay un registro de información nutricional para fruto maduro en el año {{vm.selectedYear}}.</li>
                   </ul>
                 </div>
               </div>

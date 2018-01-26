@@ -50,18 +50,33 @@ function predictionsSvc($http, $window, authSvc){
     return $http.get('/api/v1/pred-earlystorage-pink/'+stationId+"?year="+year+"&sectorId="+sectorId)
   }
 
+  var getPredictionHarvestStorageGala = function(stationId, sectorId, year){
+    return $http.get('/api/v1/pred-harveststorage-gala/'+stationId+"?year="+year+"&sectorId="+sectorId)
+  }
+
+  var getPredictionHarvestStorageFuji = function(stationId, sectorId, year){
+    return $http.get('/api/v1/pred-harveststorage-fuji/'+stationId+"?year="+year+"&sectorId="+sectorId)
+  }
+
+  var getPredictionHarvestStoragePink = function(stationId, sectorId, year){
+    return $http.get('/api/v1/pred-harveststorage-pink/'+stationId+"?year="+year+"&sectorId="+sectorId)
+  }
+
   return {
-    getPredictionColorGala        : getPredictionColorGala,
-    getPredictionSizeGala         : getPredictionSizeGala,
-    getPredictionHarvestGala      : getPredictionHarvestGala,
-    getPredictionSunDamageFuji    : getPredictionSunDamageFuji,
-    getPredictionRussetFuji       : getPredictionRussetFuji,
-    getPredictionColorFujiPink    : getPredictionColorFujiPink,
-    getPredictionSunDamagePink    : getPredictionSunDamagePink,
-    getPredictionBitterPitFuji    : getPredictionBitterPitFuji,
-    getPredictionLenticelosisGala : getPredictionLenticelosisGala,
-    getPredicitonEarlyStorageGala : getPredicitonEarlyStorageGala,
-    getPredicitonEarlyStorageFuji : getPredicitonEarlyStorageFuji,
-    getPredicitonEarlyStoragePink : getPredicitonEarlyStoragePink
+    getPredictionColorGala          : getPredictionColorGala,
+    getPredictionSizeGala           : getPredictionSizeGala,
+    getPredictionHarvestGala        : getPredictionHarvestGala,
+    getPredictionSunDamageFuji      : getPredictionSunDamageFuji,
+    getPredictionRussetFuji         : getPredictionRussetFuji,
+    getPredictionColorFujiPink      : getPredictionColorFujiPink,
+    getPredictionSunDamagePink      : getPredictionSunDamagePink,
+    getPredictionBitterPitFuji      : getPredictionBitterPitFuji,
+    getPredictionLenticelosisGala   : getPredictionLenticelosisGala,
+    getPredicitonEarlyStorageGala   : getPredicitonEarlyStorageGala,
+    getPredicitonEarlyStorageFuji   : getPredicitonEarlyStorageFuji,
+    getPredicitonEarlyStoragePink   : getPredicitonEarlyStoragePink,
+    getPredictionHarvestStorageGala : getPredictionHarvestStorageGala,
+    getPredictionHarvestStorageFuji : getPredictionHarvestStorageFuji,
+    getPredictionHarvestStoragePink : getPredictionHarvestStoragePink
   };
 }
