@@ -134,7 +134,9 @@ exports.requestPasswordReset = function(req, res){
         }else{
           // echo -n pomaceas | md5sum
           var transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
             auth: {
               user: 'no.reply.pomaceas@gmail.com',
               pass: 'ce6d125e79ebe82ba84dffe15c911421'
