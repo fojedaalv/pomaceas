@@ -134,13 +134,17 @@ exports.requestPasswordReset = function(req, res){
         }else{
           // echo -n pomaceas | md5sum
           var transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true,
+            service: 'gmail',
+            auth: {
+              type: 'Oauth2',
+              clientId: '724437176688-gr7i7tpjsne0nsvu368dg73eaffaidoe.apps.googleusercontent.com',
+              clientSecret: 'oRl4divY87YaFR83_NK3sE-U'
+            }
+            /*
             auth: {
               user: 'no.reply.pomaceas@gmail.com',
               pass: 'ce6d125e79ebe82ba84dffe15c911421'
-            }
+            }*/
           });
 
           var mailOptions = {
@@ -150,7 +154,13 @@ exports.requestPasswordReset = function(req, res){
             text: 'Está recibiendo esto porque usted o alguien más ha solicitado un cambio de contraseña para la cuenta.\n' +
               'Por favor haga click en el siguiente link o cópielo en el navegador para completar el proceso:\n\n'+
               'http://' + req.headers.host + '/#/reset-password?token=' + token + '&&email='+email+'\n\n' +
-              'Si no solicitó, haga caso omiso de este correo y su contraseña no se modificará.\n'
+              'Si no solicitó, haga caso omiso de este correo y su contraseña no se modificará.\n',
+            auth: {
+              user: 'no.reply.pomaceas@gmail.com',
+              refreshToken: '1/LeGJ22xTAoyPwejHRdSHr-zTcK6t8BFDkwVtBIGEUno',
+              access_token: 'ya29.GltwBZDVUhRrnVZ7PutheVOBStEy5CTmj4woCznGps5AeN-bh8dEspc3gM-IdU70SnUxSCUTfXgDawuKWpyjLF8P29WFneE-eVfDHKLmC8IDEkxrPJuuCmj_U3XI',
+              expires: '3600'
+            }
           };
 
           transporter.sendMail(mailOptions, (error, info) => {
