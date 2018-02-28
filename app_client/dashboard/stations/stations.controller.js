@@ -1,7 +1,7 @@
 angular.module('PomaceasWebApp')
 .controller('dashboardStationsCtrl', dashboardStationsCtrl);
 
-function dashboardStationsCtrl(stationsSvc, $scope){
+function dashboardStationsCtrl(stationsSvc, usersSvc, $scope){
   var vm = this;
   vm.stations = [];
   vm.errMessage = "";
@@ -29,6 +29,15 @@ function dashboardStationsCtrl(stationsSvc, $scope){
       vm.totalItems = response.data.meta['total-items'];
       vm.maxPages   = response.data.meta['total-pages'];
       vm.markers = vm.buildMarkers(vm.stations);
+      vm.stations.forEach((item) => {
+        usersSvc.getUser(item.owner)
+        .success(function (data) {
+          item.ownerName = data.name;
+        })
+        .error(function (e) {
+          item.ownerName = 'No asignado';
+        });;
+      })
     });
   }
 

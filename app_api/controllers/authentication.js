@@ -133,6 +133,7 @@ exports.requestPasswordReset = function(req, res){
           return;
         }else{
           // echo -n pomaceas | md5sum
+          // Changes to Oauth based on StackOverflow's thread: https://stackoverflow.com/questions/24098461/nodemailer-gmail-what-exactly-is-a-refresh-token-and-how-do-i-get-one
           var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
