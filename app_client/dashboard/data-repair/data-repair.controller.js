@@ -185,6 +185,7 @@ function dataRepairCtrl(
         vm.fieldsWithErrors.push(line);
       }
     }
+    vm.pageChanged();
   }
 
   toIsoDate = (date, time) => {
@@ -381,5 +382,17 @@ function dataRepairCtrl(
       data.push(row)
     }
     return data;
+  }
+
+  // ===============================================
+  // ======= Código para manipular datos ===========
+  // ===============================================
+  vm.copiedRow = null;
+  vm.copyRow = function(row){
+    vm.copiedRow = row;
+  }
+  vm.pasteRow = function(index){
+    //alert(index)
+    vm.fileData[index] = vm.copiedRow;
   }
 }

@@ -98,6 +98,7 @@
                     <th>Rain</th>
                     <th>Solar Rad.</th>
                     <th>ET</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -120,6 +121,14 @@
                         ng-model="vm.fileData[(vm.currentPage-1)*vm.pageSize + $parent.$parent.$index][$index]"
                         ng-if="vm.fieldsWithErrors.indexOf($parent.$index + (vm.currentPage-1)*vm.pageSize)>=0 && $index >= 2">
                         <!--vm.fileData[((vm.currentPage-1)*vm.pageSize + $parent.$index)][$index]-->
+                    </td>
+                    <td style="white-space:nowrap;">
+                      <button class="btn btn-warning btn-xs" title="Copiar Registro" ng-click="vm.copyRow(d)" ng-disabled="vm.fieldsWithErrors.indexOf($index + (vm.currentPage-1)*vm.pageSize)>=0">
+                        <i class='fa fa-copy'></i>
+                      </button>
+                      <button class="btn btn-warning btn-xs" title="Pegar Registro" ng-click="vm.pasteRow(($index) + (vm.currentPage-1)*vm.pageSize)" ng-disabled="!vm.copiedRow">
+                        <i class='fa fa-paste'></i>
+                      </button>
                     </td>
                   </tr>
                 </tbody>
