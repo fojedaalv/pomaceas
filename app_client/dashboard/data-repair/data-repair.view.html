@@ -28,7 +28,7 @@
           <div ng-if="vm.fileData && !vm.isLoading">
             <h2>Errores del Archivo</h2>
             <p>Este archivo presenta {{ vm.fieldsWithErrors.length }} errores.</p>
-            <div class="panel panel-danger" ng-if="vm.fieldsWithErrors.length>0">
+            <div class="panel panel-danger" ng-if="vm.fieldsWithErrors.length>0" style='max-height: 200px; overflow: scroll;'>
               <div class="panel-body">
                 <span ng-if="vm.fieldsWithErrors.length>0">Filas con errores:<br/>
                   <a

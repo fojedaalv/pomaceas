@@ -282,7 +282,7 @@
             </div>
             <p ng-if="(vm.dataFixingReport.fixedNData - vm.dataFixingReport.originalNData) > 0">
               Faltan los registros correspondientes a las fechas:
-              <ol>
+              <ol style="max-height:200px; overflow: scroll;">
                 <li ng-repeat="date in vm.dataFixingReport.missingDates">
                   {{ date | amUtc | amDateFormat:'DD-MM-YYYY HH:mm'}}
                 </li>
