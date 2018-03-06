@@ -395,4 +395,28 @@ function dataRepairCtrl(
     //alert(index)
     vm.fileData[index] = vm.copiedRow;
   }
+
+  vm.fixInbetweens = function(method){
+    for(var i=vm.fileData.length-1; i > 0; i--){
+      if(i > 0  && i < (vm.fileData.length-1)) {
+        if(vm.fieldsWithErrors.indexOf(i) >= 0){ //La fila es inválida
+          if(vm.fieldsWithErrors.indexOf(i-1) < 0 && vm.fieldsWithErrors.indexOf(i+1) <0){ // El siguiente y el previo no tienen errores
+            if(method=='copy'){
+              vm.fileData[i] = vm.fileData[i-1];
+            }
+            if(method=='average'){
+              for(var j = 2; j < 10; j++){
+                let a = +vm.fileData[i-1][j];
+                let b = +vm.fileData[i+1][j];
+                let avg = ((a + b) / 2).toFixed(1);
+                vm.fileData[i][j] = avg;
+              }
+            }
+          }
+        }
+      }
+    }
+    vm.updateErrors(); // Actualiza la lista de filas con errores
+    vm.pageChanged();  // Actualiza la página actual de la tabla de errores
+  }
 }

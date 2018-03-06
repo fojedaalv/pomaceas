@@ -27,7 +27,10 @@
           </button>
           <div ng-if="vm.fileData && !vm.isLoading">
             <h2>Errores del Archivo</h2>
-            <p>Este archivo presenta {{ vm.fieldsWithErrors.length }} errores.</p>
+            <p>
+              Este archivo presenta {{ vm.fieldsWithErrors.length }} errores.
+              <a href ng-click="vm.updateErrors()">Actualizar</a>
+            </p>
             <div class="panel panel-danger" ng-if="vm.fieldsWithErrors.length>0" style='max-height: 200px; overflow: scroll;'>
               <div class="panel-body">
                 <span ng-if="vm.fieldsWithErrors.length>0">Filas con errores:<br/>
@@ -40,7 +43,6 @@
                   </a><br/>
                   (Hacer click en el número de fila lo llevará a la página del error correspondiente)<br/>
                 </span>
-                <a href ng-click="vm.updateErrors()">Actualizar</a>
               </div>
             </div>
 
@@ -82,6 +84,41 @@
               last-text="Último"
               ng-change="vm.pageChanged()">
             </ul>
+
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th>
+                    Acción
+                  </th>
+                  <th>
+                    Descripción
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <button class="btn btn-warning btn-block" ng-click="vm.fixInbetweens('copy')">Reparar intermedios (copia)</button>
+                  </td>
+                  <td>
+                    Repara datos copiando el valor anterior.
+                    Repara los datos en el caso en que haya una ausencia de datos y los datos anterior y siguiente sean válidos.
+                    Se puede aplicar al caso en que una estación tome muestras cada media hora en vez de cada quince minutos.
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <button class="btn btn-warning btn-block" ng-click="vm.fixInbetweens('average')">Reparar intermedios (promedio)</button>
+                  </td>
+                  <td>
+                    Repara datos promediando el valor anterior y el siguiente.
+                    Repara los datos en el caso en que haya una ausencia de datos y los datos anterior y siguiente sean válidos.
+                    Se puede aplicar al caso en que una estación tome muestras cada media hora en vez de cada quince minutos.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
 
             <div ng-if="vm.displayData">
               <table class="table table-condensed table-striped">

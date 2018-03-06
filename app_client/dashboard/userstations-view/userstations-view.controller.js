@@ -349,6 +349,7 @@ function dashboardUserStationsViewCtrl(
       vm.uploadInfo = resp.data.message;
       vm.loadStationSummary();
     }, function (resp) {
+      console.log(resp);
       console.log('Error status: ' + resp.status);
       vm.isUploading = false;
       vm.uploadError = resp.data.message;
