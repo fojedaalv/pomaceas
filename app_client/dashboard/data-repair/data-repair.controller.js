@@ -106,6 +106,9 @@ function dataRepairCtrl(
       if(fileType == 'original' || fileType == 'procesado'){
         datum = [];
         let tempDate = lineData[0].split("-");
+        if(lineData[0].split("-").lenght==1){
+          tempDate = lineData[0].split("/");
+        }
         if(tempDate[2].length==2){
           lineData[0] = tempDate[0]+"-"+tempDate[1]+"-20"+tempDate[2];
         }
@@ -392,8 +395,9 @@ function dataRepairCtrl(
     vm.copiedRow = row;
   }
   vm.pasteRow = function(index){
-    //alert(index)
-    vm.fileData[index] = vm.copiedRow;
+    for(var i=2;i<10;i++){
+      vm.fileData[index][i] = vm.copiedRow[i];
+    }
   }
 
   vm.fixInbetweens = function(method){

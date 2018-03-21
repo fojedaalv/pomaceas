@@ -81,6 +81,9 @@ function dashboardStationsUploadCtrl(
       if(fileType == 'original' || fileType == 'procesado'){
         datum = [];
         let tempDate = lineData[0].split("-");
+        if(lineData[0].split("-").lenght==1){
+          tempDate = lineData[0].split("/");
+        }
         if(tempDate[2].length==2){
           lineData[0] = tempDate[0]+"-"+tempDate[1]+"-20"+tempDate[2];
         }
