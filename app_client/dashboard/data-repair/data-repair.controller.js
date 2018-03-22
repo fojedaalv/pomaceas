@@ -106,7 +106,7 @@ function dataRepairCtrl(
       if(fileType == 'original' || fileType == 'procesado'){
         datum = [];
         let tempDate = lineData[0].split("-");
-        if(lineData[0].split("-").lenght==1){
+        if(lineData[0].split("-").length==1){
           tempDate = lineData[0].split("/");
         }
         if(tempDate[2].length==2){
