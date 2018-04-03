@@ -147,6 +147,11 @@ function variablesQueriesCtrl(
             candidateEnd = moment(candidateEnd).add(1, 'year').toDate();
           }
           console.log(">>>Fecha Candidata Final: " + candidateEnd);
+          // Cuando una dos fechas pertenecen al mismo año, se asume que la variable corresponde al segundo año del periodo
+          // Esta condición ignora la primera fecha para que no aparezca una columna adicional en la tabla de resultados
+          if(candidateEnd.getFullYear() == vm.minDate.getFullYear() && candidateStart.getFullYear() == vm.minDate.getFullYear()){
+            continue;
+          }
           if(candidateEnd <= vm.maxDate){
             // La fecha final también sirve
             queriableDates.push({
@@ -167,15 +172,6 @@ function variablesQueriesCtrl(
 
       // Ejecuta las consultas y añade los resultados a la celda correspondiente
       for (var index in queriableDates){
-
-        /*
-        tableRow.push("- ("+variableIndex+","+index+")");
-        setTimeout((variableIndex, index) => {
-          index= 3 + Number(index);
-          vm.table.rows[variableIndex][index]=Math.random();
-          $scope.$apply();
-        }, 3000, variableIndex, index);
-        */
         tableRow.push("---");
         sensorDataSvc.getVariable({
             station: vm.stationId,
@@ -193,22 +189,14 @@ function variablesQueriesCtrl(
         .error((e) => {
           console.log(e);
         })
-        /*
-        variableSvc({
-          station: station ID,
-          variable: nombre de variable,
-          startDate: fecha de inicio,
-          endDate: fecha de término,
-          operation: 'sum'
-        })
-
-        */
       }
       tableRows.push(tableRow);
       variableIndex += 1;
     }
     for(var dat of queriableDates){
-      tableHeader.push(dat.start.getFullYear());
+      var d = dat.start.getFullYear().toString().substr(2,3) + '/' + dat.end.getFullYear().toString().substr(2,3);
+      alert(d);
+      tableHeader.push(d);
     }
     console.log(tableHeader);
     vm.table = {

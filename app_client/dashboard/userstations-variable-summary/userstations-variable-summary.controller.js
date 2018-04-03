@@ -39,7 +39,7 @@ function dashboardUserStationsVariableSummaryCtrl(  usersSvc,
           name: data[0].name,
           variables: data[0].variables
         }
-      }      
+      }
     })
     .error((e) => {
       console.log("Ocurrió un error al obtener la lista de resúmenes. Error:"+ e);
@@ -140,6 +140,11 @@ function dashboardUserStationsVariableSummaryCtrl(  usersSvc,
             candidateEnd = moment(candidateEnd).add(1, 'year').toDate();
           }
           console.log(">>>Fecha Candidata Final: " + candidateEnd);
+          // Cuando una dos fechas pertenecen al mismo año, se asume que la variable corresponde al segundo año del periodo
+          // Esta condición ignora la primera fecha para que no aparezca una columna adicional en la tabla de resultados
+          if(candidateEnd.getFullYear() == vm.minDate.getFullYear() && candidateStart.getFullYear() == vm.minDate.getFullYear()){
+            continue;
+          }
           if(candidateEnd <= vm.maxDate){
             // La fecha final también sirve
             queriableDates.push({
@@ -191,7 +196,9 @@ function dashboardUserStationsVariableSummaryCtrl(  usersSvc,
       variableIndex += 1;
     }
     for(var dat of queriableDates){
-      tableHeader.push(dat.start.getFullYear());
+      var d = dat.start.getFullYear().toString().substr(2,3) + '/' + dat.end.getFullYear().toString().substr(2,3);
+      alert(d);
+      tableHeader.push(d);
     }
     console.log(tableHeader);
     vm.table = {
