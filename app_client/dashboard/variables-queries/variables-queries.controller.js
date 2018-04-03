@@ -195,7 +195,6 @@ function variablesQueriesCtrl(
     }
     for(var dat of queriableDates){
       var d = dat.start.getFullYear().toString().substr(2,3) + '/' + dat.end.getFullYear().toString().substr(2,3);
-      alert(d);
       tableHeader.push(d);
     }
     console.log(tableHeader);
