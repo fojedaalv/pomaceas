@@ -1,6 +1,7 @@
 var passport = require('passport');
 var mongoose = require('mongoose');
 var Station = mongoose.model('Station');
+var SensorData = mongoose.model('SensorData');
 const JsonApiQueryParserClass = require('jsonapi-query-parser');
 const JsonApiQueryParser = new JsonApiQueryParserClass();
 
@@ -90,21 +91,35 @@ module.exports.create = function(req, res){
 module.exports.deleteOne = function (req, res) {
   var stationId = req.params.stationId;
   if(stationId){
-    Station.findByIdAndRemove(stationId)
-    .exec(
-      function(err, user){
-        if(err){
-          sendJSONresponse(res, 404, err);
-          return;
-        }
-        sendJSONresponse(res, 204, null);
+    SensorData.count({
+      station: stationId
+    },(error, data) => {
+      if(data == 0){
+        // Sólo borrar la estación si no hay datos registrados
+        Station.findByIdAndRemove(stationId)
+        .exec(
+          function(err, user){
+            if(err){
+              sendJSONresponse(res, 404, err);
+              return;
+            }
+            sendJSONresponse(res, 204, null);
+          }
+        )
+      }else{
+        sendJSONresponse(res, 403, {
+          "message": "No se puede eliminar la estación si aún contiene datos. Primero elimine los datos y luego elimine la estación."
+        })
+        return;
       }
-    )
+    })
   }else{
     sendJSONresponse(res, 404, {
       "message": "No se encontró la estación."
     })
   }
+  /*
+  */
 };
 
 module.exports.readOne = function(req, res){
