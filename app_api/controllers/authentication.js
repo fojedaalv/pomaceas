@@ -71,7 +71,7 @@ module.exports.login = function(req, res){
   })(req, res);
 };
 
-exports.roleAuthorization = function(roles){
+module.exports.roleAuthorization = function(roles){
   return function(req, res, next){
     var user = req.payload;
     User.findById(user._id, function(err, foundUser){
@@ -97,7 +97,7 @@ exports.roleAuthorization = function(roles){
   };
 }
 
-exports.requestPasswordReset = function(req, res){
+module.exports.requestPasswordReset = function(req, res){
   var email = req.body.email;
   if(validator.isEmail(email)){
     User.findOne({
@@ -181,6 +181,46 @@ exports.requestPasswordReset = function(req, res){
   }else{
     sendJSONresponse(res, 400, {
       message: 'El correo enviado es inválido. Revise que haya sido bien escrito e intente de nuevo.'
+    });
+    return;
+  }
+}
+
+module.exports.passwordChange = function(req, res){
+  if(req.body.old && req.body.new && req.body.new2){
+    if(req.body.new == req.body.new2){
+      User.findOne({_id: req.payload._id}, (err, user) => {
+        if(user.validPassword(req.body.old)){
+          user.setPassword(req.body.new);
+          user.save((err) => {
+            if(err){
+              sendJSONresponse(res, 500, {
+                message: 'Ha ocurrido un error en la actualización de la contraseña del usuario.'
+              });
+              return;
+            }
+            var token = user.generateJwt();
+            sendJSONresponse(res, 200, {
+              token: token
+            });
+            return;
+          })
+        }else{
+          sendJSONresponse(res, 400, {
+            message: 'La contraseña original no es la correcta.'
+          });
+          return;
+        }
+      })
+    }else{
+      sendJSONresponse(res, 400, {
+        message: 'Las contraseña nueva no coincide. Debe escribir dos veces la nueva contraseña como medida de verificación.'
+      });
+      return;
+    }
+  }else{
+    sendJSONresponse(res, 400, {
+      message: 'Falta información que ingresar.'
     });
     return;
   }

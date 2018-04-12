@@ -60,6 +60,14 @@ function authSvc($http, $window){
     return $http.post('/api/v1/reset-password', userData);
   }
 
+  var passwordChange = function(passwordData){
+    return $http.post('/api/v1/password-change', passwordData, {
+      headers: {
+        'Authorization': 'Bearer '+ getToken()
+      }
+    });
+  }
+
   return {
     currentUser : currentUser,
     saveToken : saveToken,
@@ -69,6 +77,7 @@ function authSvc($http, $window){
     login : login,
     logout : logout,
     requestPasswordReset: requestPasswordReset,
-    resetPassword: resetPassword
+    resetPassword: resetPassword,
+    passwordChange : passwordChange
   };
 }

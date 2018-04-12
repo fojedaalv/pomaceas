@@ -21,6 +21,7 @@ router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
 router.post('/request-password-reset', ctrlAuth.requestPasswordReset);
 router.post('/reset-password', ctrlAuth.resetPassword);
+router.post('/password-change', auth, ctrlAuth.passwordChange);
 
 // ================ User Endpoints =================
 router.get('/users',
