@@ -4,8 +4,9 @@
       <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
       Inicio
     </a>
+  </ul>
 
-    <div ng-show="navvm.userRole=='administrator'">
+  <ul class="list-group" ng-show="navvm.userRole=='administrator'">
     <li class="list-group-item">
       <b>Administración</b>
     </li>
@@ -41,30 +42,30 @@
       <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
       Reparar Datos Dañados
     </a>
-    </div>
+  </ul>
 
-    <div ng-show="navvm.userRole=='adviser'">
+  <ul class="list-group" ng-show="navvm.userRole=='adviser'">
     <li class="list-group-item">
       <b>Opciones de Asesor</b>
     </li>
     <a href="/#/dashboard/asesorizacion" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/asesorizacion')}">
       Asesorar
     </a>
-    </div>
+  </ul>
 
-    <div ng-show="navvm.userRole=='user' || navvm.userRole=='administrator'">
+  <ul class="list-group" ng-show="navvm.userRole=='user' || navvm.userRole=='administrator'">
     <li class="list-group-item">
       <b>Opciones de Usuario</b>
     </li>
     <a href="/#/dashboard/userstations" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/userstations')}">
       <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-      Mis estaciones de monitoreo
+      Estaciones de Monitoreo
     </a>
     <a href="/#/dashboard/nutritional-analysis" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/nutritional-analysis')}">
       <span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
       Información Nutricional
     </a>
-    </div>
+  </ul>
 
     <div>
     <li class="list-group-item">

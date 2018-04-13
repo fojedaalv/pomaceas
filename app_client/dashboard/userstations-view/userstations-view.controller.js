@@ -44,6 +44,9 @@ function dashboardUserStationsViewCtrl(
 
   vm.editSectors = () => {
     vm.editingSectors = true;
+    if(vm.station.sectors.length==0){
+      vm.addSector();
+    }
   }
 
   vm.removeSector = (sector) => {

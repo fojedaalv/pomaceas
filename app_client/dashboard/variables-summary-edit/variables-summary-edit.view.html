@@ -1,0 +1,121 @@
+<div class="app-container container-fluid">
+<div class="row">
+  <dashboard-navigation></dashboard-navigation>
+
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <button class="btn btn-default btn-xs" back-button>
+            < Volver
+          </button>
+          Editar Cuadro de Resumen de Variables
+        </h3>
+      </div>
+      <div class="panel-body">
+        <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
+        <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
+
+        <form class="clearfix">
+          <div class="form-group col-md-12">
+            <label for="name" class="control-label">Título del Resumen: </label>
+            <input class="form-control" id="name" placeholder="Nombre del Resumen" type="text" ng-model="vm.summary.name">
+          </div>
+        </form>
+
+        <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="col-md-3">Factor Productivo</th>
+              <th class="col-md-3">Variable</th>
+              <th class="col-md-2">Fecha Inicio</th>
+              <th class="col-md-2">Fecha Término</th>
+              <th class="col-md-2">Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="row in vm.summary.variables track by $index">
+              <td
+                class="no-padding">
+                <input
+                  class="form-control"
+                  placeholder="Factor Productivo"
+                  type="text"
+                  ng-model="row.factor">
+              </td>
+              <td
+                class="no-padding">
+                <select class="form-control" id="variable" ng-model="row.variable">
+                  <option ng-repeat="variable in vm.variables" value="{{ variable.value }}">
+                    {{ variable.text }}
+                  </option>
+                </select>
+              </td>
+              <td
+                class="no-padding">
+                <div class="input-group">
+                  <input type="text" readonly
+                    class="form-control"
+                    uib-datepicker-popup="{{vm.calendarFormat}}"
+                    ng-model="row.startDate"
+                    is-open="row.isCalendar1Open"
+                    datepicker-options="vm.dateOptions"
+                    ng-required="true"
+                    close-text="Cerrar"/>
+                    <span class="input-group-btn">
+                      <button type="button"
+                      class="btn btn-default"
+                      ng-click="vm.openCal1(row)">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </button>
+                    </span>
+                </div>
+              </td>
+              <td
+                class="no-padding">
+                <div class="input-group">
+                  <input type="text" readonly
+                    class="form-control"
+                    uib-datepicker-popup="{{vm.calendarFormat}}"
+                    ng-model="row.endDate"
+                    is-open="row.isCalendar2Open"
+                    datepicker-options="vm.dateOptions"
+                    ng-required="true"
+                    close-text="Cerrar"/>
+                    <span class="input-group-btn">
+                      <button type="button"
+                      class="btn btn-default"
+                      ng-click="vm.openCal2(row)">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </button>
+                    </span>
+                </div>
+              </td>
+              <td>
+                <button type="button" class="btn btn-xs btn-danger" ng-click="vm.removeRow(row)">
+                  <i class="fa fa-trash"></i> Eliminar
+                </button>
+                <button type="button" class="btn btn-xs btn-info" ng-click="vm.moveUp($index)" ng-disabled="$index==0">
+                  <i class="fa fa-arrow-up"></i>
+                </button>
+                <button type="button" class="btn btn-xs btn-info" ng-click="vm.moveDown($index)" ng-disabled="$index==vm.summary.variables.length-1">
+                  <i class="fa fa-arrow-down"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <button type="button" class="btn btn-info" ng-click="vm.addNewRow()">
+          <i class="fa fa-plus"></i> Nueva Variable
+        </button>
+        <button type="button" class="btn btn-success" ng-click="vm.saveChanges()">
+          <i class="fa fa-save"></i> Guardar Cambios
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>

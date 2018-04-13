@@ -113,8 +113,8 @@ function dashboardUserStationsVariableSummaryCtrl(  usersSvc,
     // Para cada una de las variables (filas de la tabla) obtiene las fechas a consultar
     for(var variable of summary.variables){
       // Se obtienen las fechas en texto para mostrar en la tabla
-      var startDateString = new Date(2000, variable.startDate.month-1, variable.startDate.day, 12).toLocaleString("es-CL", {day: 'numeric', month: 'short'});
-      var endDateString = new Date(2000, variable.endDate.month-1, variable.endDate.day, 12).toLocaleString("es-CL", {day: 'numeric', month: 'short'});
+      var startDateString = new Date(2000, variable.startDate.month-1, variable.startDate.day, 12).toLocaleString("es-CL", {day: 'numeric', month: 'numeric'});
+      var endDateString = new Date(2000, variable.endDate.month-1, variable.endDate.day, 12).toLocaleString("es-CL", {day: 'numeric', month: 'numeric'});
       var stringDates = startDateString + " - " + endDateString;
 
       // Se inician definen los tres elementos de la fila de la tabla

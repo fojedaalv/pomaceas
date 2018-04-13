@@ -24,6 +24,42 @@ module.exports.listSummaries = (req, res) => {
     });
 }
 
+module.exports.updateSummary = (req, res) => {
+  if (!req.params.summaryId) {
+    sendJSONresponse(res, 404, {
+      "message": "Estación no encontrada. Se requiere un ID para buscarla."
+    });
+    return;
+  }
+  Summary.findById(req.params.summaryId)
+  .exec(
+    function(err, summary){
+      if (!summary) {
+        sendJSONresponse(res, 404, {
+          "message": "ID de resumen no encontrado."
+        });
+        return;
+      } else if (err) {
+        sendJSONresponse(res, 400, err);
+        return;
+      }
+      summary.name      = req.body.name;
+      summary.variables = req.body.variables;
+      summary.save(function(err){
+        if (err){
+          console.log(err);
+          sendJSONresponse(res, 404, {
+            "message": "Ha ocurrido un error en la actualización de los datos. Revise que los datos sean correctos."
+          })
+          return;
+        }else{
+          sendJSONresponse(res, 200, summary);
+        }
+      });
+    }
+  )
+}
+
 module.exports.createSummary = (req, res) => {
   var name = req.body.name;
   var variables = req.body.variables;
@@ -67,11 +103,27 @@ module.exports.deleteSummary = (req, res) => {
     )
   }else{
     sendJSONresponse(res, 404, {
-      "message": "No se encontró la estación."
+      "message": "No se encontró el resumen."
     })
   }
 }
 
 module.exports.getSummary = (req, res) => {
-
+  var summaryId = req.params.summaryId;
+  if(isObjectIdValid(summaryId)){
+    Summary.findById(summaryId)
+    .exec(
+      function(err, summary){
+        if(err){
+          sendJSONresponse(res, 404, err);
+          return;
+        }
+        sendJSONresponse(res, 200, summary);
+      }
+    )
+  }else{
+    sendJSONresponse(res, 404, {
+      "message": "No se encontró el resumen."
+    })
+  }
 }

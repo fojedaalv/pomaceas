@@ -161,6 +161,14 @@ router.get(
 // ======== Variables Summaries Endpoints ==========
 router.get('/summaries',
   ctrlSummaries.listSummaries);
+router.get('/summary/:summaryId',
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlSummaries.getSummary);
+router.patch('/summary/:summaryId',
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlSummaries.updateSummary);
 router.post('/summaries',
   auth,
   ctrlAuth.roleAuthorization(['administrator']),

@@ -30,6 +30,10 @@ input[type="file"]{
   height: 300px;
 }
 
+.no-padding {
+  padding:0px !important;
+}
+
 /* Smol input*/
 .input-xs {
   height: 22px;
@@ -37,4 +41,10 @@ input[type="file"]{
   font-size: 12px;
   line-height: 1.5; /* If Placeholder of the input is moved up, rem/modify this. */
   border-radius: 3px;
+}
+
+/* Table headers color */
+th {
+  background-color: #18bc9c;
+  color: white;
 }

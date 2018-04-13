@@ -44,7 +44,8 @@ function stationsPublicCtrl(stationsSvc, $scope){
         longitude: stations[i].location.coordinates[1],
         city: stations[i].city,
         region: stations[i].region,
-        title: stations[i].name
+        title: stations[i].name,
+        icon: 'images/antenna.png'
       }
       markers.push(marker);
     }

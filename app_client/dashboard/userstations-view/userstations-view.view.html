@@ -129,7 +129,7 @@
       </div>
       <div class="panel-body">
         <p>Los cuarteles representan divisiones del huerto. Debe existir al menos uno asociado a un tipo de cultivar para poder efectuar predicciones.</p>
-        <table class="table table-striped table-hover">
+        <table class="table table-striped table-hover" ng-if="vm.station.sectors.length>0">
           <thead>
             <th class="col-md-5">Cuartel</th>
             <th class="col-md-5">Cultivar</th>
@@ -166,6 +166,9 @@
           </tr>
         </tbody>
         </table>
+        <span ng-if="!vm.editingSectors && vm.station.sectors.length==0">
+          <p>Aún no se han registrado cuarteles. Presione Editar Sectores para añadirlos.</p>
+        </span>
         <span ng-if="vm.editingSectors">
           <p>Existen cambios sin guardar. Presione "Guardar Cambios" si quiere aplicarlos, o "Cancelar Edición" en caso contrario.</p>
         </span>
@@ -291,6 +294,7 @@
           </div>
         </div>
 
+        <div class="table-responsive">
         <table class="table table-striped table-hover" ng-show="vm.isDataLoaded">
           <caption>Muestra de los datos cargados</caption>
           <thead>
@@ -315,6 +319,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
 

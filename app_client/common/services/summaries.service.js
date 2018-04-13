@@ -13,6 +13,23 @@ function summariesSvc($http, $window, authSvc){
     );
   }
 
+  var getSummary = (summaryId) => {
+    return $http.get('/api/v1/summary/'+summaryId, {
+      headers: {
+        'Authorization': 'Bearer '+ authSvc.getToken()
+      }
+    });
+  }
+
+  var updateSummary = function(summary){
+    var summaryId = summary._id;
+    return $http.patch('/api/v1/summary/'+summaryId, summary, {
+      headers: {
+        'Authorization': 'Bearer '+ authSvc.getToken()
+      }
+    });
+  }
+
   var getSummariesList = () => {
     return $http.get('/api/v1/summaries');
   }
@@ -26,8 +43,10 @@ function summariesSvc($http, $window, authSvc){
   }
 
   return {
-    createSummary: createSummary,
-    getSummariesList: getSummariesList,
-    deleteSummary: deleteSummary
+    createSummary    : createSummary,
+    getSummariesList : getSummariesList,
+    deleteSummary    : deleteSummary,
+    updateSummary    : updateSummary,
+    getSummary       : getSummary
   };
 }

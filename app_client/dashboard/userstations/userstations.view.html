@@ -11,6 +11,7 @@
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
         Hay {{ vm.stations.length }} estaciones disponibles registradas a nombre de {{ vm.user.name }}.
         Si posee una estación que aún no ha sido registrada, contacte a la Administración.
+        <div class="table-responsive">
         <table class="table table-striped table-hover" ng-if="vm.stations.length">
           <thead>
             <tr>
@@ -33,6 +34,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
 

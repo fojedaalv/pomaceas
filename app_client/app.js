@@ -72,6 +72,11 @@ function config($routeProvider, $logProvider){
       controller: 'variablesSummaryCtrl',
       controllerAs: 'vm'
     })
+    .when('/dashboard/variables-summary-edit/:summaryId', {
+      templateUrl: 'dashboard/variables-summary-edit/variables-summary-edit.view.html',
+      controller: 'variablesSummaryEditCtrl',
+      controllerAs: 'vm'
+    })
     .when('/dashboard/variables-queries', {
       templateUrl: 'dashboard/variables-queries/variables-queries.view.html',
       controller: 'variablesQueriesCtrl',

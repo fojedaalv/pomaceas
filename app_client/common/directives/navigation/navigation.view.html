@@ -13,11 +13,14 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
+        <li ng-show="navvm.isLoggedIn">
+          <a href="/#/dashboard">Inicio</a>
+        </li>
         <li>
-          <a href="/#/stations-public">Acceso Público</a>
+          <a href="/#/stations-public">Datos Generales</a>
         </li>
         <li ng-hide="navvm.isLoggedIn">
-          <a href="/#/login">Acceder</a>
+          <a href="/#/login">Acceso Suscriptores</a>
         </li>
         <li ng-show="navvm.isLoggedIn">
           <a href="/#/dashboard">Panel de Control</a>
