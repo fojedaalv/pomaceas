@@ -1997,6 +1997,13 @@ module.exports.getVariable = (req, res) => {
         sendJSONresponse(res, 404, err);
         return;
       }else{
+        if(!result[0]){
+          sendJSONresponse(res, 404, {
+            variable : variableToQuery,
+            value    : null
+          });
+          return;
+        }
         console.log(result[0]);
         // Los GDH se aplican divididos por 4
         if(variableToQuery == 'gdh' || variableToQuery == 'richard' || variableToQuery == 'richardsonMod' || variableToQuery == 'unrath'){
