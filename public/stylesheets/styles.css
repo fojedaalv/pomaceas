@@ -48,3 +48,23 @@ th {
   background-color: #18bc9c;
   color: white;
 }
+
+.basic-footer {
+  height: 80px;
+  padding: 10px;
+  background-color: #3a3a3a;
+  color: #FFF;
+  border-top: 1px solid #eee;
+  text-align: left;
+}
+
+.dash-nav-header {
+  background-color: #18bc9c;
+  color: #FFF;
+}
+
+.dash-nav-item {
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 0.8em;
+}

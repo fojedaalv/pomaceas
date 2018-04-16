@@ -1,44 +1,44 @@
 <div class="col-md-3">
   <ul class="list-group">
-    <a href="/#/dashboard" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard')}">
+    <a href="/#/dashboard" class="list-group-item dash-nav-item" ng-class="{ active: navvm.isActive('/dashboard')}">
       <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
       Inicio
     </a>
   </ul>
 
   <ul class="list-group" ng-show="navvm.userRole=='administrator'">
-    <li class="list-group-item">
+    <li class="list-group-item dash-nav-item dash-nav-header">
       <b>Administración</b>
     </li>
-    <a href="/#/dashboard/users" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/users')}">
+    <a href="/#/dashboard/users" class="list-group-item dash-nav-item" ng-class="{ active: navvm.isActive('/dashboard/users')}">
       <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
       Usuarios
     </a>
-    <a href="/#/dashboard/stations" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/stations')}">
+    <a href="/#/dashboard/stations" class="list-group-item dash-nav-item" ng-class="{ active: navvm.isActive('/dashboard/stations')}">
       <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
       Estaciones de Monitoreo
     </a>
-    <a href="/#/dashboard/stations-map" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/stations-map')}">
+    <a href="/#/dashboard/stations-map" class="list-group-item dash-nav-item" ng-class="{ active: navvm.isActive('/dashboard/stations-map')}">
       <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
       Mapa de Estaciones de Monitoreo
     </a>
-    <a href="/#/dashboard/stations-new" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/stations-new')}">
+    <a href="/#/dashboard/stations-new" class="list-group-item dash-nav-item" ng-class="{ active: navvm.isActive('/dashboard/stations-new')}">
       <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
       Crear nueva estación
     </a>
-    <a href="/#/dashboard/stations-upload" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/stations-upload')}">
+    <a href="/#/dashboard/stations-upload" class="list-group-item dash-nav-item" ng-class="{ active: navvm.isActive('/dashboard/stations-upload')}">
       <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
       Subir datos a una estación
     </a>
-    <a href="/#/dashboard/variables-summary" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/variables-summary')}">
+    <a href="/#/dashboard/variables-summary" class="list-group-item dash-nav-item" ng-class="{ active: navvm.isActive('/dashboard/variables-summary')}">
       <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
       Crear Resúmenes de Variables
     </a>
-    <a href="/#/dashboard/variables-queries" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/variables-queries')}">
+    <a href="/#/dashboard/variables-queries" class="list-group-item dash-nav-item" ng-class="{ active: navvm.isActive('/dashboard/variables-queries')}">
       <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
       Consultar Resúmenes de Variables
     </a>
-    <a href="/#/dashboard/data-repair" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/data-repair')}">
+    <a href="/#/dashboard/data-repair" class="list-group-item dash-nav-item" ng-class="{ active: navvm.isActive('/dashboard/data-repair')}">
       <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
       Reparar Datos Dañados
     </a>
@@ -54,24 +54,24 @@
   </ul>
 
   <ul class="list-group" ng-show="navvm.userRole=='user' || navvm.userRole=='administrator'">
-    <li class="list-group-item">
+    <li class="list-group-item dash-nav-item dash-nav-header">
       <b>Opciones de Usuario</b>
     </li>
-    <a href="/#/dashboard/userstations" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/userstations')}">
+    <a href="/#/dashboard/userstations" class="list-group-item dash-nav-item" ng-class="{ active: navvm.isActive('/dashboard/userstations')}">
       <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
       Estaciones de Monitoreo
     </a>
-    <a href="/#/dashboard/nutritional-analysis" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/nutritional-analysis')}">
+    <a href="/#/dashboard/nutritional-analysis" class="list-group-item dash-nav-item" ng-class="{ active: navvm.isActive('/dashboard/nutritional-analysis')}">
       <span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
       Información Nutricional
     </a>
   </ul>
 
     <div>
-    <li class="list-group-item">
+    <li class="list-group-item dash-nav-item dash-nav-header">
       <b>Preferencias del usuario</b>
     </li>
-    <a href="/#/dashboard/user-edit" class="list-group-item" ng-class="{ active: navvm.isActive('/dashboard/user-edit')}">
+    <a href="/#/dashboard/user-edit" class="list-group-item dash-nav-item" ng-class="{ active: navvm.isActive('/dashboard/user-edit')}">
       <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
       Actualizar mis datos
     </a>
