@@ -45,6 +45,36 @@ module.exports.list = function(req, res){
     });
 };
 
+module.exports.listAll = function(req, res){
+  let hostname    = req.headers.host;
+  let query = { };
+  Station.find(
+    query,
+    '_id name city region location owner sectors',
+    {
+      sort:{ }
+    },
+    function(err, stations){
+      if(err){
+        console.log(err);
+        sendJSONresponse(res, 400, err);
+      }else{
+        Station.count(query, (err, count) => {
+          sendJSONresponse(res, 200, {
+            meta: {
+              "total-pages": 1,
+              "total-items": count
+            },
+            links: {
+              self: hostname+'/api/v1/stations/all'
+            },
+            data: stations
+          });
+        });
+      }
+    });
+};
+
 module.exports.create = function(req, res){
   console.log(req.body);
   if(!req.body.name){

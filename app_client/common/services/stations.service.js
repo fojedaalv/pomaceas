@@ -14,8 +14,16 @@ function stationsSvc($http, $window, authSvc){
     });
   }
 
+  var getAllStations = function(){
+    return $http.get('/api/v1/stations/all', {
+      headers: {
+        Authorization: 'Bearer '+ authSvc.getToken()
+      }
+    });
+  }
+
   var getPublicStationsList = function(pageNumber = 0, pageSize = 0){
-    return $http.get('/api/v1/stations-public');
+    return $http.get('/api/v1/stations-public', );
   }
 
   var createStation = function(station){
@@ -78,6 +86,7 @@ function stationsSvc($http, $window, authSvc){
     getStation : getStation,
     updateStation : updateStation,
     getUserStations : getUserStations,
-    updateSectors : updateSectors
+    updateSectors : updateSectors,
+    getAllStations : getAllStations
   };
 }

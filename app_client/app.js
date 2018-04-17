@@ -137,6 +137,11 @@ function config($routeProvider, $logProvider){
       controller: 'dashboardNutritionalAnalysisCtrl',
       controllerAs: 'vm'
     })
+    .when('/dashboard/nutritional-admin', {
+      templateUrl: 'dashboard/nutritional-admin/nutritional-admin.view.html',
+      controller: 'dashboardNutritionalAdminCtrl',
+      controllerAs: 'vm'
+    })
     .when('/stations-public', {
       templateUrl: 'stations-public/stations-public.view.html',
       controller: 'stationsPublicCtrl',

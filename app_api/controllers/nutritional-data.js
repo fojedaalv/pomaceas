@@ -61,6 +61,9 @@ module.exports.list = (req, res) => {
   },
   '_id'
   )
+  .sort({
+    name : 1
+  })
   .exec((err, stations) => {
     if(err) {
       console.log(err);
@@ -81,7 +84,9 @@ module.exports.list = (req, res) => {
       query,
       '',
       {
-        sort  : { },
+        sort  : {
+          date: -1
+        },
         skip  : pageNumber*pageSize,
         limit : pageSize*1
       }
@@ -101,6 +106,72 @@ module.exports.list = (req, res) => {
             },
             links: {
               self: hostname+'/api/v1/nutritional-data'
+            },
+            data: data
+          });
+        });
+      }
+    })
+  })
+}
+
+module.exports.listAll = (req, res) => {
+  let hostname    = req.headers.host;
+  let requestData = JsonApiQueryParser.parseRequest(req.url);
+  let pageNumber  = requestData.queryData.page.number  || 0;
+  let pageSize    = requestData.queryData.page.size    || 10;
+  let filter      = requestData.queryData.filter;
+  let query = { };
+  Station.find({
+
+  },
+  '_id'
+  )
+  .sort({
+    name : 1
+  })
+  .exec((err, stations) => {
+    if(err) {
+      console.log(err);
+      sendJSONresponse(res, 400, err);
+      return;
+    }
+    let station_ids = [];
+    stations.forEach((station) => {
+      station_ids.push(station._id);
+    })
+    query = {
+      station : { $in : station_ids}
+    }
+    if(filter.sector){
+      query.sectorId = filter.sector;
+    }
+    NutritionalData.find(
+      query,
+      '',
+      {
+        sort  : {
+          date: -1
+        },
+        skip  : pageNumber*pageSize,
+        limit : pageSize*1
+      }
+    )
+    .populate('station')
+    .exec((err, data) => {
+      if(err){
+        console.log(err);
+        sendJSONresponse(res, 400, err);
+        return;
+      }else{
+        NutritionalData.count(query, (err, count) => {
+          sendJSONresponse(res, 200, {
+            meta: {
+              "total-pages": Math.ceil(count/pageSize),
+              "total-items": count
+            },
+            links: {
+              self: hostname+'/api/v1/nutritional-data/all'
             },
             data: data
           });

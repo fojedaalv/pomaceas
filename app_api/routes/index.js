@@ -49,6 +49,10 @@ router.get('/stations',
   auth,
   ctrlAuth.roleAuthorization(['administrator']),
   ctrlStations.list);
+router.get('/stations/all',
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlStations.listAll);
 router.post('/stations',
   auth,
   ctrlAuth.roleAuthorization(['administrator']),
@@ -205,6 +209,13 @@ router.get(
   '/nutritional-data',
   auth,
   ctrlNutritionalData.list
+);
+
+router.get(
+  '/nutritional-data/all',
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlNutritionalData.listAll
 );
 
 router.delete(
