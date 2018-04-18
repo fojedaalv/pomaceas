@@ -128,14 +128,14 @@ function dashboardNutritionalAdminCtrl(stationsSvc, authSvc, nutritionalDataSvc,
     data.KMgdivCa = (data.K + data.Mg) / data.Ca;
     // FALTAN LOS INDICADORES DE RIESGO
     if(data.stage=='small'){
-      data.risk1 = (data.Ca < 5.5) ? 1 : 0;
+      data.risk1 = (data.Ca < 15) ? 1 : 0;
       data.risk2 = (data.N  > 112) ? 1 : 0;
       data.risk3 = (data.K  > 195) ? 1 : 0;
       data.risk4 = (data.NdivCa > 7.5) ? 1 : 0;
       data.risk5 = (data.KdivCa > 19.5) ? 1 : 0;
     }
     if(data.stage=='mature'){
-      data.risk1 = (data.Ca < 15)  ? 1 : 0;
+      data.risk1 = (data.Ca < 5.5)  ? 1 : 0;
       data.risk2 = (data.N  > 45)  ? 1 : 0;
       data.risk3 = (data.K  > 150) ? 1 : 0;
       data.risk4 = (data.NdivCa > 10) ? 1 : 0;
