@@ -16,6 +16,62 @@ module.exports.list = function(req, res){
   let pageNumber  = requestData.queryData.page.number  || 0;
   let pageSize    = requestData.queryData.page.size    || 10;
   let query = { };
+  Station.aggregate([
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        city: 1,
+        region: 1,
+        location: 1,
+        owner: 1,
+        sectors: 1,
+        region_n: {
+          $switch: {
+            branches: [
+              { case: { $eq: ['$region', 'VI'] }, then: 6 },
+              { case: { $eq: ['$region', 'VII'] }, then: 7 },
+              { case: { $eq: ['$region', 'VIII'] }, then: 8 },
+              { case: { $eq: ['$region', 'IX'] }, then: 9 },
+              { case: { $eq: ['$region', 'X'] }, then: 10 }
+            ],
+            default: 15
+          }
+        }
+      }
+    },
+    {
+      $sort : {
+        region_n: 1,
+        name: 1
+      }
+    },
+    {
+      $skip  : pageNumber*pageSize
+    },
+    {
+      $limit : pageSize*1
+    }
+  ], (err, stations) => {
+    if(err){
+      console.log(err);
+      sendJSONresponse(res, 400, err);
+    }else{
+      Station.count(query, (err, count) => {
+        sendJSONresponse(res, 200, {
+          meta: {
+            "total-pages": Math.ceil(count/pageSize),
+            "total-items": count
+          },
+          links: {
+            self: hostname+'/api/v1/stations'
+          },
+          data: stations
+        });
+      });
+    }
+  })
+  /*
   Station.find(
     query,
     '_id name city region location owner sectors',
@@ -43,6 +99,7 @@ module.exports.list = function(req, res){
         });
       }
     });
+    */
 };
 
 module.exports.listAll = function(req, res){
