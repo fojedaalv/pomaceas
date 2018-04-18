@@ -15,6 +15,9 @@ module.exports.list = function(req, res){
   let requestData = JsonApiQueryParser.parseRequest(req.url);
   let pageNumber  = requestData.queryData.page.number  || 0;
   let pageSize    = requestData.queryData.page.size    || 10;
+  if(pageSize == 0){
+    pageSize = 1000;
+  }
   let query = { };
   Station.aggregate([
     {
