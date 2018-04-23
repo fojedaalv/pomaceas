@@ -14,98 +14,101 @@
         <form class="clearfix">
           <div class="form-group col-md-12">
             <label for="name" class="control-label">Título del Resumen: </label>
-            <input class="form-control" id="name" placeholder="Nombre del Resumen" type="text" ng-model="vm.newSummary.name">
+            <input class="form-control" id="name" placeholder="Nombre del Resumen" type="text" ng-model="vm.summary.name">
           </div>
         </form>
 
-        <form class="form-inline well well-sm clearfix">
-          <div class="form-group col-md-3">
-            <label for="factor" class="control-label">Factor Productivo</label>
-            <input class="form-control" id="factor" placeholder="Factor Productivo" type="text" ng-model="vm.newVariable.factor">
-          </div>
-          <div class="form-group col-md-3">
-            <label for="variable" class="control-label">Variable</label><br/>
-            <select class="form-control" id="variable" ng-model="vm.newVariable.variable">
-              <option ng-repeat="variable in vm.variables" value="{{ variable.value }}">
-                {{ variable.text }}
-              </option>
-            </select>
-          </div>
-          <div class="form-group col-md-2">
-            <label for="sector" class="control-label">Fecha Inicio</label>
-            <div class="input-group">
-              <input type="text" readonly
-                class="form-control"
-                uib-datepicker-popup="{{vm.startCalendar.format}}"
-                ng-model="vm.newVariable.startDate"
-                is-open="vm.startCalendar.isOpen"
-                datepicker-options="vm.dateOptions"
-                ng-required="true"
-                close-text="Cerrar"/>
-                <span class="input-group-btn">
-                  <button type="button"
-                  class="btn btn-default"
-                  ng-click="vm.openCal1()">
-                    <i class="glyphicon glyphicon-calendar"></i>
-                  </button>
-                </span>
-            </div>
-          </div>
-          <div class="form-group col-md-2">
-            <label for="sector" class="control-label">Fecha Término</label>
-            <div class="input-group">
-              <input type="text" readonly
-                class="form-control"
-                uib-datepicker-popup="{{vm.endCalendar.format}}"
-                ng-model="vm.newVariable.endDate"
-                is-open="vm.endCalendar.isOpen"
-                datepicker-options="vm.dateOptions"
-                ng-required="true"
-                close-text="Cerrar"/>
-                <span class="input-group-btn">
-                  <button type="button"
-                  class="btn btn-default"
-                  ng-click="vm.openCal2()">
-                    <i class="glyphicon glyphicon-calendar"></i>
-                  </button>
-                </span>
-            </div>
-          </div>
-          <div class="form-group col-md-2">
-            <label for="sector" class="control-label">Opciones</label>
-            <button type="button" class="btn btn-primary btn-block" ng-click="vm.addToNewSummary()">Añadir</button>
-          </div>
-        </form>
-        <div ng-if="!vm.newSummary.variables.length">
-          <p>No se han añadido variables. Si desea crear un nuevo cuadro resumen de variables, añada variables con el formulario de arriba.</p>
-        </div>
-        <div class="table-responsive">
-        <table class="table table-striped table-hover" ng-if="vm.newSummary.variables.length">
+        <div class="table-responsive mx-15" ng-if="vm.summary.variables.length>0" style="overflow-x: visible;">
+        <table class="table">
           <thead>
             <tr>
-              <th>Factor Productivo</th>
-              <th>Variable</th>
-              <th>Fecha Inicio</th>
-              <th>Fecha Término</th>
-              <th></th>
+              <th class="col-md-3">Factor Productivo</th>
+              <th class="col-md-3">Variable</th>
+              <th class="col-md-2">Fecha Inicio</th>
+              <th class="col-md-2">Fecha Término</th>
+              <th class="col-md-2">Opciones</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="variable in vm.newSummary.variables">
-              <td>{{ variable.factor }}</td>
-              <td>{{ variable.variable | variableTranslate }}</td>
-              <td>{{ variable.startDate | amDateFormat:'DD [de] MMMM' }}</td>
-              <td>{{ variable.endDate | amDateFormat:'DD [de] MMMM' }}</td>
+            <tr ng-repeat="row in vm.summary.variables track by $index">
+              <td
+                class="no-padding">
+                <input
+                  class="form-control"
+                  placeholder="Factor Productivo"
+                  type="text"
+                  ng-model="row.factor">
+              </td>
+              <td
+                class="no-padding">
+                <select class="form-control" id="variable" ng-model="row.variable">
+                  <option ng-repeat="variable in vm.variables" value="{{ variable.value }}">
+                    {{ variable.text }}
+                  </option>
+                </select>
+              </td>
+              <td
+                class="no-padding">
+                <div class="input-group">
+                  <input type="text" readonly
+                    class="form-control"
+                    uib-datepicker-popup="{{vm.calendarFormat}}"
+                    ng-model="row.startDate"
+                    is-open="row.isCalendar1Open"
+                    datepicker-options="vm.dateOptions"
+                    ng-required="true"
+                    close-text="Cerrar"/>
+                    <span class="input-group-btn">
+                      <button type="button"
+                      class="btn btn-default"
+                      ng-click="vm.openCal1(row)">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </button>
+                    </span>
+                </div>
+              </td>
+              <td
+                class="no-padding">
+                <div class="input-group">
+                  <input type="text" readonly
+                    class="form-control"
+                    uib-datepicker-popup="{{vm.calendarFormat}}"
+                    ng-model="row.endDate"
+                    is-open="row.isCalendar2Open"
+                    datepicker-options="vm.dateOptions"
+                    ng-required="true"
+                    close-text="Cerrar"/>
+                    <span class="input-group-btn">
+                      <button type="button"
+                      class="btn btn-default"
+                      ng-click="vm.openCal2(row)">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </button>
+                    </span>
+                </div>
+              </td>
               <td>
-                <button type="button" class="btn btn-xs btn-danger btn-block" ng-click="vm.removeVariable(variable)">X</button>
+                <button type="button" class="btn btn-xs btn-danger" ng-click="vm.removeRow(row)">
+                  <i class="fa fa-trash"></i> Eliminar
+                </button>
+                <button type="button" class="btn btn-xs btn-info" ng-click="vm.moveUp($index)" ng-disabled="$index==0">
+                  <i class="fa fa-arrow-up"></i>
+                </button>
+                <button type="button" class="btn btn-xs btn-info" ng-click="vm.moveDown($index)" ng-disabled="$index==vm.summary.variables.length-1">
+                  <i class="fa fa-arrow-down"></i>
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
         </div>
-        <hr>
-        <div class="form-group col-md-3 col-md-offset-9">
-          <button type="button" class="btn btn-primary btn-block" ng-click="vm.saveNewSummary()">Guardar Cuadro Resumen</button>
+        <div class="mx-15">
+          <button type="button" class="btn btn-info" ng-click="vm.addNewRow()">
+            <i class="fa fa-plus"></i> Nueva Variable
+          </button>
+          <button type="button" class="btn btn-success" ng-click="vm.saveSummary()">
+            <i class="fa fa-save"></i> Guardar Informe
+          </button>
         </div>
       </div>
     </div>

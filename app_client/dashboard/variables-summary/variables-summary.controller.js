@@ -6,77 +6,89 @@ function variablesSummaryCtrl(usersSvc, authSvc, $routeParams, $location, APPLE_
   vm.errMessage = "";
   vm.formInfo ="";
   vm.variables = APPLE_VARIABLES;
-  vm.newVariable = {
-    factor: "",
-    variable: vm.variables[0].value,
-    startDate: moment().subtract(3, 'months').toDate(),
-    endDate: moment().subtract(1, 'month').toDate()
-  }
-  vm.newSummary = {
-    name: "",
-    variables: []
-  }
-  vm.addToNewSummary = () => {
-    if(vm.newVariable.factor == ""){
-      alert("No se puede dejar vacío el Factor Productivo.");
-      return;
-    }
-    vm.newSummary.variables.push({
-      factor: vm.newVariable.factor,
-      variable: vm.newVariable.variable,
-      startDate: {
-        month: vm.newVariable.startDate.getMonth(),
-        day: vm.newVariable.startDate.getDate()
-      },
-      endDate: {
-        month: vm.newVariable.endDate.getMonth(),
-        day: vm.newVariable.endDate.getDate()
-      }
-    });
 
-    vm.newVariable = {
-      factor: vm.newVariable.factor,
-      variable: vm.variables[0].value,
-      startDate: vm.newVariable.startDate,
-      endDate: vm.newVariable.endDate
-    }
+  // NEW CODE
+  vm.summary = {
+    name : '',
+    variables : []
   }
 
-  vm.removeVariable = function(variable){
+  vm.removeRow = (row) => {
     var confDialog = "¿Desea eliminar la variable?";
     var conf = confirm(confDialog);
     if(conf){
-      var index = vm.newSummary.variables.indexOf(variable);
-      vm.newSummary.variables.splice(index, 1);
+      var index = vm.summary.variables.indexOf(row);
+      vm.summary.variables.splice(index, 1);
     }
   }
 
-  vm.saveNewSummary = () => {
-    if(vm.newSummary.name==""){
-      alert("No puede quedar el nombre en blanco.")
-    }else if(vm.newSummary.variables.length==0){
-      alert("Debe haber al menos una variable para crear el cuadro.");
-    }else{
-      for(index in vm.newSummary.variables){
-        vm.newSummary.variables[index].startDate.month +=1;
-        vm.newSummary.variables[index].endDate.month   +=1;
-      }
-      summariesSvc.createSummary({
-        name: vm.newSummary.name,
-        variables: vm.newSummary.variables
-      })
-      .success(function(summary){
-        vm.newSummary = {
-          name: "",
-          variables: []
-        }
-        alert('Resumen creado exitosamente.')
-        vm.getSummariesList();
-      })
-      .error(function (e) {
-        vm.errMessage = "El resumen no pudo ser creado. Detalles del error: "+e.message;
-      });
+  vm.moveUp = (index) => {
+    let temp = vm.summary.variables[index-1];
+    vm.summary.variables[index-1] = vm.summary.variables[index];
+    vm.summary.variables[index] = temp;
+  }
+
+  vm.moveDown = (index) => {
+    let temp = vm.summary.variables[index+1];
+    vm.summary.variables[index+1] = vm.summary.variables[index];
+    vm.summary.variables[index] = temp;
+  }
+
+  vm.addNewRow = () => {
+    let row = {
+      factor: '',
+      variable: APPLE_VARIABLES[0].value,
+      startDate: new Date(),
+      endDate: new Date()
     }
+    if(vm.summary.variables.length>0){
+      row.startDate = vm.summary.variables[vm.summary.variables.length-1].startDate;
+      row.endDate   = vm.summary.variables[vm.summary.variables.length-1].endDate;
+    }
+    vm.summary.variables.push(row);
+  }
+
+  vm.saveSummary = () => {
+    vm.errMessage = "";
+    if(vm.summary.name==''){
+      vm.errMessage = 'No se puede dejar el nombre del resumen en blanco.';
+      return;
+    }
+    let summary = {
+      name      : vm.summary.name,
+      variables : JSON.parse(JSON.stringify(vm.summary.variables))
+    }
+    for(var i=0; i<summary.variables.length; i++){
+      if(vm.summary.variables[i].factor==''){
+        vm.errMessage = 'No se puede dejar el factor productivo en blanco.';
+        return;
+      }
+      summary.variables[i] = {
+        factor    : vm.summary.variables[i].factor,
+        variable  : vm.summary.variables[i].variable,
+        startDate : {
+          month   : vm.summary.variables[i].startDate.getMonth()+1,
+          day     : vm.summary.variables[i].startDate.getDate()
+        },
+        endDate   : {
+          month   : vm.summary.variables[i].endDate.getMonth()+1,
+          day     : vm.summary.variables[i].endDate.getDate()
+        }
+      }
+    }
+
+    summariesSvc.createSummary(summary)
+    .success(function(summary){
+      alert('Resumen creado exitosamente.');
+      vm.getSummariesList();
+      vm.summary = {
+        name : '',
+        variables : []
+      }
+    })
+    .error(function (e) {
+      vm.errMessage = "El resumen no pudo ser creado. Detalles del error: "+e.message;
+    });
   }
 
   // Code for summaries list
@@ -107,14 +119,7 @@ function variablesSummaryCtrl(usersSvc, authSvc, $routeParams, $location, APPLE_
   }
 
   // Code for date selection
-  vm.startCalendar = {
-    format: 'dd/MMM',
-    isOpen: false
-  }
-  vm.endCalendar = {
-    format: 'dd/MMM',
-    isOpen: false
-  }
+  vm.calendarFormat = 'dd/MMM';
   vm.dateOptions = {
     formatYear: 'yy',
     datepickerMode: 'day',
@@ -126,10 +131,10 @@ function variablesSummaryCtrl(usersSvc, authSvc, $routeParams, $location, APPLE_
     minDate: null,
     startingDay: 1
   };
-  vm.openCal1 = function(){
-    vm.startCalendar.isOpen = true;
+  vm.openCal1 = function(row){
+    row.isCalendar1Open = true;
   }
-  vm.openCal2 = function(){
-    vm.endCalendar.isOpen = true;
+  vm.openCal2 = function(row){
+    row.isCalendar2Open = true;
   }
 }
