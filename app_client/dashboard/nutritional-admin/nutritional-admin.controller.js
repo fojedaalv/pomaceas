@@ -207,7 +207,7 @@ function dashboardNutritionalAdminCtrl(stationsSvc, authSvc, nutritionalDataSvc,
   vm.loadData2 = () => {
     if(vm.selectedSector !== 0){
       let sectorID = vm.sectors[vm.selectedSector]._id;
-      nutritionalDataSvc.getDataListBySector(vm.currentPage-1, vm.pageSize, sectorID)
+      nutritionalDataSvc.getDataListBySectorAdmin(vm.currentPage-1, vm.pageSize, sectorID)
       .error((err) => {
         vm.errMessage = err.message;
         console.log(err);

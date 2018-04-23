@@ -212,6 +212,13 @@ router.get(
 );
 
 router.get(
+  '/nutritional-data-admin',
+  auth,
+  ctrlAuth.roleAuthorization(['administrator']),
+  ctrlNutritionalData.listAdmin
+);
+
+router.get(
   '/nutritional-data/all',
   auth,
   ctrlAuth.roleAuthorization(['administrator']),

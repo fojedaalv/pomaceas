@@ -43,6 +43,19 @@ function nutritionalDataSvc($http, $window, authSvc){
     });
   }
 
+  var getDataListBySectorAdmin = function(pageNumber = 0, pageSize = 0, sectorID){
+    return $http.get('/api/v1/nutritional-data-admin',{
+      params : {
+        'page[number]'   : pageNumber,
+        'page[size]'     : pageSize,
+        'filter[sector]' : sectorID
+      },
+      headers: {
+        Authorization: 'Bearer '+ authSvc.getToken()
+      }
+    });
+  }
+
   var removeData = (dataID) => {
     return $http.delete('/api/v1/nutritional-data/'+dataID, {
       headers: {
@@ -56,6 +69,7 @@ function nutritionalDataSvc($http, $window, authSvc){
     getDataList : getDataList,
     getAllDataList : getAllDataList,
     getDataListBySector : getDataListBySector,
+    getDataListBySectorAdmin : getDataListBySectorAdmin,
     removeData  : removeData
   };
 }

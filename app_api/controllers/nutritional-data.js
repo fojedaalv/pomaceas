@@ -116,6 +116,52 @@ module.exports.list = (req, res) => {
   })
 }
 
+module.exports.listAdmin = (req, res) => {
+  // Endpoint para que el administrador pueda obtener información nutricional de
+  // cualquier cuartel
+  let hostname    = req.headers.host;
+  let requestData = JsonApiQueryParser.parseRequest(req.url);
+  let pageNumber  = requestData.queryData.page.number  || 0;
+  let pageSize    = requestData.queryData.page.size    || 10;
+  let filter      = requestData.queryData.filter;
+  let query = {
+    sectorId : filter.sector
+  }
+  NutritionalData.find(
+    query,
+    '',
+    {
+      sort  : {
+        createdAt: -1,
+        date: -1
+      },
+      skip  : pageNumber*pageSize,
+      limit : pageSize*1
+    }
+  )
+  .populate('station')
+  .exec((err, data) => {
+    if(err){
+      console.log(err);
+      sendJSONresponse(res, 400, err);
+      return;
+    }else{
+      NutritionalData.count(query, (err, count) => {
+        sendJSONresponse(res, 200, {
+          meta: {
+            "total-pages": Math.ceil(count/pageSize),
+            "total-items": count
+          },
+          links: {
+            self: hostname+'/api/v1/nutritional-data'
+          },
+          data: data
+        });
+      });
+    }
+  })
+}
+
 module.exports.listAll = (req, res) => {
   let hostname    = req.headers.host;
   let requestData = JsonApiQueryParser.parseRequest(req.url);
