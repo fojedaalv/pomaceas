@@ -47,11 +47,11 @@
               <td>
                 <label>
                   <input type="radio" ng-model="vm.fdata.stage" value="small">
-                  Fruto Pequeño
+                  Fruto 60 ddpf
                 </label><br/>
                 <label>
                   <input type="radio" ng-model="vm.fdata.stage" value="mature">
-                  Fruto Maduro
+                  Fruto a Cosecha
                 </label><br/>
               </td>
               <td>
@@ -71,7 +71,7 @@
             <th>Mg (mg/100g PF)</th>
             <th>Ms %</th>
             <th>N° Frutos</th>
-            <th>Peso Total</th>
+            <th>Peso Total (g)</th>
             <th>Guardar</th>
           </thead>
           <tbody>
@@ -144,10 +144,10 @@
                 <td><span>{{nutData.date | amDateFormat:'DD-MM-YYYY'}}</span></td>
                 <td>
                   <span ng-if="nutData.stage == 'small'">
-                    Fruto Pequeño
+                    Fruto 60 ddpf
                   </span>
                   <span ng-if="nutData.stage == 'mature'">
-                    Fruto Maduro
+                    Fruto a Cosecha
                   </span>
                 </td>
                 <td>{{nutData.N}}</td>

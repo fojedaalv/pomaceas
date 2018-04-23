@@ -85,6 +85,7 @@ module.exports.list = (req, res) => {
       '',
       {
         sort  : {
+          createdAt: -1,
           date: -1
         },
         skip  : pageNumber*pageSize,
@@ -151,6 +152,7 @@ module.exports.listAll = (req, res) => {
       '',
       {
         sort  : {
+          createdAt: -1,
           date: -1
         },
         skip  : pageNumber*pageSize,

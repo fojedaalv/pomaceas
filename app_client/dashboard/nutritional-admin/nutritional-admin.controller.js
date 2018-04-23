@@ -51,7 +51,7 @@ function dashboardNutritionalAdminCtrl(stationsSvc, authSvc, nutritionalDataSvc,
   vm.dateOptions = {
     formatYear: 'yy',
     datepickerMode: 'day',
-    formatDayTitle: 'MMMM',
+    formatDayTitle: 'MMMM - yyyy',
     minMode:'day',
     maxMode:'day',
     initDate: null,
@@ -114,6 +114,7 @@ function dashboardNutritionalAdminCtrl(stationsSvc, authSvc, nutritionalDataSvc,
     .then(function(response){
       console.log(response);
       vm.loadData();
+      vm.loadData2();
     })
     vm.clearForm();
   }

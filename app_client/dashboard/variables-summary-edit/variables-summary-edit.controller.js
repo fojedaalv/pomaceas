@@ -99,6 +99,41 @@ function variablesSummaryEditCtrl($routeParams, $location, summariesSvc, APPLE_V
     });
   }
 
+  vm.saveChangesAsNew = () => {
+    vm.errMessage = "";
+    let summary = {
+      name      : vm.summary.name,
+      variables : JSON.parse(JSON.stringify(vm.summary.variables))
+    }
+    for(var i=0; i<summary.variables.length; i++){
+      if(vm.summary.variables[i].factor==''){
+        alert('No se puede dejar el factor productivo en blanco.');
+        return;
+      }
+      summary.variables[i] = {
+        factor    : vm.summary.variables[i].factor,
+        variable  : vm.summary.variables[i].variable,
+        startDate : {
+          month   : vm.summary.variables[i].startDate.getMonth()+1,
+          day     : vm.summary.variables[i].startDate.getDate()
+        },
+        endDate   : {
+          month   : vm.summary.variables[i].endDate.getMonth()+1,
+          day     : vm.summary.variables[i].endDate.getDate()
+        }
+      }
+    }
+
+    summariesSvc.createSummary(summary)
+    .success(function(summary){
+      alert('Resumen creado exitosamente.');
+      $location.path('dashboard/variables-summary');
+    })
+    .error(function (e) {
+      vm.errMessage = "El resumen no pudo ser creado. Detalles del error: "+e.message;
+    });
+  }
+
   // Code for date selection
   vm.calendarFormat = 'dd/MMM';
   vm.dateOptions = {
