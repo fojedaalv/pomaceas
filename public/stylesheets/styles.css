@@ -75,3 +75,8 @@ body {
 .mx-15 {
   margin: 0 15px;
 }
+
+.pred-result {
+  font-size: 1.3em;
+  font-weight: 500;
+}

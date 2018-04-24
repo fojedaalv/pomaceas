@@ -131,7 +131,7 @@
               <th>Mg</th>
               <th>Ms</th>
               <th>N°</br/>Frutos</th>
-              <th>Peso<br/>Total</th>
+              <th>Peso<br/>Total (g)</th>
               <th>Índice<br/>Riesgo</th>
               <th>Otros</th>
               <th>Opciones</th>
@@ -150,14 +150,14 @@
                     Fruto a Cosecha
                   </span>
                 </td>
-                <td>{{nutData.N}}</td>
-                <td>{{nutData.P}}</td>
-                <td>{{nutData.K}}</td>
-                <td>{{nutData.Ca}}</td>
-                <td>{{nutData.Mg}}</td>
-                <td>{{nutData.Ms}}</td>
-                <td>{{nutData.N_Frutos}}</td>
-                <td>{{nutData.Peso_Total}}</td>
+                <td>{{nutData.N          | number:1}}</td>
+                <td>{{nutData.P          | number:1}}</td>
+                <td>{{nutData.K          | number:1}}</td>
+                <td>{{nutData.Ca         | number:1}}</td>
+                <td>{{nutData.Mg         | number:1}}</td>
+                <td>{{nutData.Ms         | number:1}}</td>
+                <td>{{nutData.N_Frutos   | number:1}}</td>
+                <td>{{nutData.Peso_Total | number:1}}</td>
                 <td>{{nutData.riskIndex}}</td>
                 <td>{{nutData.other}}</td>
                 <td><button type="button" class="btn btn-danger btn-xs" ng-click="vm.removeData(nutData)"><i class="fa fa-trash"></i></button></td>
@@ -201,9 +201,10 @@
               <th>N/K</th>
               <th>K/P</th>
               <th>P/Ca</th>
-              <th>(K/Mg)/Ca</th>
+              <th>(K+Mg)/Ca</th>
+              <th>(K+Mg)/Ca + N/Ca</th>
               <th>Índice de Riesgo</th>
-              <th>Peso Promedio</th>
+              <th>Peso Promedio (g)</th>
             </thead>
             <tbody>
               <tr ng-repeat="nutData in vm.nutritionalIndicators">
@@ -216,15 +217,16 @@
                     Fruto Maduro
                   </span>
                 </td>
-                <td>{{nutData.NdivCa    | number:2}}</td>
-                <td>{{nutData.KdivCa    | number:2}}</td>
-                <td>{{nutData.MgdivCa   | number:2}}</td>
-                <td>{{nutData.NdivK     | number:2}}</td>
-                <td>{{nutData.KdivP     | number:2}}</td>
-                <td>{{nutData.PdivCa    | number:2}}</td>
-                <td>{{nutData.KMgdivCa  | number:2}}</td>
-                <td>{{nutData.riskIndex | number:2}}</td>
-                <td>{{nutData.avgWeight | number:2}}</td>
+                <td>{{nutData.NdivCa    | number:1}}</td>
+                <td>{{nutData.KdivCa    | number:1}}</td>
+                <td>{{nutData.MgdivCa   | number:1}}</td>
+                <td>{{nutData.NdivK     | number:1}}</td>
+                <td>{{nutData.KdivP     | number:1}}</td>
+                <td>{{nutData.PdivCa    | number:1}}</td>
+                <td>{{nutData.KMgdivCa  | number:1}}</td>
+                <td>{{nutData.KMgdivCaNCa | number:1}}</td>
+                <td>{{nutData.riskIndex | number:1}}</td>
+                <td>{{nutData.avgWeight | number:1}}</td>
               </tr>
             </tbody>
           </table>

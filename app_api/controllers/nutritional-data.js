@@ -257,6 +257,7 @@ let calculateNutritionalIndicators = (data) => {
   data.KdivP    = data.K / data.P;
   data.PdivCa   = data.P / data.Ca;
   data.KMgdivCa = (data.K + data.Mg) / data.Ca;
+  data.KMgdivCaNCa = data.KMgdivCa + (data.N/data.Ca);
   if(data.stage=='small'){
     data.risk1 = (data.Ca < 15) ? 1 : 0;
     data.risk2 = (data.N  > 112) ? 1 : 0;
