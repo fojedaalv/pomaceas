@@ -9,7 +9,6 @@
       </div>
       <div class="panel-body">
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
-        Hay {{ vm.totalItems }} estaciones disponibles. <br/>
         <ul
           uib-pagination
           total-items="vm.totalItems"
@@ -20,8 +19,8 @@
           boundary-links="true"
           class="pagination-sm"
           force-ellipses="false"
-          first-text="Inicio"
-          last-text="Final"
+          first-text=""
+          last-text=""
           previous-text="Anterior"
           next-text="Siguiente">
         </ul>
@@ -67,11 +66,17 @@
           boundary-links="true"
           class="pagination-sm"
           force-ellipses="false"
-          first-text="Inicio"
-          last-text="Final"
+          first-text=""
+          last-text=""
           previous-text="Anterior"
           next-text="Siguiente">
         </ul>
+        <div ng-if="vm.totalItems==1">
+          {{ vm.totalItems }} estación disponible <br/>
+        </div>
+        <div ng-if="vm.totalItems>1">
+          {{ vm.totalItems }} estaciones disponibles <br/>
+        </div>
       </div>
     </div>
 

@@ -9,9 +9,6 @@
       </div>
       <div class="panel-body">
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
-        <p ng-if="vm.totalItems>0">
-          Hay {{vm.totalItems}} usuarios registrados en el sistema.
-        </p>
         <ul
           uib-pagination
           total-items="vm.totalItems"
@@ -22,8 +19,8 @@
           boundary-links="true"
           class="pagination-sm"
           force-ellipses="false"
-          first-text="Inicio"
-          last-text="Final"
+          first-text=""
+          last-text=""
           previous-text="Anterior"
           next-text="Siguiente">
         </ul>
@@ -64,11 +61,17 @@
           boundary-links="true"
           class="pagination-sm"
           force-ellipses="false"
-          first-text="Inicio"
-          last-text="Final"
+          first-text=""
+          last-text=""
           previous-text="Anterior"
           next-text="Siguiente">
         </ul>
+        <p ng-if="vm.totalItems>1">
+          {{vm.totalItems}} usuarios registrados en el sistema
+        </p>
+        <p ng-if="vm.totalItems==1">
+          {{vm.totalItems}} usuario registrado en el sistema
+        </p>
       </div>
     </div>
   </div>

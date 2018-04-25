@@ -55,7 +55,7 @@ body {
 .basic-footer {
   height: 80px;
   padding: 10px;
-  background-color: #3a3a3a;
+  background-color: #828081;
   color: #FFF;
   border-top: 1px solid #eee;
   text-align: left;
@@ -80,3 +80,72 @@ body {
   font-size: 1.3em;
   font-weight: 500;
 }
+
+.pagination .pagination-last a {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+.pagination .pagination-first a {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+/* Desde aquí vienen los overrides de pomáceas
+ * Pomáceas Claro    : 6caf00
+ * Pomáceas Oscuro   : 439527
+ */
+.navbar-inverse {
+  background-color: #6caf00;
+  border-bottom   : 3px solid #439527;
+}
+
+.dash-nav-header {
+  background-color: #439527;
+}
+
+.text-pomaceas {
+  color: #439527;
+}
+
+.btn-success {
+  background-color: #439527;
+  color: #FFF;
+}
+.btn-success:hover{
+  background-color: #6caf00;
+}
+
+* {
+  border-radius: 0px !important;
+}
+.bottom-align-text {
+  position: absolute;
+ bottom: 0;
+ right: 0;
+}
+.sideborder {
+  border-right: 1px solid #ecf0f1;
+}
+/*
+.panel-success > .panel-heading {
+  background-color: #439527;
+}*/
+.pomaceas-navbar {
+
+}
+.pomaceas-navbar li:hover {
+  background-color: #439527;
+}
+.pomaceas-navbar li:hover a:hover{
+  color: #FFF;
+}
+/*
+.pomaceas-navbar a:after {
+  content: "";
+  display: inline;
+  margin: 0 10px;
+  height: .5em;
+  padding-top: 0px;
+  border-right: 1px solid white;
+}*/
