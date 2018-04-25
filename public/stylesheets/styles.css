@@ -140,6 +140,22 @@ body {
 .pomaceas-navbar li:hover a:hover{
   color: #FFF;
 }
+.table th {
+  background-color: #439527;
+  border: 3px solid #FFF !important;
+}
+.pagination-sm li.disabled > a {
+  /*background-color: red;*/
+  background-color: #acdbad;
+}
+.pagination-sm li.active > a {
+  /*background-color: red;*/
+  background-color: #439527;
+}
+.pagination-sm li.disabled:hover > a, .pagination-sm li.active:hover > a {
+  /*background-color: red;*/
+  background-color: #6caf00;
+}
 /*
 .pomaceas-navbar a:after {
   content: "";
