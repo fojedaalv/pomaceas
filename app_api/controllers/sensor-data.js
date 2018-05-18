@@ -309,6 +309,7 @@ module.exports.dataUpload = function (req, res) {
         hrsDPVmay2p5: hrsDPVmay2p5
       });
     });
+    /*
     SensorData.collection.insertMany(objects, {ordered: true}, function(err, docs){
       if (err) {
         console.log(JSON.stringify(err, null, "\t"));
@@ -324,6 +325,66 @@ module.exports.dataUpload = function (req, res) {
         return;
       }
     })
+    */
+    let bulkOp = SensorData.collection.initializeOrderedBulkOp();
+    objects.forEach((item) => {
+      bulkOp.find({
+        station : req.params.stationId,
+        date    : item.date
+      })
+      .upsert()
+      .update({
+        $set : {
+          tempOut       : item.tempOut,
+          hiTemp        : item.hiTemp,
+          lowTemp       : item.lowTemp,
+          outHum        : item.outHum,
+          windSpeed     : item.windSpeed,
+          rain          : item.rain,
+          solarRad      : item.solarRad,
+          et            : item.et,
+          hr95          : item.hr95,
+          uEstres       : item.uEstres,
+          gdh           : item.gdh,
+          gd            : item.gd,
+          hr10          : item.hr10,
+          hr7           : item.hr7,
+          richard       : item.richard,
+          richardsonMod : item.richardsonMod,
+          unrath        : item.unrath,
+          hrmen0c       : item.hrmen0c,
+          hrmay27c      : item.hrmay27c,
+          hrmay29c      : item.hrmay29c,
+          hrmay32c      : item.hrmay32c,
+          hrmen6c       : item.hrmen6c,
+          hrmen12c      : item.hrmen12c,
+          hrmen18c      : item.hrmen18c,
+          hrmay15c      : item.hrmay15c,
+          hrrad         : item.hrrad,
+          hrrad300      : item.hrrad300,
+          hrabe         : item.hrabe,
+          hropt         : item.hropt,
+          dpv           : item.dpv,
+          es            : item.es,
+          hrsDPVmay2p5  : item.hrsDPVmay2p5
+        }
+      })
+    })
+    bulkOp.execute((error, result) => {
+      if(error){
+        console.log(JSON.stringify(error, null, "\t"));
+        sendJSONresponse(res, 400, {
+          message: "Se ha producido un error en la inserción de los datos. Probablemente se hayan subido datos que ya estaban en el sistema."
+        });
+        return;
+      }else{
+        sendJSONresponse(res, 201, {
+          message   : "Inserción exitosa de datos.",
+          nInserted : Math.max(result.toJSON().nUpserted, result.toJSON().nMatched)
+        });
+        return;
+      }
+    });
   })
 }
 

@@ -121,8 +121,8 @@ body {
 }
 .bottom-align-text {
   position: absolute;
- bottom: 0;
- right: 0;
+  bottom: 0;
+  right: 0;
 }
 .sideborder {
   border-right: 1px solid #ecf0f1;
@@ -144,17 +144,23 @@ body {
   background-color: #439527;
   border: 3px solid #FFF !important;
 }
+.pagination-sm li > a {
+  background-color: #4dac2c;
+}
 .pagination-sm li.disabled > a {
-  /*background-color: red;*/
   background-color: #acdbad;
 }
 .pagination-sm li.active > a {
-  /*background-color: red;*/
   background-color: #439527;
 }
 .pagination-sm li.disabled:hover > a, .pagination-sm li.active:hover > a {
-  /*background-color: red;*/
   background-color: #6caf00;
+}
+.dashboard-nav > ul.list-group > a.active {
+  background-color: #6caf00;
+}
+.pagination > .disabled > a:focus {
+  background-color: #439527;
 }
 /*
 .pomaceas-navbar a:after {
