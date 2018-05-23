@@ -329,8 +329,8 @@ module.exports.dataUpload = function (req, res) {
     let bulkOp = SensorData.collection.initializeOrderedBulkOp();
     objects.forEach((item) => {
       bulkOp.find({
-        station : req.params.stationId,
-        date    : item.date
+        station         : req.params.stationId,
+        date            : item.date
       })
       .upsert()
       .update({

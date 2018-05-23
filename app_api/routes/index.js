@@ -225,6 +225,14 @@ router.get(
   ctrlNutritionalData.listAll
 );
 
+
+// Get all data to filter and query in front-end
+router.get(
+  '/nutritional-data/bulk',
+  auth,
+  ctrlNutritionalData.getAllNutData
+)
+
 router.delete(
   '/nutritional-data/:id',
   ctrlNutritionalData.remove

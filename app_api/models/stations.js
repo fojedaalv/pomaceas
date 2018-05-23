@@ -28,7 +28,8 @@ var stationSchema = new mongoose.Schema({
   },
   owner: {
     type: ObjectId,
-    unique: false
+    unique: false,
+    ref: 'User'
   },
   location: {
     type: { type: String },

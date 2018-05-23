@@ -30,6 +30,17 @@ function nutritionalDataSvc($http, $window, authSvc){
     });
   }
 
+  var getBulkData = function(){
+    return $http.get('/api/v1/nutritional-data/bulk',{
+      params : {
+
+      },
+      headers: {
+        Authorization: 'Bearer '+ authSvc.getToken()
+      }
+    });
+  }
+
   var getDataListBySector = function(pageNumber = 0, pageSize = 0, sectorID){
     return $http.get('/api/v1/nutritional-data',{
       params : {
@@ -65,11 +76,12 @@ function nutritionalDataSvc($http, $window, authSvc){
   }
 
   return {
-    uploadData  : uploadData,
-    getDataList : getDataList,
-    getAllDataList : getAllDataList,
-    getDataListBySector : getDataListBySector,
+    uploadData               : uploadData,
+    getDataList              : getDataList,
+    getAllDataList           : getAllDataList,
+    getDataListBySector      : getDataListBySector,
     getDataListBySectorAdmin : getDataListBySectorAdmin,
-    removeData  : removeData
+    removeData               : removeData,
+    getBulkData              : getBulkData
   };
 }

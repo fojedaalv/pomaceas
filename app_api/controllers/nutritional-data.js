@@ -295,3 +295,45 @@ module.exports.calculations = (req, res) => {
     sendJSONresponse(res, 200, data);
   })
 }
+
+module.exports.getAllNutData = (req, res) => {
+  NutritionalData.find({ })
+  .sort({
+    date: -1
+  })
+  .populate({
+    path: 'station',
+    select: '_id owner name sectors',
+    populate: {
+      path: 'owner',
+      select: '_id name'
+    }
+  })
+  .lean()
+  .exec(
+    (error, data) => {
+      if(error || !data){
+        sendJSONresponse(res, 404, {
+          message: "No se encontraron registros"
+        });
+        return;
+      }else{
+        data.forEach((item) => {
+          item = calculateNutritionalIndicators(item);
+          item.owner = item.station.owner;
+          item.sector = item.station.sectors.filter((element) => {
+            return String(element._id) === String(item.sectorId)
+          })[0];
+          console.log(item);
+        })
+        sendJSONresponse(
+          res,
+          200,
+          {
+            data: data
+          }
+        )
+      }
+    }
+  )
+}

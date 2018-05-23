@@ -1,0 +1,93 @@
+<div class="app-container container-fluid">
+<div class="row">
+  <dashboard-navigation></dashboard-navigation>
+
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Explorar Datos Nutricionales</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive" style="max-height:500px;overflow:scroll;">
+          <table class="table table-condensed table-bordered table-responsive">
+            <thead>
+              <th>Dueño</th>
+              <th>Estación</th>
+              <th>Cuartel</th>
+              <th>Variedad</th>
+              <th>Fecha</th>
+              <th>Momento<br/>Medición</th>
+              <th>N</th>
+              <th>P</th>
+              <th>K</th>
+              <th>Ca</th>
+              <th>Mg</th>
+              <th>Ms</th>
+              <th>Otros</th>
+              <th>N/Ca</th>
+              <th>K/Ca</th>
+              <th>Mg/Ca</th>
+              <th>N/K</th>
+              <th>K/P</th>
+              <th>P/Ca</th>
+              <th>(K+Mg)/Ca</th>
+              <th>Índice<br/>Riesgo</th>
+              <th>N°</br/>Frutos</th>
+              <th>Peso<br/>Total (g)</th>
+              <th>Peso<br/>Promedio (g)</th>
+            </thead>
+            <tbody>
+              <tr ng-repeat="nutData in vm.displayData" style="white-space:nowrap;">
+                <td>{{nutData.owner.name}}</td>
+                <td>{{nutData.station.name}}</td>
+                <td>{{nutData.sector.name}}</td>
+                <td>{{nutData.sector.cultivar | cultivarTranslate}}</td>
+                <td>{{nutData.date | amDateFormat:'YYYY-MM-DD'}}</td>
+                <td>
+                  <span ng-if="nutData.stage == 'small'">
+                    Fruto 60 ddpf
+                  </span>
+                  <span ng-if="nutData.stage == 'mature'">
+                    Fruto a Cosecha
+                  </span>
+                </td>
+                <td>{{nutData.N            | number:1}}</td>
+                <td>{{nutData.P            | number:1}}</td>
+                <td>{{nutData.K            | number:1}}</td>
+                <td>{{nutData.Ca           | number:1}}</td>
+                <td>{{nutData.Mg           | number:1}}</td>
+                <td>{{nutData.Ms           | number:1}}</td>
+                <td>{{nutData.other}}</td>
+                <td>{{nutData.NdivCa       | number:1}}</td>
+                <td>{{nutData.KdivCa       | number:1}}</td>
+                <td>{{nutData.MgdivCa      | number:1}}</td>
+                <td>{{nutData.NdivK        | number:1}}</td>
+                <td>{{nutData.KdivP        | number:1}}</td>
+                <td>{{nutData.PdivCa       | number:1}}</td>
+                <td>{{nutData.KMgdivCa     | number:1}}</td>
+                <td>{{nutData.riskIndex    | number:1}}</td>
+                <td>{{nutData.N_Frutos     | number:1}}</td>
+                <td>{{nutData.Peso_Total   | number:1}}</td>
+                <td>{{(nutData.Peso_Total / nutData.N_Frutos)   | number:1}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button class="btn btn-success"
+          type="button"
+          style="margin-top:10px;"
+          ng-csv="vm.getData()"
+          csv-header="vm.getFileHeaders()"
+          filename="{{vm.getFileName()}}"
+          field-separator="{{vm.getFileSeparator()}}">
+          <i class="fa fa-save"></i>
+          Descargar Datos
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer></footer>
+</div>
+</div>
