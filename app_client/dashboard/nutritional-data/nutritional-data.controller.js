@@ -1,7 +1,7 @@
 angular.module('PomaceasWebApp')
 .controller('dashboardNutritionalDataCtrl', dashboardNutritionalDataCtrl);
 
-function dashboardNutritionalDataCtrl(stationsSvc, authSvc, nutritionalDataSvc, $scope, $filter){
+function dashboardNutritionalDataCtrl(stationsSvc, authSvc, usersSvc, nutritionalDataSvc, $scope, $filter){
   var vm = this;
   vm.stations = [];
   vm.sectors  = [];
@@ -9,6 +9,57 @@ function dashboardNutritionalDataCtrl(stationsSvc, authSvc, nutritionalDataSvc, 
   vm.errMessage = "";
   vm.originalData = [];
   vm.displayData  = [];
+  vm.cultivars = [
+    {value:'',            text:'Todos'},
+    {value:'gala',        text:'Gala'},
+    {value:'cripps_pink', text:'Cripps Pink'},
+    {value:'fuji',        text:'Fuji'}
+  ]
+  vm.users = [
+    {value:'',            text:'Todos'}
+  ]
+  vm.filter = {
+    owner    : '',
+    cultivar : ''
+  }
+
+  vm.init = () => {
+    usersSvc.getUsersList()
+    .success(function(data){
+      data.data.forEach((item) => {
+        vm.users.push({
+          value : item._id,
+          text  : item.name
+        })
+      })
+    })
+    .error(function(e){
+      console.log(e);
+    })
+  }
+  vm.init();
+
+  $scope.$watchGroup(['vm.filter.cultivar', 'vm.filter.owner'], () => {
+    vm.displayData = vm.originalData.filter(
+      (item) => {
+        let cultivarFilter = false;
+        let ownerFilter    = false;
+        if(vm.filter.cultivar != ''){
+          cultivarFilter = (item.sector.cultivar == vm.filter.cultivar)
+        }else{
+          cultivarFilter = true;
+        }
+
+        if(vm.filter.owner != ''){
+          ownerFilter = (item.owner._id == vm.filter.owner)
+        }else{
+          ownerFilter = true;
+        }
+
+        return cultivarFilter && ownerFilter
+      }
+    )
+  })
 
   vm.loadBulk = () => {
     nutritionalDataSvc.getBulkData()
