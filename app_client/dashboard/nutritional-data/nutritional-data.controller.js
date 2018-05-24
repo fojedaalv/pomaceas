@@ -18,9 +18,17 @@ function dashboardNutritionalDataCtrl(stationsSvc, authSvc, usersSvc, nutritiona
   vm.users = [
     {value:'',            text:'Todos'}
   ]
+  vm.stations = [
+    {value:'',            text:'Todas'}
+  ]
+  vm.sectors = [
+    {value:'',            text:'Todos'}
+  ]
   vm.filter = {
     owner    : '',
-    cultivar : ''
+    cultivar : '',
+    station  : '',
+    sector   : ''
   }
 
   vm.init = () => {
@@ -39,11 +47,67 @@ function dashboardNutritionalDataCtrl(stationsSvc, authSvc, usersSvc, nutritiona
   }
   vm.init();
 
-  $scope.$watchGroup(['vm.filter.cultivar', 'vm.filter.owner'], () => {
+  $scope.$watch('vm.filter.owner', () => {
+    if(vm.filter.owner!=''){
+      vm.stations = [
+        {value:'',            text:'Todas'}
+      ]
+      vm.filter.station = '';
+      stationsSvc.getUserStations(vm.filter.owner)
+      .error((err) => {
+        vm.errMessage = err.message;
+        console.log(err);
+      })
+      .then((response) => {
+        response.data.forEach((item) => {
+          vm.stations.push({
+            value : item._id,
+            text  : item.name
+          })
+        })
+      })
+    }else{
+      vm.stations = [
+        {value:'',            text:'Todas'}
+      ]
+      vm.filter.station = '';
+    }
+  })
+
+  $scope.$watch('vm.filter.station', () => {
+    if(vm.filter.station!=''){
+      vm.sectors = [
+        {value:'',            text:'Todos'}
+      ]
+      vm.filter.sector = '';
+      stationsSvc.getStation(vm.filter.station)
+      .error((err) => {
+        vm.errMessage = err.message;
+        console.log(err);
+      })
+      .then((response) => {
+        response.data.sectors.forEach((item) => {
+          vm.sectors.push({
+            value : item._id,
+            text  : item.name
+          })
+        })
+      })
+    }else{
+      vm.sectors = [
+        {value:'',            text:'Todos'}
+      ]
+      vm.filter.sector = '';
+    }
+  })
+
+  $scope.$watchGroup(['vm.filter.cultivar', 'vm.filter.owner', 'vm.filter.station', 'vm.filter.sector'], () => {
     vm.displayData = vm.originalData.filter(
       (item) => {
         let cultivarFilter = false;
         let ownerFilter    = false;
+        let stationFilter  = false;
+        let sectorFilter   = false;
         if(vm.filter.cultivar != ''){
           cultivarFilter = (item.sector.cultivar == vm.filter.cultivar)
         }else{
@@ -56,7 +120,19 @@ function dashboardNutritionalDataCtrl(stationsSvc, authSvc, usersSvc, nutritiona
           ownerFilter = true;
         }
 
-        return cultivarFilter && ownerFilter
+        if(vm.filter.station != ''){
+          stationFilter = (item.station._id == vm.filter.station)
+        }else{
+          stationFilter = true;
+        }
+
+        if(vm.filter.sector != ''){
+          sectorFilter = (item.sector._id == vm.filter.sector)
+        }else{
+          sectorFilter = true;
+        }
+
+        return cultivarFilter && ownerFilter && stationFilter && sectorFilter
       }
     )
   })

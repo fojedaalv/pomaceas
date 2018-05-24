@@ -10,18 +10,36 @@
       <div class="panel-body">
         <form class="form-inline well clearfix">
 
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-3">
             <label for="owner" class="control-label">Productor</label><br/>
-            <select class="form-control" id="owner" ng-model="vm.filter.owner">
+            <select class="form-control" id="owner" ng-model="vm.filter.owner" style="width:100%;">
               <option ng-repeat="item in vm.users" value="{{ item.value }}">
                 {{ item.text }}
               </option>
             </select>
           </div>
 
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-3">
+            <label for="station" class="control-label">Estaciones</label><br/>
+            <select class="form-control" id="station" ng-model="vm.filter.station" style="width:100%;">
+              <option ng-repeat="item in vm.stations" value="{{ item.value }}">
+                {{ item.text }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group col-md-3">
+            <label for="sector" class="control-label">Cuarteles</label><br/>
+            <select class="form-control" id="sector" ng-model="vm.filter.sector" style="width:100%;">
+              <option ng-repeat="item in vm.sectors" value="{{ item.value }}">
+                {{ item.text }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group col-md-3">
             <label for="cultivar" class="control-label">Variedad</label><br/>
-            <select class="form-control" id="cultivar" ng-model="vm.filter.cultivar">
+            <select class="form-control" id="cultivar" ng-model="vm.filter.cultivar" style="width:100%;">
               <option ng-repeat="item in vm.cultivars" value="{{ item.value }}">
                 {{ item.text }}
               </option>
