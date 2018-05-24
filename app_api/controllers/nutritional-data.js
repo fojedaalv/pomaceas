@@ -324,7 +324,7 @@ module.exports.getAllNutData = (req, res) => {
           item.sector = item.station.sectors.filter((element) => {
             return String(element._id) === String(item.sectorId)
           })[0];
-          console.log(item);
+          //console.log(item);
         })
         sendJSONresponse(
           res,

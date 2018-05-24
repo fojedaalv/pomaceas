@@ -11,7 +11,7 @@
         <form class="form-inline well clearfix">
 
           <div class="form-group col-md-4">
-            <label for="owner" class="control-label">Dueño</label><br/>
+            <label for="owner" class="control-label">Productor</label><br/>
             <select class="form-control" id="owner" ng-model="vm.filter.owner">
               <option ng-repeat="item in vm.users" value="{{ item.value }}">
                 {{ item.text }}
@@ -32,7 +32,7 @@
         <div class="table-responsive" style="max-height:500px;overflow:scroll;white-space:nowrap;">
           <table class="table table-condensed table-bordered table-responsive">
             <thead>
-              <th>Dueño</th>
+              <th>Productor</th>
               <th>Estación</th>
               <th>Cuartel</th>
               <th>Variedad</th>
