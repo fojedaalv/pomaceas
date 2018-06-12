@@ -1,4 +1,16 @@
-<nav id="mainNav" class="navbar navbar-fixed-top navbar-inverse">
+<div class="container"
+ng-show="(navvm.isActive('/') || navvm.isActive('/register') || navvm.isActive('/forgot-password'))">
+  <div class="home-header">
+    <a href="/#/">
+      <img class="cp-logo" src="images/logo.png"></img>
+    </a>
+    <img class="ut-logo" src="images/logouniversidad.png"></img>
+  </div>
+  <div class="home-header-underline"></div>
+</div>
+
+<nav id="mainNav" class="navbar navbar-fixed-top navbar-inverse"
+ng-show="!(navvm.isActive('/') || navvm.isActive('/register') || navvm.isActive('/forgot-password'))">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">

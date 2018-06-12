@@ -162,6 +162,24 @@ body {
 .pagination > .disabled > a:focus {
   background-color: #439527;
 }
+.home-header {
+  height: 200px;
+  background-color: #68942d;
+  background-image: url('/images/background.png');
+  margin-bottom: 5px;
+}
+.home-header-underline {
+  height: 10px;
+  background-color: #f39c12;
+  margin-bottom: 30px;
+}
+.cp-logo {
+  margin: 70px;
+}
+.ut-logo {
+  margin: 80px;
+  float: right;
+}
 /*
 .pomaceas-navbar a:after {
   content: "";
