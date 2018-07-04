@@ -4,7 +4,7 @@
   <div class="col-md-9">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Crear una nueva estación</h3>
+        <h3 class="panel-title">Crear Estación</h3>
       </div>
       <div class="panel-body">
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
@@ -18,13 +18,13 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="inputCity" class="col-lg-2 control-label">Ciudad</label>
+            <label for="inputCity" class="col-lg-2 control-label">Localidad</label>
             <div class="col-lg-10">
               <input class="form-control" id="inputCity" placeholder="Ciudad" type="text" ng-model="vm.newStation.city">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputOwner" class="col-lg-2 control-label">Dueño</label>
+            <label for="inputOwner" class="col-lg-2 control-label">Productor</label>
             <div class="col-lg-10">
               <select class="form-control" id="inputOwner" ng-model="vm.newStation.owner">
                 <option value=""></option>
@@ -55,7 +55,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="inputRegion" class="col-lg-2 control-label">Ubicación</label>
+            <label for="inputRegion" class="col-lg-2 control-label">Ubicación Geográfica</label>
             <div class="col-lg-5">
               <input class="form-control" id="inputLat" placeholder="Latitud" ng-model="vm.cursor.location.latitude">
             </div>

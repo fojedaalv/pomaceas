@@ -5,55 +5,69 @@
   <div class="col-md-9">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Datos de la Estación {{vm.station.name }}</h3>
+        <h3 class="panel-title"><b>1.-Datos de la Estación {{vm.station.name }}</b></h3>
       </div>
       <div class="panel-body">
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
         <div class="alert alert-info" role="alert" ng-show="vm.formInfo">{{vm.formInfo}}</div>
-        <div class="row">
-          <div class="col-md-3">
-            <strong>Nombre</strong>: {{ vm.station.name }}
-          </div>
-          <div class="col-md-5">
-            <strong>Último Registro</strong>:
-            <span ng-if="vm.stationSummary.lastReading">
-            {{ vm.stationSummary.lastReading | amUtc | amDateFormat:'DD [de] MMMM [de] YYYY HH:mm:ss' }}
-            </span>
-            <span ng-if="!vm.stationSummary.lastReading">
-            No hay datos en la estación.
-            </span>
-          </div>
-          <div class="col-md-4">
-            <strong>Ubicación</strong>: {{ vm.station.city }}, {{ vm.station.region | regionTranslate }}
-            <!-- Coordenadas: ({{vm.station.location.coordinates[0]}}, {{vm.station.location.coordinates[1]}}) -->
-          </div>
-          <div class="col-md-12">
-            <strong>Datos disponibles</strong>:
-            <span ng-if="vm.stationSummary.datesAvailable.length>0">
-              desde {{ vm.startDate | amDateFormat:'DD [de] MMMM [de] YYYY' }} hasta {{ vm.endDate | amDateFormat:'DD [de] MMMM [de] YYYY' }}
-            </span>
-            <span ng-if="!vm.stationSummary.datesAvailable.length>0">
-              No hay datos agregados a la estación
-            </span>
-          </div>
-        </div>
+        <table class="table table-bordered table-condensed text-center">
+          <thead>
+            <th>
+              NOMBRE
+            </th>
+            <th>
+              DATOS DISPONIBLES
+            </th>
+            <th>
+              UBICACIÓN
+            </th>
+            <th>
+              ÚLTIMO REGISTRO
+            </th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                {{ vm.station.name }}
+              </td>
+              <td>
+                <span ng-if="vm.stationSummary.datesAvailable.length>0">
+                  desde {{ vm.startDate | amDateFormat:'DD [de] MMMM [de] YYYY' }} hasta {{ vm.endDate | amDateFormat:'DD [de] MMMM [de] YYYY' }}
+                </span>
+                <span ng-if="!vm.stationSummary.datesAvailable.length>0">
+                  No hay datos agregados a la estación
+                </span>
+              </td>
+              <td>
+                {{ vm.station.city }}, {{ vm.station.region | regionTranslate }}
+              </td>
+              <td>
+                {{ vm.stationSummary.lastReading | amUtc | amDateFormat:'DD [de] MMMM [de] YYYY HH:mm:ss' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        Opciones de consulta
+        <b>
+        2.-Opciones de consulta
+        </b>
       </div>
       <div class="panel-body">
         <div class="row">
           <div class="col-md-3">
             <a href="/#/dashboard/userstations-bydates/{{vm.station._id}}">
-              <div class="panel panel-success">
-                <div class="panel-heading" style="min-height:150px;">
-                  <p class="text-center panel-title">Consultar variables por rangos de días</p>
-                  <h2 class="text-center">
-                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                  </h2>
+              <div class="row">
+                <div class="col-xs-5">
+                  <img src="images/01.png"/>
+                </div>
+                <div class="col-xs-7" style="padding-top: 10px; color: #555;">
+                  <strong>
+                    Consultar variables por rangos de días
+                  </strong>
                 </div>
               </div>
             </a>
@@ -61,12 +75,14 @@
 
           <div class="col-md-3">
             <a href="/#/dashboard/userstations-monthly/{{vm.station._id}}">
-              <div class="panel panel-success">
-                <div class="panel-heading" style="min-height:150px;">
-                  <p class="text-center panel-title">Consultar variables por mes</p>
-                  <h2 class="text-center">
-                    <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-                  </h2>
+              <div class="row">
+                <div class="col-xs-5">
+                  <img src="images/02.png"/>
+                </div>
+                <div class="col-xs-7" style="padding-top: 10px; color: #555;">
+                  <strong>
+                    Consultar variables por mes
+                  </strong>
                 </div>
               </div>
             </a>
@@ -74,12 +90,14 @@
 
           <div class="col-md-3">
             <a href="/#/dashboard/userstations-predictions/{{vm.station._id}}">
-              <div class="panel panel-success">
-                <div class="panel-heading" style="min-height:150px;">
-                  <p class="text-center panel-title">Estimaciones</p><br/>
-                  <h2 class="text-center">
-                    <span class="glyphicon glyphicon-leaf" aria-hidden="true"></span>
-                  </h2>
+              <div class="row">
+                <div class="col-xs-5">
+                  <img src="images/03.png"/>
+                </div>
+                <div class="col-xs-7" style="padding-top: 10px; color: #555;">
+                  <strong>
+                    Estimaciones
+                  </strong>
                 </div>
               </div>
             </a>
@@ -87,22 +105,18 @@
 
           <div class="col-md-3">
             <a href="/#/dashboard/userstations-variable-summary/{{vm.station._id}}">
-              <div class="panel panel-success">
-                <div class="panel-heading" style="min-height:150px;">
-                  <p class="text-center panel-title">Reporte de variables relevantes</p>
-                  <h2 class="text-center">
-                    <span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
-                  </h2>
+              <div class="row">
+                <div class="col-xs-5">
+                  <img src="images/05.png"/>
+                </div>
+                <div class="col-xs-7" style="padding-top: 10px; color: #555;">
+                  <strong>
+                    Reporte de variables relevantes
+                  </strong>
                 </div>
               </div>
             </a>
           </div>
-
-
-
-
-
-
 
         <!--
         <div class="row">
@@ -125,10 +139,22 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Cuarteles del huerto asociado a la estación</h3>
+        <h3 class="panel-title"><b>3.-Cuarteles del huerto asociado a la estación</b></h3>
       </div>
       <div class="panel-body">
-        <p>Los cuarteles representan divisiones del huerto. Debe existir al menos uno asociado a un tipo de cultivar para poder efectuar predicciones.</p>
+        <div class="row" style="margin-bottom:10px;">
+          <div class="col-md-10">
+
+          </div>
+          <div class="col-md-2">
+            <span ng-if="!vm.editingSectors">
+              <button type="button" class="btn btn-success" ng-click="vm.editSectors()">
+                <i class="fa fa-fw fa-edit"></i>
+                Editar Cuarteles
+              </button>
+            </span>
+          </div>
+        </div>
         <table class="table table-striped table-hover" ng-if="vm.station.sectors.length>0">
           <thead>
             <th class="col-md-5">Cuartel</th>
@@ -172,20 +198,28 @@
         <span ng-if="vm.editingSectors">
           <p>Existen cambios sin guardar. Presione "Guardar Cambios" si quiere aplicarlos, o "Cancelar Edición" en caso contrario.</p>
         </span>
-        <span ng-if="!vm.editingSectors">
-          <button type="button" class="btn btn-success" ng-click="vm.editSectors()">Editar Cuarteles</button>
-        </span>
         <span ng-if="vm.editingSectors">
-          <button type="button" class="btn btn-success" ng-click="vm.addSector()">Añadir Cuarteles</button>
-          <button type="button" class="btn btn-success" ng-click="vm.cancelEditSectors()">Cancelar Edición</button>
-          <button type="button" class="btn btn-success" ng-click="vm.updateSectors()">Guardar Cambios</button>
+          <button type="button" class="btn btn-success" ng-click="vm.addSector()">
+            <i class="fa fa-fw fa-plus"></i>
+            Añadir Cuarteles
+          </button>
+          <button type="button" class="btn btn-success" ng-click="vm.cancelEditSectors()">
+            <i class="fa fa-fw fa-undo"></i>
+            Cancelar Edición
+          </button>
+          <button type="button" class="btn btn-success" ng-click="vm.updateSectors()">
+            <i class="fa fa-fw fa-save"></i>
+            Guardar Cambios
+          </button>
         </span>
       </div>
     </div>
 
     <div class="panel panel-default" ng-if="vm.stationId">
       <div class="panel-heading">
-        Subir datos a la estación
+        <b>
+        4.-Subir datos a la estación
+        </b>
       </div>
       <div class="panel-body">
         <div class="alert">
@@ -325,7 +359,7 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        Eliminar datos de la estación
+        <b>5.-Eliminar datos de la estación</b>
       </div>
       <div class="panel-body">
         <div ng-if="vm.stationSummary.datesAvailable.length>0">

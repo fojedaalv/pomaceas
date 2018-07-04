@@ -9,38 +9,36 @@
       <div class="panel-body">
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
         <form class="form-inline well clearfix" ng-if="vm.stations.length>0">
-
+          <strong>1. Estación</strong><br/>
           <div class="form-group col-md-4">
-            <label for="station" class="control-label">Estación</label><br/>
-            <select class="form-control" id="station" ng-model="vm.stationId">
+            <select class="form-control" id="station" ng-model="vm.stationId" style="width:100%">
               <option ng-repeat="stat in vm.stations" value="{{ stat._id }}">
                 {{ stat.name }}, {{ stat.city}}, {{ stat.region }} Región
               </option>
             </select>
           </div>
 
-          <div class="col-md-8">
+          <div class="form-group col-md-8">
             <span ng-if="!vm.stationSummary.lastReading">
               La estación seleccionada no tiene datos.
             </span>
-            <span ng-if="vm.stationSummary.lastReading">
-              <p>
-                <strong>Último Registro:</strong>
+            <div class="row" ng-if="vm.stationSummary.lastReading">
+              <div class="col-md-6">
+                <strong>Último Registro</strong><br/>
                 {{ vm.stationSummary.lastReading | amUtc | amDateFormat:'DD [de] MMMM [de] YYYY HH:mm:ss' }}
-              </p>
-              <p>
-                <strong>Primer Registro:</strong>
+              </div>
+              <div class="col-md-6">
+                <strong>Primer Registro</strong><br/>
                 {{ vm.minDate | amDateFormat:'DD [de] MMMM [de] YYYY HH:mm:ss' }}
-              </p>
-            </span>
+              </div>
+            </div>
           </div>
         </form>
 
-        <div class="panel panel-default" ng-if="vm.stationId">
-          <hr/>
-          <div class="panel-heading">
-            Subir datos a la estación
-          </div>
+        <div class="panel panel-default well" ng-if="vm.stationId">
+          <strong>
+            2. Subir datos a la estación
+          </strong>
           <div class="panel-body">
             <div class="alert">
               <p>Para subir datos a la estación se debe considerar:</p>

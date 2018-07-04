@@ -53,12 +53,13 @@ body {
   padding-bottom: 80px;
 }
 .basic-footer {
-  height: 80px;
+  height: 60px;
   padding: 10px;
   background-color: #828081;
   color: #FFF;
   border-top: 1px solid #eee;
   text-align: left;
+  font-size: .7em;
 }
 
 .dash-nav-header {
@@ -141,9 +142,10 @@ body {
   color: #FFF;
 }
 .table th {
-  background-color: #439527;
+  background-color: #6daf00;
   border: 3px solid #FFF !important;
 }
+/*
 .pagination-sm li > a {
   background-color: #4dac2c;
 }
@@ -161,7 +163,35 @@ body {
 }
 .pagination > .disabled > a:focus {
   background-color: #439527;
+}*/
+
+/* Modifications to pagination */
+.pagination-sm li > a {
+  background-color: transparent;
+  color: #aaaaaa;
 }
+.pagination-sm li.disabled > a {
+  background-color: transparent;
+}
+.pagination-sm li.active > a {
+  background-color: #439527;
+  color: white;
+}
+.pagination-sm li.disabled:hover > a, .pagination-sm li.active:hover > a, .pagination-sm li:hover > a {
+  background-color: #6caf00;
+  color: white;
+}
+.pagination-sm li:nth-child(2) > a, .pagination-sm li:nth-last-child(2) > a{
+  background-color: #aaaaaa !important;
+  color: white;
+}
+.dashboard-nav > ul.list-group > a.active {
+  background-color: #6caf00 !important;
+}
+.pagination > .disabled > a:focus {
+  background-color: #439527;
+}
+
 .home-header {
   height: 200px;
   background-color: #68942d;
@@ -189,3 +219,9 @@ body {
   padding-top: 0px;
   border-right: 1px solid white;
 }*/
+
+.valign-middle {
+  display:inline-block;
+  vertical-align:
+  middle;float:none;
+}
