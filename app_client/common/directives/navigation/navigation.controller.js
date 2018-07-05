@@ -16,7 +16,7 @@ function navigationCtrl($location, authSvc, $rootScope){
     vm.currentUser = authSvc.currentUser();
   });
   vm.isActive = function (viewLocation) {
-    console.log(viewLocation)
+    //console.log(viewLocation)
     return viewLocation === $location.path();
   };
 }

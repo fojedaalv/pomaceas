@@ -44,22 +44,52 @@ function dashboardStationsUploadCtrl(
     if(lines.length==0){
       return [];
     }else{
-      if(lines[0].split("\t").length == 33){
+      if(lines[0].split("\t").length >= 10){
         fileType = 'original';
       }else if(lines[0].split(",").length == 10){
         fileType = 'procesado';
       }else{
         alert("No se ha podido analizar el archivo.");
-        return [];
+        vm.isLoading = false;
+        vm.isLoadingRepairFile = false;
+        $scope.$apply();
+        return null;
       }
     }
 
     // Se remueven los encabezados.
     // El archivo original tiene dos líneas y el procesado tiene una.
+    let labels = [];
     if(fileType == 'original'){
-      lines = lines.slice(2);
+      labels = lines.slice(0, 2);
+      lines  = lines.slice(2);
     }else if(fileType == 'procesado'){
-      lines = lines.slice(1);
+      labels = lines.slice(0, 1);
+      lines  = lines.slice(1);
+    }
+
+    let indices = [];
+    if(fileType == 'original'){
+      for(var i=0; i<labels.length; i++){
+        labels[i] = labels[i].replace('\r', '');
+      }
+      let top = labels[0].split('\t');
+      let btm = labels[1].split('\t');
+      let categories = [];
+      for(var i=0; i<top.length; i++){
+        categories[i] = (top[i] + ' ' + btm[i]).trim();
+      }
+      indices.push(categories.indexOf('Date'));
+      indices.push(categories.indexOf('Time'));
+      indices.push(categories.indexOf('Temp Out'));
+      indices.push(categories.indexOf('Hi Temp'));
+      indices.push(categories.indexOf('Low Temp'));
+      indices.push(categories.indexOf('Out Hum'));
+      indices.push(categories.indexOf('Wind Speed'));
+      indices.push(categories.indexOf('Rain'));
+      indices.push(categories.indexOf('Solar Rad.'));
+      indices.push(categories.indexOf('ET'));
+      console.log(indices);
     }
 
     // Se lee cada línea y se extraen los campos relevantes
@@ -89,18 +119,22 @@ function dashboardStationsUploadCtrl(
         }
 
         // Se construye el dato desde los campos correspondientes
-        datum.push(lineData[0]);
-        datum.push(lineData[1].replace(":", "-"));
-        datum.push(lineData[2]);
-        datum.push(lineData[3]);
-        datum.push(lineData[4]);
-        datum.push(lineData[5]);
         if(fileType == 'original'){
-          datum.push(lineData[7]);
-          datum.push(lineData[17]);
-          datum.push(lineData[19]);
-          datum.push(lineData[28]);
+          for(var i=0; i<indices.length; i++){
+            let d = lineData[indices[i]];
+            // Corrige el formato de la fecha
+            if(i==1){
+              d = d.replace(":", "-");
+            }
+            datum.push(d);
+          }
         }else if(fileType == 'procesado'){
+          datum.push(lineData[0]);
+          datum.push(lineData[1].replace(":", "-"));
+          datum.push(lineData[2]);
+          datum.push(lineData[3]);
+          datum.push(lineData[4]);
+          datum.push(lineData[5]);
           datum.push(lineData[6]);
           datum.push(lineData[7]);
           datum.push(lineData[8]);
