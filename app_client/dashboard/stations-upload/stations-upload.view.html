@@ -135,14 +135,17 @@
                     Se encontraron {{ vm.dataFixingReport.maxFailures }} ausencias consecutivas, lo que excede el límite aceptado.
                   </p>
                 </div>
-                <p ng-if="(vm.dataFixingReport.fixedNData - vm.dataFixingReport.originalNData) > 0">
+                <button class="btn btn-xs btn-default" ng-click="vm.viewMissingDates=!vm.viewMissingDates" ng-if="vm.dataFixingReport.missingDates.length > 0">
+                  Ver fechas faltantes
+                </button>
+                <div ng-if="(vm.dataFixingReport.fixedNData - vm.dataFixingReport.originalNData) > 0 && vm.viewMissingDates">
                   Faltan los registros correspondientes a las fechas:
                   <ol>
                     <li ng-repeat="date in vm.dataFixingReport.missingDates">
                       {{ date | amUtc | amDateFormat:'DD-MM-YYYY HH:mm'}}
                     </li>
                   </ol>
-                </p>
+                </div>
               </div>
             </div>
 

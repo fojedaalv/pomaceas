@@ -57,10 +57,16 @@
           <div class="form-group">
             <label for="inputRegion" class="col-lg-2 control-label">Ubicación Geográfica</label>
             <div class="col-lg-5">
-              <input class="form-control" id="inputLat" placeholder="Latitud" ng-model="vm.cursor.location.latitude">
+              <div class="input-group">
+                <span class="input-group-addon">Latitud</span>
+                <input class="form-control" id="inputLat" placeholder="Latitud" ng-model="vm.cursor.location.latitude">
+              </div>
             </div>
             <div class="col-lg-5">
-              <input class="form-control" id="inputLng" placeholder="Longitud" ng-model="vm.cursor.location.longitude">
+              <div class="input-group">
+                <span class="input-group-addon">Longitud</span>
+                <input class="form-control" id="inputLng" placeholder="Longitud" ng-model="vm.cursor.location.longitude">
+              </div>
             </div>
             <div class="col-lg-10 col-lg-offset-2">
               <br/>
