@@ -66,7 +66,7 @@
                 </div>
                 <div class="col-xs-7" style="padding-top: 10px; color: #555;">
                   <strong>
-                    Consultar variables por rangos de días
+                    Variables por día
                   </strong>
                 </div>
               </div>
@@ -81,7 +81,7 @@
                 </div>
                 <div class="col-xs-7" style="padding-top: 10px; color: #555;">
                   <strong>
-                    Consultar variables por mes
+                    Variables por mes
                   </strong>
                 </div>
               </div>
@@ -92,7 +92,7 @@
             <a href="/#/dashboard/userstations-predictions/{{vm.station._id}}">
               <div class="row">
                 <div class="col-xs-5">
-                  <img src="images/03.png"/>
+                  <img src="images/05.png"/>
                 </div>
                 <div class="col-xs-7" style="padding-top: 10px; color: #555;">
                   <strong>
@@ -107,11 +107,11 @@
             <a href="/#/dashboard/userstations-variable-summary/{{vm.station._id}}">
               <div class="row">
                 <div class="col-xs-5">
-                  <img src="images/05.png"/>
+                  <img src="images/variables-small.png"/>
                 </div>
                 <div class="col-xs-7" style="padding-top: 10px; color: #555;">
                   <strong>
-                    Reporte de variables relevantes
+                    Reporte de variables
                   </strong>
                 </div>
               </div>
@@ -229,7 +229,7 @@
               Verifique que el archivo a subir sea un archivo de texto o .csv
             </li>
             <li>
-              Las dos primeras líneas del archivo se considerarán como etiquetas de las variables y las demás líneas como datos
+              Las dos primeras líneas del archivo se considerarán como nombres de las variables y las demás líneas como datos
             </li>
             <li>
               Las columnas del archivo deben estar separadas por tabulaciones
@@ -238,13 +238,13 @@
           <p>Pasos para subir datos a la estación:</p>
           <ol>
             <li>
-              Seleccionar el archivo a importar presionando en 'Examinar'
+              Seleccionar el archivo a importar presionando el botón en el recuadro gris
             </li>
             <li>
               Cargar el archivo a la memoria presionando en 'Cargar'
             </li>
             <li>
-              Al Cargar, se mostrarán las 100 primeras líneas del archivo para verificar que se cargó correctamente
+              Al Cargar, Se verificará si el archivo se pudo leer correctamente y no tiene errores críticos
             </li>
             <li>
               Si el archivo se cargó correctamente, presionar 'Subir' para enviar los datos al servidor
@@ -364,7 +364,7 @@
       <div class="panel-body">
         <div ng-if="vm.stationSummary.datesAvailable.length>0">
           <p>Para eliminar datos de la estación, seleccione la fecha de inicio y la fecha de fin. Luego, presione Eliminar.</p>
-          <p>Se borrarán los datos desde el día de inicio hasta el día de término incluido, y no se podrán recuperar.</p>
+          <p>Se borrarán los datos desde el día de inicio hasta el día de término incluido, <b>y no se podrán recuperar</b>.</p>
           <p>Existen datos diponibles desde: {{ vm.startDate | amDateFormat:'DD [de] MMMM [de] YYYY' }} hasta: {{ vm.endDate | amDateFormat:'DD [de] MMMM [de] YYYY' }}</p>
           <div class="row">
             <div class="col-md-4">

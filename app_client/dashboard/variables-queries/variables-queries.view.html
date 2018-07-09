@@ -5,7 +5,7 @@
   <div class="col-md-9">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Consultar Resumen de Variables</h3>
+        <h3 class="panel-title">Consultar Reporte de Variables</h3>
       </div>
       <div class="panel-body">
         <div class="alert alert-danger" role="alert" ng-show="vm.errMessage">{{ vm.errMessage }}</div>
@@ -15,14 +15,14 @@
           <form class="form-inline well clearfix">
             <div class="form-group col-md-4">
               <label for="station" class="control-label">Estación</label><br/>
-              <select class="form-control" id="station" ng-model="vm.stationId">
+              <select class="form-control" id="station" ng-model="vm.stationId" style="width: 100%">
                 <option ng-repeat="stat in vm.stations" value="{{ stat._id }}">
                   {{ stat.name }}, {{ stat.city}}, {{ stat.region }} Región
                 </option>
               </select>
             </div>
             <div class="form-group col-md-4">
-              <label for="summary" class="control-label">Resumen de Variables</label><br/>
+              <label for="summary" class="control-label">Reporte de Variables</label><br/>
               <select class="form-control" id="summary" ng-model="vm.selectedSummary">
                 <option ng-repeat="summ in vm.summaries" value="{{ summ._id }}">
                   {{ summ.name }}

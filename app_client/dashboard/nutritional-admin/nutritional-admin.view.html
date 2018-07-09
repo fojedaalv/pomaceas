@@ -117,53 +117,55 @@
 
         <span ng-if="vm.nutritionalData.length>0">
           <h3>Datos Nutricionales Ingresados</h3>
-          <table class="table table-condensed table-bordered table-responsive">
-            <thead>
-              <th>Estación</th>
-              <th>Variedad</th>
-              <th>Cuartel</th>
-              <th>Fecha</th>
-              <th>Momento<br/>Medición</th>
-              <th>N</th>
-              <th>P</th>
-              <th>K</th>
-              <th>Ca</th>
-              <th>Mg</th>
-              <th>Ms</th>
-              <th>N°</br/>Frutos</th>
-              <th>Peso<br/>Total (g)</th>
-              <th>Índice<br/>Riesgo</th>
-              <th>Otros</th>
-              <th>Opciones</th>
-            </thead>
-            <tbody>
-              <tr ng-repeat="nutData in vm.nutritionalData">
-                <td>{{nutData.station.name}}</td>
-                <td>{{nutData.sector.cultivar | cultivarTranslate}}</td>
-                <td>{{nutData.sector.name}}</td>
-                <td><span>{{nutData.date | amDateFormat:'DD-MM-YYYY'}}</span></td>
-                <td>
-                  <span ng-if="nutData.stage == 'small'">
-                    Fruto 60 ddpf
-                  </span>
-                  <span ng-if="nutData.stage == 'mature'">
-                    Fruto a Cosecha
-                  </span>
-                </td>
-                <td>{{nutData.N          | number:1}}</td>
-                <td>{{nutData.P          | number:1}}</td>
-                <td>{{nutData.K          | number:1}}</td>
-                <td>{{nutData.Ca         | number:1}}</td>
-                <td>{{nutData.Mg         | number:1}}</td>
-                <td>{{nutData.Ms         | number:1}}</td>
-                <td>{{nutData.N_Frutos   | number:1}}</td>
-                <td>{{nutData.Peso_Total | number:1}}</td>
-                <td>{{nutData.riskIndex}}</td>
-                <td>{{nutData.other}}</td>
-                <td><button type="button" class="btn btn-danger btn-xs" ng-click="vm.removeData(nutData)"><i class="fa fa-trash"></i></button></td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="table table-condensed table-bordered table-responsive" style="white-space: nowrap;">
+              <thead>
+                <th>Estación</th>
+                <th>Variedad</th>
+                <th>Cuartel</th>
+                <th>Fecha</th>
+                <th>Momento<br/>Medición</th>
+                <th>N</th>
+                <th>P</th>
+                <th>K</th>
+                <th>Ca</th>
+                <th>Mg</th>
+                <th>Ms</th>
+                <th>N°</br/>Frutos</th>
+                <th>Peso<br/>Total (g)</th>
+                <th>Índice<br/>Riesgo</th>
+                <th>Otros</th>
+                <th>Opciones</th>
+              </thead>
+              <tbody>
+                <tr ng-repeat="nutData in vm.nutritionalData">
+                  <td>{{nutData.station.name}}</td>
+                  <td>{{nutData.sector.cultivar | cultivarTranslate}}</td>
+                  <td>{{nutData.sector.name}}</td>
+                  <td><span>{{nutData.date | amDateFormat:'DD-MM-YYYY'}}</span></td>
+                  <td>
+                    <span ng-if="nutData.stage == 'small'">
+                      Fruto 60 ddpf
+                    </span>
+                    <span ng-if="nutData.stage == 'mature'">
+                      Fruto a Cosecha
+                    </span>
+                  </td>
+                  <td>{{nutData.N          | number:1}}</td>
+                  <td>{{nutData.P          | number:1}}</td>
+                  <td>{{nutData.K          | number:1}}</td>
+                  <td>{{nutData.Ca         | number:1}}</td>
+                  <td>{{nutData.Mg         | number:1}}</td>
+                  <td>{{nutData.Ms         | number:1}}</td>
+                  <td>{{nutData.N_Frutos   | number:1}}</td>
+                  <td>{{nutData.Peso_Total | number:1}}</td>
+                  <td>{{nutData.riskIndex}}</td>
+                  <td>{{nutData.other}}</td>
+                  <td><button type="button" class="btn btn-danger btn-xs" ng-click="vm.removeData(nutData)"><i class="fa fa-trash"></i></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <ul
             uib-pagination
             total-items="vm.totalItems"

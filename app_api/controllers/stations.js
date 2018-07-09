@@ -46,6 +46,7 @@ module.exports.list = function(req, res){
     {
       $sort : {
         region_n: 1,
+        city: 1,
         name: 1
       }
     },

@@ -13,8 +13,8 @@
 
         <form class="clearfix">
           <div class="form-group col-md-12">
-            <label for="name" class="control-label">Título del Resumen: </label>
-            <input class="form-control" id="name" placeholder="Nombre del Resumen" type="text" ng-model="vm.summary.name">
+            <label for="name" class="control-label">Título del Reporte: </label>
+            <input class="form-control" id="name" placeholder="Nombre del Reporte" type="text" ng-model="vm.summary.name">
           </div>
         </form>
 
@@ -132,10 +132,10 @@
               <td>{{ summ.name }}</td>
               <td>{{ summ.variables.length }}</td>
               <td>
-                <a href="/#/dashboard/variables-summary-edit/{{summ._id}}" class="btn btn-xs btn-warning btn-block">
+                <a href="/#/dashboard/variables-summary-edit/{{summ._id}}" class="btn btn-xs btn-warning">
                   <i class="fa fa-edit"></i> Editar
                 </a>
-                <button type="button" class="btn btn-xs btn-danger btn-block" ng-click="vm.removeSummary(summ)">
+                <button type="button" class="btn btn-xs btn-danger" ng-click="vm.removeSummary(summ)">
                   <i class="fa fa-trash"></i> Eliminar
                 </button>
               </td>
