@@ -19,7 +19,13 @@ module.exports.list = function(req, res){
   User.find(
     query,
     '_id name email role phone',
-    {},
+    {
+      sort: {
+        name: 1
+      },
+      skip  : pageNumber*pageSize,
+      limit : pageSize*1
+    },
     function(err, users){
       if(err){
         console.log(err);
