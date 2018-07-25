@@ -225,3 +225,11 @@ body {
   vertical-align:
   middle;float:none;
 }
+
+.panel-success .panel-heading {
+  background-color: #439527;
+}
+
+.panel-success .table .success {
+  background-color: #439527;
+}
