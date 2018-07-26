@@ -124,7 +124,7 @@ function variablesQueriesCtrl(
       var endDateString = new Date(2000, variable.endDate.month-1, variable.endDate.day, 12).toLocaleString("es-CL", {day: 'numeric', month: 'numeric'});
       var stringDates = startDateString + " - " + endDateString;
 
-      // Se inician definen los tres elementos de la fila de la tabla
+      // Se definen los tres elementos de la fila de la tabla
       var tableRow = [
         variable.factor,
         variable.variable,
@@ -182,8 +182,22 @@ function variablesQueriesCtrl(
         })
         .success(((variableIndex, index) => {
           return (data) => {
-            index= 3 + Number(index);
-            vm.table.rows[variableIndex][index]=data.value;
+            index = 3 + Number(index);
+            vm.table.rows[variableIndex][index] = data.value;
+
+            // Verifica si los valores ya se terminaron de cargar
+            // Si se cargaron, calcular el promedio
+            let values = vm.table.rows[variableIndex].slice(3);
+            console.log(values);
+            let complete = (values.indexOf("---") == -1) && (values.length > 0);
+            console.log(complete);
+            if(complete){
+              let sum = 0;
+              values.forEach( item => sum += item );
+              let avg = (sum / values.length);
+              vm.table.rows[variableIndex].push(avg);
+              vm.table.rows[variableIndex].push('---');
+            }
           }
         })(variableIndex, index))
         .error((e) => {
@@ -196,6 +210,10 @@ function variablesQueriesCtrl(
     for(var dat of queriableDates){
       var d = dat.start.getFullYear().toString().substr(2,3) + '/' + dat.end.getFullYear().toString().substr(2,3);
       tableHeader.push(d);
+    }
+    if(queriableDates.length > 0) {
+      tableHeader.push('Promedio');
+      tableHeader.push('Variación');
     }
     console.log(tableHeader);
     vm.table = {
