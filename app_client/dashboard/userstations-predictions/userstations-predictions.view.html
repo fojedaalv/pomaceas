@@ -36,9 +36,9 @@
               <span> {{ vm.selectedSector.cultivar | cultivarTranslate }} </span>
             </div>
             <div class="form-group col-md-4">
-              <label for="year" class="control-label">Año:</label>
+              <label for="year" class="control-label">Período:</label>
               <select class="form-control" id="year" ng-model="vm.selectedYear">
-                <option ng-repeat="y in vm.yearsAvailable" value="{{y}}">{{y}}</option>
+                <option ng-repeat="y in vm.yearsAvailable" value="{{y}}">{{y | yearToPeriod}}</option>
               </select>
             </div>
           </form>
