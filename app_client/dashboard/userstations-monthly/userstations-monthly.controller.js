@@ -1,7 +1,7 @@
 angular.module('PomaceasWebApp')
 .controller('dashboardUserStationsMonthlyCtrl', dashboardUserStationsMonthlyCtrl);
 
-function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sensorDataSvc, moment){
+function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sensorDataSvc, moment, excelSvc){
   var vm = this;
 
   var chileanFormatters = d3.locale({ "decimal": ",", "thousands": ".", "grouping": [3], "currency": ["$", ""], "dateTime": "%a %b %e %X %Y", "date": "%d.%m.%Y", "time": "%H:%M:%S", "periods": ["AM", "PM"], "days": ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"], "shortDays": ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], "months": ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"], "shortMonths": ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"] });
@@ -581,5 +581,74 @@ function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sen
       })
     }
     return data;
+  }
+
+  vm.getExcelFile = () => {
+    let headers = vm.getFileHeaders();
+    let data    = [];
+    vm.getDataInArray().forEach((item) => {
+      let row = [
+        item.date,
+        item.tempMediaDiaria,
+        item.tempMediaMaxi,
+        item.tempMediaMin,
+        item.tempMaxMax,
+        item.tempMinMin,
+        item.hrMedia,
+        item.hrMaxima,
+        item.hrMinima,
+        item.horas95,
+        item.estres,
+        item.gdMaxYMin,
+        item.gdh,
+        item.gd,
+        item.mineq10,
+        item.min105hrs,
+        item.mineq7,
+        item.richardson,
+        item.unrath,
+        item.diasHel,
+        item.hrmen0c,
+        item.hrmay27c,
+        item.hrmay29c,
+        item.hrmay32c,
+        item.dias5hrsmay27,
+        item.dias5hrsmay29,
+        item.dias5hrsmay32,
+        item.hrmen6c,
+        item.hrmen12c,
+        item.hrmen18c,
+        item.hrmay15c,
+        item.et0,
+        item.horasRad12,
+        item.horasRad300,
+        item.maxRad,
+        item.energia,
+        item.vmaxViento,
+        item.hrAbe,
+        item.pp,
+        item.hrTOpt,
+        item.dpv,
+        item.hrsDPVmay2p5
+      ]
+      for(let i=0;i<row.length;i++){
+        if(row[i]=='---') row[i] = '0.0';
+      }
+      data.push(row);
+    })
+    excelSvc.createExcelFile(
+      "Datos mensuales desde "+ moment(vm.startDate).format("YYYY-MM") +" hasta "+moment(vm.endDate).format("YYYY-MM"),
+      headers,
+      data
+    )
+    .success(function(response, status, headers, config){
+      console.log(response);
+      let filePath = 'http://pomaceas.ferativ.com'+response.location;
+      console.log(filePath)
+      window.open(filePath, '_blank', '');
+    })
+    .error(function(e){
+
+    })
   }
 }

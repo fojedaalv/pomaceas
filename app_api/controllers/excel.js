@@ -39,7 +39,7 @@ module.exports.getExcelFile = (req, res) => {
     ]
   }
   const result = xlr(conf);
-  let filename = 'excel-reports/' + name + ' ' + date + '.xlsx';
+  let filename = 'excel-reports/' + name + ' (' + date + ').xlsx';
   fs.writeFile(filename, new Buffer(result, 'binary'),  'binary', function(err) {
     if(err) {
         console.log(err);

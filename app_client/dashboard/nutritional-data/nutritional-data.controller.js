@@ -262,7 +262,7 @@ function dashboardNutritionalDataCtrl(stationsSvc, authSvc, usersSvc, nutritiona
         item.Peso_Promedio
       ])
     });
-    //let data = [];
+
     excelSvc.createExcelFile(
       'Reporte Datos Nutricionales',
       headers,
@@ -270,7 +270,7 @@ function dashboardNutritionalDataCtrl(stationsSvc, authSvc, usersSvc, nutritiona
     )
     .success(function(response, status, headers, config){
       console.log(response);
-      let filePath = 'http://localhost:3000'+response.location;
+      let filePath = 'http://pomaceas.ferativ.com'+response.location;
       console.log(filePath)
       window.open(filePath, '_blank', '');
     })

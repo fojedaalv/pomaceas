@@ -655,7 +655,7 @@
 
           <!-- ============Exportar a CSV=========== -->
           <div class="row">
-          <button class="btn btn-block btn-success"
+          <button class="btn btn-success"
             type="button"
             ng-csv="vm.getDataInArray()"
             add-bom="true"
@@ -663,6 +663,12 @@
             filename="{{vm.getFileName()}}"
             field-separator="{{vm.getFileSeparator()}}">
             Exportar datos a CSV
+          </button>
+          <button
+            class="btn btn-success"
+            ng-click="vm.getExcelFile()">
+            <i class="fa fa-save"></i>
+            Descargar Datos en EXCEL
           </button>
           </div>
         </div>
