@@ -14,6 +14,7 @@ var ctrlReports         = require('../controllers/reports');
 var ctrlSummaries       = require('../controllers/summaries');
 var ctrlComments        = require('../controllers/comments');
 var ctrlNutritionalData = require('../controllers/nutritional-data');
+var ctrlExcel           = require('../controllers/excel');
 
 // ========== Authentication Endpoints =============
 
@@ -244,6 +245,11 @@ router.get(
   ctrlNutritionalData.calculations
 )
 
+// ================ Excel Endpoints ================
+router.post(
+  '/excel',
+  ctrlExcel.getExcelFile
+)
 
 // ================= Test Endpoints ================
 router.get('/querytest',

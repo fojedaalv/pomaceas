@@ -1,7 +1,7 @@
 angular.module('PomaceasWebApp')
 .controller('dashboardNutritionalDataCtrl', dashboardNutritionalDataCtrl);
 
-function dashboardNutritionalDataCtrl(stationsSvc, authSvc, usersSvc, nutritionalDataSvc, $scope, $filter){
+function dashboardNutritionalDataCtrl(stationsSvc, authSvc, usersSvc, nutritionalDataSvc, $scope, $filter, excelSvc){
   var vm = this;
   vm.stations = [];
   vm.sectors  = [];
@@ -144,7 +144,7 @@ function dashboardNutritionalDataCtrl(stationsSvc, authSvc, usersSvc, nutritiona
       console.log(err);
     })
     .then((response) => {
-      console.log(response);
+      //console.log(response);
       vm.originalData = response.data.data;
       vm.displayData  = response.data.data;
     })
@@ -229,5 +229,53 @@ function dashboardNutritionalDataCtrl(stationsSvc, authSvc, usersSvc, nutritiona
   }
   vm.getFileSeparator = function(){
     return ",";
+  }
+
+  vm.getExcelFile = function(){
+    let headers = vm.getFileHeaders();
+    let data    = [];
+    vm.getData('').forEach((item) => {
+      data.push([
+        item.owner,
+        item.station,
+        item.sector,
+        item.cultivar,
+        item.date,
+        item.stage,
+        item.N,
+        item.P,
+        item.K,
+        item.Ca,
+        item.Mg,
+        item.Ms,
+        item.other,
+        item.NdivCa,
+        item.KdivCa,
+        item.MgdivCa,
+        item.NdivK,
+        item.KdivP,
+        item.PdivCa,
+        item.KMgdivCa,
+        item.riskIndex,
+        item.N_Frutos,
+        item.Peso_Total,
+        item.Peso_Promedio
+      ])
+    });
+    //let data = [];
+    excelSvc.createExcelFile(
+      'Reporte Datos Nutricionales',
+      headers,
+      data
+    )
+    .success(function(response, status, headers, config){
+      console.log(response);
+      let filePath = 'http://localhost:3000'+response.location;
+      console.log(filePath)
+      window.open(filePath, '_blank', '');
+    })
+    .error(function(e){
+
+    })
   }
 }

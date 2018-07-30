@@ -113,6 +113,14 @@
           </table>
         </div>
 
+        <button
+          class="btn btn-success"
+          style="margin-top:10px;"
+          ng-click="vm.getExcelFile()">
+          <i class="fa fa-save"></i>
+          Descargar Datos en Excel
+        </button>
+
         <button class="btn btn-success"
           type="button"
           style="margin-top:10px;"
@@ -121,7 +129,7 @@
           filename="{{vm.getFileName()}}"
           field-separator="{{vm.getFileSeparator()}}">
           <i class="fa fa-save"></i>
-          Descargar Datos
+          Descargar Datos en CSV
         </button>
       </div>
     </div>

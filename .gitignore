@@ -6,3 +6,4 @@ notes
 backups
 reports/*.pdf
 npm-debug*
+excel-reports/*.xlsx
