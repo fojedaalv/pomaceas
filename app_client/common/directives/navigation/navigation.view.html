@@ -34,9 +34,11 @@ ng-show="!(navvm.isActive('/') || navvm.isActive('/register') || navvm.isActive(
         <li ng-hide="navvm.isLoggedIn">
           <a href="/#/">Acceso Suscriptores</a>
         </li>
+        <!--
         <li ng-show="navvm.isLoggedIn">
           <a href="/#/dashboard">Panel de Control</a>
         </li>
+        -->
         <li ng-show="navvm.isLoggedIn">
           <a href="" ng-click="navvm.logout()">Salir</a>
         </li>
