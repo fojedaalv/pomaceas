@@ -167,6 +167,11 @@ function config($routeProvider, $logProvider){
       controller: 'resetPasswordCtrl',
       controllerAs: 'vm'
     })
+    .when('/help/user-manual', {
+      templateUrl: 'dashboard/help/user-manual/user-manual.view.html',
+      controller: 'userManualCtrl',
+      controllerAs: 'vm'
+    })
     .when('/sandbox', {
       templateUrl: 'sandbox/sandbox.view.html',
       controller: 'sandboxCtrl',

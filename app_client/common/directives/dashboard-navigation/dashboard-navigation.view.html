@@ -77,7 +77,7 @@
     </a>
   </ul>
 
-    <div>
+  <ul class="list-group">
     <li class="list-group-item dash-nav-item dash-nav-header">
       <b>Preferencias del usuario</b>
     </li>
@@ -85,7 +85,15 @@
       <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
       Actualizar mis datos
     </a>
-    </div>
+  </ul>
 
+  <ul class="list-group">
+    <li class="list-group-item dash-nav-item dash-nav-header">
+      <b>Ayuda</b>
+    </li>
+    <a href="/#/help/user-manual" class="list-group-item dash-nav-item" ng-class="{ active: navvm.isActive('/help/user-manual')}">
+      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+      Manual de Usuario
+    </a>
   </ul>
 </div>
