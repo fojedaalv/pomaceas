@@ -624,6 +624,6 @@ function dashboardUserStationsByDatesCtrl(stationsSvc, $routeParams, $scope, sen
     })
     .error(function(e){
 
-    })
+    })    
   }
 }

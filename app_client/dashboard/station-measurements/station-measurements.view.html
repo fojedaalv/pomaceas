@@ -44,7 +44,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
               <button class="btn btn-block btn-success"
                 type="button"
                 ng-csv="vm.getDataInArray('avgSensorDataByMonth')"
@@ -54,12 +54,14 @@
                 <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
                 Exportar datos a CSV
               </button>
-              <!--
-              <button type="button" ng-click="vm.saveChart()" class="btn btn-default">
-                <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-                Guardar Gráfico
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-block btn-success"
+                type="button"
+                ng-click="vm.getExcelFile('avgSensorDataByMonth')">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                Exportar datos a Excel
               </button>
-              -->
             </div>
           </div>
 
@@ -104,7 +106,7 @@
               </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-2">
               <button class="btn btn-block btn-success"
                 type="button"
                 ng-csv="vm.getDataInArray('sensorDataByDay')"
@@ -113,6 +115,14 @@
                 field-separator="{{vm.getFileSeparator()}}">
                 <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
                 Exportar datos a CSV
+              </button>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-block btn-success"
+                type="button"
+                ng-click="vm.getExcelFile('sensorDataByDay')">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                Exportar datos a Excel
               </button>
             </div>
           </div>

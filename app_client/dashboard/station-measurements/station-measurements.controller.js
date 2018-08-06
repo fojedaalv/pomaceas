@@ -1,7 +1,7 @@
 angular.module('PomaceasWebApp')
 .controller('dashboardStationMeasurementsCtrl', dashboardStationMeasurementsCtrl);
 
-function dashboardStationMeasurementsCtrl(stationsSvc, $routeParams, $scope, sensorDataSvc){
+function dashboardStationMeasurementsCtrl(stationsSvc, $routeParams, $scope, sensorDataSvc, excelSvc){
   var vm = this;
   vm.station = {};
   vm.stationId = $routeParams.stationId;;
@@ -465,4 +465,44 @@ function dashboardStationMeasurementsCtrl(stationsSvc, $routeParams, $scope, sen
     //window.open(img.src);
     //location.href = "data:image/png;base64"+btoa(svg_xml);
   }*/
+
+  vm.getExcelFile = function(dataset){
+    let headers = vm.getFileHeaders();
+    let data    = [];
+    let dataObjects = vm.getDataInArray(dataset);
+    dataObjects.forEach(item => {
+      let row = [
+        item.date,
+        item.tempOut,
+        item.lowTemp,
+        item.hiTemp,
+        item.outHum,
+        item.windSpeed,
+        item.rain,
+        item.solarRad,
+        item.et
+      ]
+      data.push(row);
+    })
+    let title = "";
+    if(dataset=='avgSensorDataByMonth'){
+      title = 'Promedios diarios por mes';
+    }else if(dataset=='sensorDataByDay'){
+      title = 'Mediciones por día';
+    }
+    excelSvc.createExcelFile(
+      title,
+      headers,
+      data
+    )
+    .success(function(response, status, headers, config){
+      console.log(response);
+      let filePath = 'http://pomaceas.ferativ.com'+response.location;
+      console.log(filePath)
+      window.open(filePath, '_blank', '');
+    })
+    .error(function(e){
+
+    })
+  }
 }
