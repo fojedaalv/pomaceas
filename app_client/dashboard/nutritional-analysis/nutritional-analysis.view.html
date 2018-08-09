@@ -64,11 +64,11 @@
         </table>
         <table class="table table-sm" ng-if="vm.sectors.length>0">
           <thead>
-            <th>N (mg/100g PF)</th>
-            <th>P (mg/100g PF)</th>
-            <th>K (mg/100g PF)</th>
-            <th>Ca (mg/100g PF)</th>
-            <th>Mg (mg/100g PF)</th>
+            <th>N *</th>
+            <th>P *</th>
+            <th>K *</th>
+            <th>Ca *</th>
+            <th>Mg *</th>
             <th>Ms %</th>
             <th>N° Frutos</th>
             <th>Peso Total (g)</th>
@@ -105,6 +105,11 @@
                 <button type="button" class="btn btn-success btn-block" ng-click="vm.saveData()">
                   <i class="fa fa-save"></i>
                 </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <small>* (mg/100g PF)</small>
               </td>
             </tr>
           </form>
