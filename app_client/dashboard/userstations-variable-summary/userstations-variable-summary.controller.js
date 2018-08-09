@@ -199,7 +199,7 @@ function dashboardUserStationsVariableSummaryCtrl(  usersSvc,
               // Calcular la variación porcentual entre el promedio y el último año
               let position = vm.table.rows[variableIndex].length-2;
               let lastYear = vm.table.rows[variableIndex][position];
-              let variation = (avg - lastYear) / avg * 100;
+              let variation = (lastYear - avg) / avg * 100;
               vm.table.rows[variableIndex].push(variation);
             }
           }

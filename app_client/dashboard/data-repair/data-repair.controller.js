@@ -332,7 +332,8 @@ function dataRepairCtrl(
         // Buscar la fecha en los datos disponibles para reparación
         console.log("Searching for row to repair: " + vm.fileData[rowIndex][0] + ", " + vm.fileData[rowIndex][1])
         for(var i=0; i<fileData.length; i++){
-          if(fileData[i][0]==vm.fileData[rowIndex][0] && fileData[i][1]==vm.fileData[rowIndex][1]){
+          // Parche: se añade un '0' para cubrir el caso en que no lee los valores de hora tipo '0:15'
+          if(fileData[i][0]==vm.fileData[rowIndex][0] && (fileData[i][1]==vm.fileData[rowIndex][1] || '0'+fileData[i][1]==vm.fileData[rowIndex][1])){
             //console.log("Row Found");
             //console.log(fileData[i]);
             // Verificar si los datos son válidos

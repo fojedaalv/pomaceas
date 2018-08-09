@@ -123,7 +123,7 @@
                       <div class="panel panel-success">
                         <div class="panel-heading">Fecha estimada de cosecha</div>
                         <div class="panel-body">
-                          Según los datos obtenidos por el sistema, se estima como día de cosecha entre: <b>{{vm.predictions.harvestDate | amSubtract : '3' : 'days' | amDateFormat:'DD [de] MMMM [de] YYYY' }} y {{vm.predictions.harvestDate | amAdd : '3' : 'days' | amDateFormat:'DD [de] MMMM [de] YYYY' }}</b>
+                          Según los datos obtenidos por el sistema, se estima como día de cosecha entre: <b>{{vm.predictions.harvestDate | amSubtract : '3' : 'days' | amDateFormat:'DD [de] MMMM' }} y {{vm.predictions.harvestDate | amAdd : '3' : 'days' | amDateFormat:'DD [de] MMMM [de] YYYY' }}</b>
                         </div>
                       </div>
                     </div>
@@ -176,7 +176,7 @@
                 <table class="table table-stripped table-hover table-bordered" ng-if="vm.predictions.earlyStorageGala!='no-data'">
                   <thead>
                     <td class="col-md-3 success">
-                      <strong>Índice de Riesgo</strong>
+                      <strong>Índice de Potencial</strong>
                     </td>
                     <td class="col-md-3 success">
                       <strong>Potencial de almacenaje</strong>
