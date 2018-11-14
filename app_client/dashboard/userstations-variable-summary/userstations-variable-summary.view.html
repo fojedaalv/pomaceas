@@ -37,35 +37,66 @@
         </div>
 
 
-        <div ng-if="vm.table && vm.hasData">
+        <div ng-if="vm.summaryData">
+          <div class="table-responsive">
           <table class="table table-stripped table-hover table-bordered">
             <thead>
-              <tr ng-show="vm.table.header.length > 3">
+              <tr>
                 <th colspan="3"></th>
-                <th colspan="{{vm.table.header.length - 3}}" class="text-center">Períodos</th>
+                <th colspan="{{vm.summaryData.values[0].length}}" class="text-center">Períodos</th>
+                <th colspan="2"></th>
               </tr>
               <tr>
-                <th ng-repeat="head in vm.table.header">{{ head }}</th>
+                <th>Factor Productivo</th>
+                <th>Variable</th>
+                <th>Período</th>
+                <th ng-repeat="period in vm.summaryData.periods">{{period.from}}/{{period.to}}</th>
+                <th>Promedio</th>
+                <th>Variación</th>
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="row in vm.table.rows">
-                <td class="col-md-2">{{ row[0] }}</td>
-                <td class="col-md-2">{{ row[1] | variableTranslate }}</td>
-                <td class="col-md-2">{{ row[2] }}</td>
-                <td ng-repeat="item in row.slice(3, -1) track by $index">{{ (item | number:0) }}</td>
-                <td ng-if="row.length>3">{{row[row.length-1] | number:0}}%</td>
+              <tr ng-repeat="row in vm.summary.variables track by $index">
+                <td>{{row.factor}}</td>
+                <td>{{row.variable | variableTranslate}}</td>
+                <td>{{row.startDate.day}}-{{row.startDate.month}} - {{row.endDate.day}}-{{row.endDate.month}}</td>
+                <td
+                  ng-repeat="value in vm.summaryData.values[$index] track by $index"
+                  ng-class="{'warning' : value == null}"
+                  style="text-align: right;">
+                  {{value | number:0}}
+                </td>
+                <td
+                  style="text-align: right;">
+                  {{vm.summaryData.stats[$index].average | number:0}}
+                </td>
+                <td
+                  ng-class="{'warning' : !vm.summaryData.stats[$index].variation && vm.summaryData.stats[$index].variation != 0 }"
+                  style="text-align: right;">
+                  {{vm.summaryData.stats[$index].variation | number:0}}
+                  <span ng-if="vm.summaryData.stats[$index].variation || vm.summaryData.stats[$index].variation == 0">%</span>
+                </td>
               </tr>
             </tbody>
           </table>
-          <p>Datos disponibles desde: {{ vm.minDate | amDateFormat:'DD [de] MMMM [de] YYYY' }} hasta: {{ vm.maxDate | amDateFormat:'DD [de] MMMM [de] YYYY' }}</p>
 
-          <span ng-if="vm.comment">
-            <div class="panel panel-default">
-              <div class="panel-heading"><h3>Comentario Técnico</h3></div>
-              <div class="panel-body">{{vm.comment}}</div>
+          <p>Datos disponibles desde: {{ vm.minDate | amDateFormat:'DD [de] MMMM [de] YYYY' }} hasta: {{ vm.maxDate | amDateFormat:'DD [de] MMMM [de] YYYY' }}</p>
+          <p>Las celdas con <i class="fa fa-square text-warning"></i> no se pudieron calcular por faltar datos en esa fecha.</p>
+
+          <div class="panel panel-default">
+            <div class="panel-heading"><h3>Comentario Técnico</h3></div>
+            <div class="panel-body">
+              <span ng-if="vm.comment">
+                {{vm.comment}}
+              </span>
+              <span ng-if="!vm.comment">
+                <p>
+                  No se ha añadido un comentario técnico para este reporte.
+                  Puede solicitar uno contactando a la administración.
+                </p>
+              </span>
             </div>
-          </span>
+          </div>
         </div>
       </div>
     </div>

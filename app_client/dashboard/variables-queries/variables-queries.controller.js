@@ -128,13 +128,13 @@ function variablesQueriesCtrl(
     for(let i=0; i<summary.variables.length; i++){
       measurements[i] = new Array(periods.length);
     }
-    vm.superTest = {
+    vm.summaryData = {
       values  : [],
       periods : periods,
       stats   : []
     };
     vm.completedQueries = 0;
-    vm.superTest.values = measurements;
+    vm.summaryData.values = measurements;
     let completedCallback = () => {
       // Esta función verifica que se terminaron de realizar todos los cálculos
       // (aunque hayan terminado por error)
@@ -142,8 +142,8 @@ function variablesQueriesCtrl(
         // Por cada periodo, verificar todos los valores y eliminar columnas sin resultados
         periods.forEach((item, index) => {
           let isOk = true;
-          for(let i=0; i < vm.superTest.values.length; i++){
-            let t = vm.superTest.values[i][index];
+          for(let i=0; i < vm.summaryData.values.length; i++){
+            let t = vm.summaryData.values[i][index];
             if(t == null || t == undefined){
               isOk = false;
             }
@@ -151,21 +151,21 @@ function variablesQueriesCtrl(
           if(!isOk){
             // Elimina el periodo y los valores de cada fila
             periods.splice(index, 1);
-            for(let i=0; i < vm.superTest.values.length; i++){
-              vm.superTest.values[i].splice(index, 1);
+            for(let i=0; i < vm.summaryData.values.length; i++){
+              vm.summaryData.values[i].splice(index, 1);
             }
           }
         })
 
         // Acá calcular los promedios y variaciones
-        for(let i=0; i < vm.superTest.values.length; i++){
+        for(let i=0; i < vm.summaryData.values.length; i++){
           let sum = 0;
-          let values = vm.superTest.values[i];
+          let values = vm.summaryData.values[i];
           values.forEach( item => sum += item );
           let avg = Math.round(sum / values.length);
           let lastYear = values[values.length-1];
           let variation = -Math.round((avg - lastYear) / avg * 100);
-          vm.superTest.stats.push({
+          vm.summaryData.stats.push({
             average   : avg,
             variation : variation
           })
@@ -202,7 +202,7 @@ function variablesQueriesCtrl(
         .success(((i, j) => {
           return (data) => {
             vm.completedQueries+=1;
-            vm.superTest.values[i][j] = data.value;
+            vm.summaryData.values[i][j] = data.value;
             completedCallback();
           }
         })(i, j))
