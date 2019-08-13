@@ -633,6 +633,8 @@ function dashboardUserStationsMonthlyCtrl(stationsSvc, $routeParams, $scope, sen
       ]
       for(let i=0;i<row.length;i++){
         if(row[i]=='---') row[i] = '0.0';
+        // if(row[i]==undefinined) row[i] = '0.0';
+        // if(row[i]==null) row[i] = '0.0';
       }
       data.push(row);
     })

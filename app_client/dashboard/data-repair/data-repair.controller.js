@@ -65,6 +65,7 @@ function dataRepairCtrl(
 
     let indices = [];
     if(fileType == 'original'){
+      // Obtención de indices (columnas) para la variables en los archivos originales
       for(var i=0; i<labels.length; i++){
         labels[i] = labels[i].replace('\r', '');
       }
@@ -407,14 +408,24 @@ function dataRepairCtrl(
         if(vm.fieldsWithErrors.indexOf(i) >= 0){ //La fila es inválida
           if(vm.fieldsWithErrors.indexOf(i-1) < 0 && vm.fieldsWithErrors.indexOf(i+1) <0){ // El siguiente y el previo no tienen errores
             if(method=='copy'){
-              vm.fileData[i] = vm.fileData[i-1];
+              for(var j = 2; j < 10; j++){
+                if(j!=7){
+                  vm.fileData[i][j] = vm.fileData[i-1][j];
+                } else {
+                  vm.fileData[i][j] ='0.00'; // No duplicar datos de lluvia
+                }
+              }
             }
             if(method=='average'){
               for(var j = 2; j < 10; j++){
-                let a = +vm.fileData[i-1][j];
-                let b = +vm.fileData[i+1][j];
-                let avg = ((a + b) / 2).toFixed(1);
-                vm.fileData[i][j] = avg;
+                if(j!=7){
+                  let a = +vm.fileData[i-1][j];
+                  let b = +vm.fileData[i+1][j];
+                  let avg = ((a + b) / 2).toFixed(1);
+                  vm.fileData[i][j] = avg;
+                } else {
+                  vm.fileData[i][j] ='0.00'; // No duplicar datos de lluvia
+                }
               }
             }
           }

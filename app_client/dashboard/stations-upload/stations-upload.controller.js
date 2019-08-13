@@ -61,9 +61,11 @@ function dashboardStationsUploadCtrl(
     // El archivo original tiene dos líneas y el procesado tiene una.
     let labels = [];
     if(fileType == 'original'){
+      console.log('-----Debug archivo original-----');;
       labels = lines.slice(0, 2);
       lines  = lines.slice(2);
     }else if(fileType == 'procesado'){
+      console.log('-----Debug archivo procesado-----');;
       labels = lines.slice(0, 1);
       lines  = lines.slice(1);
     }
@@ -89,7 +91,6 @@ function dashboardStationsUploadCtrl(
       indices.push(categories.indexOf('Rain'));
       indices.push(categories.indexOf('Solar Rad.'));
       indices.push(categories.indexOf('ET'));
-      console.log(indices);
     }
 
     // Se lee cada línea y se extraen los campos relevantes
@@ -141,20 +142,109 @@ function dashboardStationsUploadCtrl(
           datum.push(lineData[9]);
         }
 
-        // Cuando la estación recibe datos inválidos para un dato, en el archivo
-        // aparece '---'. Se verifica si el dato leído tiene un campo inválido.
-        if(datum.indexOf('---') > -1){
-
-        }else{
-
-        }
-
         fileData.push(datum);
       }else{
         continue;
       }
     }
+    // Buscando y corrigiendo datos faltantes en columnas de entrada
+    let gap_report = {
+      'found': 0,
+      'corrected': 0,
+      'moreThan2Hours': 0,
+      'ignore': 0,
+      'dateJumps': 0,
+      'gapDates': []
+    };
+    // Recorrer todos los datos de entrada por fila
+    for(i=0; i < fileData.length; i++) {
+      let gap_indexes = [], index = -1;
+      // Busca datos faltantes en filas
+      while ((index = fileData[i].indexOf('---', index+1)) != -1) {
+        gap_report.found++;
+        // Fecha de inicio en gaps
+        var expectedDate = moment.utc(toIsoDate(fileData[i][0], fileData[i][1]));
+        var aditionalGaps = 0;
+        if(gap_report.gapDates.indexOf(expectedDate.toDate()) === -1) {
+          console.log(expectedDate.toDate());
+          gap_report.gapDates.push(expectedDate.toDate());
+        }
+        // Si encuentra datos faltantes recorrer la columna hasta encontrar datos nuevamente
+        for(j=i+1; j < fileData.length; j++) {
+          expectedDate.add(15, 'minutes');
+          var tempDate = moment.utc(toIsoDate(fileData[j][0], fileData[j][1]));
+          if (!tempDate.isSameOrBefore(expectedDate)) {
+            gap_report.dateJumps++;
+            aditionalGaps++;
+          };
+          // si ecuentra dato pasa a hacer las validaciones para parchar los faltantes
+          if(fileData[j][index]!='---') {
+            // promero se serciora que no falten más de 2 horas consecutivas de datos
+            if ((j+aditionalGaps)-i < 8) {
+              // se calcula el dato para parchar los faltantes
+              let patchValue = 0;
+              // checkear el caso que el gap se encuentre al inicio del archivo
+              if (i-1<0) {
+                patchValue = parseFloat(fileData[j][index]);
+              } else {
+                patchValue = (parseFloat(fileData[i-1][index])+parseFloat(fileData[j][index]))/2;
+              }
+              // se parcha todos los datos faltantes en la seccion de la columna encontrada
+              for(k=i; k<j; k++) {
+                fileData[k][index] = parseFloat(patchValue).toFixed(2);
+                gap_report.corrected++;
+              }
+            } else {
+              // si son más de dos horas se cambian los campos para que sean ignorados en el resto de la búsqueda
+              // y se guarla la información para el reporte
+              gap_report.moreThan2Hours++;
+              for(k=i; k<j; k++) {
+                fileData[k][index] = 'ignore';
+                gap_report.ignore++;
+              }
+            }
+            break;
+          } else if(j+1==fileData.length) { // Checker el caso en que el gap de datos se encuentre al final del archivo
+            // promero se serciora que no falten más de 2 horas consecutivas de datos
+            if (j-i < 8) {
+              // se parcha todos los datos faltantes en la seccion de la columna encontrada
+              for(k=i; k<j; k++) {
+                fileData[k][index] = fileData[i-1][index];
+                gap_report.corrected++;
+              }
+            } else {
+              // si son más de dos horas se cambian los campos para que sean ignorados en el resto de la búsqueda
+              // y se guarla la información para el reporte
+              gap_report.moreThan2Hours++;
+              for(k=i; k<j; k++) {
+                fileData[k][index] = 'ignore';
+                gap_report.ignore++;
+              }
+            }
+            if(gap_report.gapDates.indexOf(expectedDate.toDate()) === -1) {
+              console.log('last?');
+              gap_report.gapDates.push(expectedDate.toDate());
+            }
+          } else {
+            gap_report.found++;
+            if(gap_report.gapDates.indexOf(expectedDate.toDate()) === -1) {
+              console.log('next?');
+              gap_report.gapDates.push(expectedDate.toDate());
+            }
+          }
+        }
+      }
+    }
 
+    // Reseteando gaps ignorados
+    for(i=0; i < fileData.length; i++) {
+      let gap_indexes = [], index = -1;
+      while ((index = fileData[i].indexOf('ignore', index+1)) === -1) {
+        fileData[i][index] = '---';
+      }
+    }
+    console.table(fileData);
+    console.log(gap_report);
     return fileData;
   }
 
@@ -256,7 +346,7 @@ function dashboardStationsUploadCtrl(
             vm.fileData[i-1][4],
             vm.fileData[i-1][5],
             vm.fileData[i-1][6],
-            vm.fileData[i-1][7],
+            '0.00', // No duplicar datos de lluvia.
             vm.fileData[i-1][8],
             vm.fileData[i-1][9]
           ])
